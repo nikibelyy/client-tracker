@@ -4,12 +4,73 @@
   <meta charset="UTF-8">
   <title>Клиентская база</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 30px; max-width: 800px; }
-    h2 { margin-top: 40px; }
-    input, button { padding: 8px; margin: 5px 0; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-    .delete-btn { background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      max-width: 1000px;
+      background-color: #f9f9f9;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px 0 15px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    input {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      cursor: default;
+    }
+    th.sortable:hover {
+      background-color: #e0e0e0;
+      cursor: pointer;
+    }
+    .delete-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .form-group, .filter-group {
+      margin-bottom: 15px;
+    }
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .filters input {
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -17,21 +78,45 @@
   <h1>Клиентская база</h1>
 
   <h2>Добавить клиента</h2>
-  <label>Гос. номер:</label><br>
-  <input type="text" id="plate" placeholder="А123ВС 77"><br>
+  <div class="form-group">
+    <label>ФИО клиента:</label>
+    <input type="text" id="fullName" placeholder="Иванов Иван Иванович">
+  </div>
 
-  <label>Сумма:</label><br>
-  <input type="number" id="amount" placeholder="1000"><br>
+  <div class="form-group">
+    <label>Телефон:</label>
+    <input type="tel" id="phone" placeholder="+7 (900) 123-45-67">
+  </div>
+
+  <div class="form-group">
+    <label>Гос. номер:</label>
+    <input type="text" id="plate" placeholder="А123ВС 77">
+  </div>
+
+  <div class="form-group">
+    <label>Сумма:</label>
+    <input type="number" id="amount" placeholder="1000">
+  </div>
 
   <button onclick="addClient()">Добавить</button>
+  <button onclick="exportCSV()">Экспорт в Excel (CSV)</button>
 
   <h2>Список клиентов</h2>
+
+  <div class="filters">
+    <input type="text" id="filterName" placeholder="Фильтр по ФИО" oninput="renderTable()">
+    <input type="text" id="filterPlate" placeholder="Фильтр по номеру" oninput="renderTable()">
+    <input type="text" id="filterPhone" placeholder="Фильтр по телефону" oninput="renderTable()">
+  </div>
+
   <table id="clientTable">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Гос. номер</th>
-        <th>Сумма</th>
+        <th class="sortable" onclick="sortTable('index')">#</th>
+        <th class="sortable" onclick="sortTable('fullName')">ФИО</th>
+        <th class="sortable" onclick="sortTable('phone')">Телефон</th>
+        <th class="sortable" onclick="sortTable('plate')">Гос. номер</th>
+        <th class="sortable" onclick="sortTable('amount')">Сумма</th>
         <th>Удалить</th>
       </tr>
     </thead>
@@ -40,6 +125,8 @@
 
   <script>
     let clients = JSON.parse(localStorage.getItem('clients')) || [];
+    let sortBy = '';
+    let sortAsc = true;
 
     function saveClients() {
       localStorage.setItem('clients', JSON.stringify(clients));
@@ -47,32 +134,67 @@
 
     function renderTable() {
       const tbody = document.querySelector("#clientTable tbody");
+      const nameFilter = document.getElementById("filterName").value.toLowerCase();
+      const plateFilter = document.getElementById("filterPlate").value.toLowerCase();
+      const phoneFilter = document.getElementById("filterPhone").value.toLowerCase();
+
+      let filtered = clients.filter(c =>
+        c.fullName.toLowerCase().includes(nameFilter) &&
+        c.plate.toLowerCase().includes(plateFilter) &&
+        c.phone.toLowerCase().includes(phoneFilter)
+      );
+
+      if (sortBy) {
+        filtered.sort((a, b) => {
+          if (sortBy === 'amount') return sortAsc ? a.amount - b.amount : b.amount - a.amount;
+          return sortAsc
+            ? a[sortBy].localeCompare(b[sortBy], 'ru')
+            : b[sortBy].localeCompare(a[sortBy], 'ru');
+        });
+      }
+
       tbody.innerHTML = "";
-      clients.forEach((client, index) => {
+      filtered.forEach((client, index) => {
         tbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
+            <td>${client.fullName}</td>
+            <td>${client.phone}</td>
             <td>${client.plate}</td>
             <td>${client.amount} ₽</td>
-            <td><button class="delete-btn" onclick="deleteClient(${index})">Удалить</button></td>
+            <td><button class="delete-btn" onclick="deleteClient(${clients.indexOf(client)})">Удалить</button></td>
           </tr>
         `;
       });
     }
 
+    function sortTable(key) {
+      if (sortBy === key) {
+        sortAsc = !sortAsc;
+      } else {
+        sortBy = key;
+        sortAsc = true;
+      }
+      renderTable();
+    }
+
     function addClient() {
+      const fullName = document.getElementById("fullName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
       const plate = document.getElementById("plate").value.trim();
       const amount = parseFloat(document.getElementById("amount").value);
 
-      if (!plate || isNaN(amount)) {
-        alert("Пожалуйста, введите корректные данные.");
+      if (!fullName || !phone || !plate || isNaN(amount)) {
+        alert("Пожалуйста, заполните все поля корректно.");
         return;
       }
 
-      clients.push({ plate, amount });
+      clients.push({ fullName, phone, plate, amount });
       saveClients();
       renderTable();
 
+      document.getElementById("fullName").value = "";
+      document.getElementById("phone").value = "";
       document.getElementById("plate").value = "";
       document.getElementById("amount").value = "";
     }
@@ -83,6 +205,20 @@
         saveClients();
         renderTable();
       }
+    }
+
+    function exportCSV() {
+      let csv = "№,ФИО,Телефон,Гос. номер,Сумма\n";
+      clients.forEach((c, i) => {
+        csv += `${i + 1},"${c.fullName}","${c.phone}","${c.plate}",${c.amount}\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "clients.csv";
+      a.click();
     }
 
     renderTable();
