@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Клиентская база</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; max-width: 800px; }
+    h2 { margin-top: 40px; }
+    input, button { padding: 8px; margin: 5px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    .delete-btn { background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>Клиентская база</h1>
+
+  <h2>Добавить клиента</h2>
+  <label>Гос. номер:</label><br>
+  <input type="text" id="plate" placeholder="А123ВС 77"><br>
+
+  <label>Сумма:</label><br>
+  <input type="number" id="amount" placeholder="1000"><br>
+
+  <button onclick="addClient()">Добавить</button>
+
+  <h2>Список клиентов</h2>
+  <table id="clientTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Гос. номер</th>
+        <th>Сумма</th>
+        <th>Удалить</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let clients = JSON.parse(localStorage.getItem('clients')) || [];
+
+    function saveClients() {
+      localStorage.setItem('clients', JSON.stringify(clients));
+    }
+
+    function renderTable() {
+      const tbody = document.querySelector("#clientTable tbody");
+      tbody.innerHTML = "";
+      clients.forEach((client, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${client.plate}</td>
+            <td>${client.amount} ₽</td>
+            <td><button class="delete-btn" onclick="deleteClient(${index})">Удалить</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    function addClient() {
+      const plate = document.getElementById("plate").value.trim();
+      const amount = parseFloat(document.getElementById("amount").value);
+
+      if (!plate || isNaN(amount)) {
+        alert("Пожалуйста, введите корректные данные.");
+        return;
+      }
+
+      clients.push({ plate, amount });
+      saveClients();
+      renderTable();
+
+      document.getElementById("plate").value = "";
+      document.getElementById("amount").value = "";
+    }
+
+    function deleteClient(index) {
+      if (confirm("Удалить эту запись?")) {
+        clients.splice(index, 1);
+        saveClients();
+        renderTable();
+      }
+    }
+
+    renderTable();
+  </script>
+
+</body>
+</html>
