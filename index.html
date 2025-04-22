@@ -51,15 +51,6 @@
       cursor: pointer;
     }
 
-    button[type="submit"] {
-      background: #007bff;
-      color: white;
-    }
-
-    button[type="submit"]:hover {
-      background: #0056b3;
-    }
-
     #whatsappButton {
       background-color: #25D366;
       color: white;
@@ -84,7 +75,6 @@
       <input type="tel" id="phone" placeholder="Номер телефона (+7...)" required />
       <input type="text" id="car" placeholder="Марка авто" required />
       <input type="text" id="plate" placeholder="Гос номер" required />
-      <input type="text" id="insurance" placeholder="Страховка" required />
 
       <select id="address" required>
         <option value="" disabled selected>Выберите адрес осмотра</option>
@@ -94,7 +84,6 @@
       </select>
 
       <input type="file" id="photo" accept="image/*" required />
-      <button type="submit">Добавить клиента</button>
       <button type="button" id="whatsappButton">Запись на осмотр (WhatsApp)</button>
     </form>
     <p id="status"></p>
@@ -106,43 +95,60 @@
       return digits.length === 11 && /^(7|8)/.test(digits);
     }
 
-    document.getElementById("clientForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-
+    // Отправка данных и фото в Telegram при нажатии WhatsApp-кнопки
+    document.getElementById("whatsappButton").addEventListener("click", async function () {
       const name = document.getElementById("name").value.trim();
       const phone = document.getElementById("phone").value.trim();
-      const car = document.getElementById("car").value;
-      const plate = document.getElementById("plate").value;
-      const insurance = document.getElementById("insurance").value;
+      const car = document.getElementById("car").value.trim();
+      const plate = document.getElementById("plate").value.trim();
       const address = document.getElementById("address").value;
       const photoInput = document.getElementById("photo");
 
-      if (!isValidPhone(phone)) {
-        alert("Введите корректный номер телефона (11 цифр, начинается с +7, 7 или 8).");
+      if (!name || !phone || !car || !plate || !address) {
+        alert("Пожалуйста, заполните все поля.");
         return;
+      }
+
+      if (!isValidPhone(phone)) {
+        alert("Введите корректный номер телефона.");
+        return;
+      }
+
+      let formattedPhone = phone.replace(/\D/g, '');
+      if (formattedPhone.startsWith('8')) {
+        formattedPhone = '7' + formattedPhone.slice(1);
       }
 
       const now = new Date();
       const dateTime = now.toLocaleString('ru-RU');
 
-      const message = `
-Новый клиент:
+      // WhatsApp-сообщение клиенту
+      const clientMessage = `Здравствуйте, ${name}!
+Вы записаны на осмотр повреждений транспортного средства по адресу: ${address}.
+В скором времени с вами свяжется оператор.
+Если у вас есть вопросы — пишите.`;
+
+      const whatsappURL = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(clientMessage)}`;
+      window.open(whatsappURL, '_blank');
+
+      // Отправка в Telegram
+      const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
+      const chatId = '7523840597';
+
+      const telegramMessage = `
+Запись на осмотр:
 Дата: ${dateTime}
 ФИО: ${name}
 Телефон: ${phone}
 Марка авто: ${car}
 Гос номер: ${plate}
-Страховка: ${insurance}
 Адрес осмотра: ${address}
       `;
-
-      const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
-      const chatId = '7523840597';
 
       await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message })
+        body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
       });
 
       const formData = new FormData();
@@ -155,7 +161,7 @@
       })
       .then(response => {
         if (response.ok) {
-          document.getElementById("status").innerText = "Клиент и фото успешно добавлены!";
+          document.getElementById("status").innerText = "Запись отправлена, фото загружено!";
           document.getElementById("clientForm").reset();
         } else {
           document.getElementById("status").innerText = "Ошибка при отправке фото.";
@@ -164,54 +170,6 @@
       .catch(error => {
         document.getElementById("status").innerText = "Ошибка соединения.";
         console.error("Ошибка:", error);
-      });
-    });
-
-    document.getElementById("whatsappButton").addEventListener("click", async function () {
-      const phone = document.getElementById("phone").value.trim();
-      const address = document.getElementById("address").value;
-      const name = document.getElementById("name").value.trim();
-
-      if (!phone || !address || !name) {
-        alert("Пожалуйста, заполните ФИО, номер телефона и выберите адрес.");
-        return;
-      }
-
-      if (!isValidPhone(phone)) {
-        alert("Введите корректный номер телефона для WhatsApp.");
-        return;
-      }
-
-      let formattedPhone = phone.replace(/\D/g, '');
-      if (formattedPhone.startsWith('8')) {
-        formattedPhone = '7' + formattedPhone.slice(1);
-      }
-
-      const now = new Date();
-      const dateTime = now.toLocaleString('ru-RU');
-
-      const clientMessage = `Здравствуйте, ${name}! Вы записаны на осмотр повреждений транспортного средства по адресу: ${address}. Если у вас есть вопросы — пишите.`;
-      const whatsappURL = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(clientMessage)}`;
-      window.open(whatsappURL, '_blank');
-
-      const telegramMessage = `
-Запись на осмотр:
-Дата и время записи: ${dateTime}
-ФИО: ${name}
-Телефон: ${phone}
-Адрес осмотра: ${address}
-      `;
-
-      const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
-      const chatId = '7523840597';
-
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: telegramMessage
-        })
       });
     });
   </script>
