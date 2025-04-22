@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>БАЗА ДАННЫХ</title>
+  <title>Добавление клиентов</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -66,20 +66,21 @@
 </head>
 <body>
   <div class="container">
-    <h1>БАЗА ДАННЫХ</h1>
+    <h1>Добавление клиентов</h1>
     <form id="clientForm">
       <input type="text" id="name" placeholder="ФИО" required />
       <input type="tel" id="phone" placeholder="Номер телефона" required />
       <input type="text" id="car" placeholder="Марка авто" required />
       <input type="text" id="plate" placeholder="Гос номер" required />
       <input type="text" id="insurance" placeholder="Страховка" required />
+      <input type="file" id="photo" accept="image/*" required />
       <button type="submit">Добавить клиента</button>
     </form>
     <p id="status"></p>
   </div>
 
   <script>
-    document.getElementById("clientForm").addEventListener("submit", function(e) {
+    document.getElementById("clientForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
       const name = document.getElementById("name").value;
@@ -87,6 +88,7 @@
       const car = document.getElementById("car").value;
       const plate = document.getElementById("plate").value;
       const insurance = document.getElementById("insurance").value;
+      const photoInput = document.getElementById("photo");
 
       const now = new Date();
       const dateTime = now.toLocaleString('ru-RU');
@@ -104,20 +106,31 @@
       const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
       const chatId = '7523840597';
 
-      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      // 1. Сначала отправляем текстовое сообщение
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: chatId,
           text: message,
         })
+      });
+
+      // 2. Потом отправляем фото
+      const formData = new FormData();
+      formData.append('chat_id', chatId);
+      formData.append('photo', photoInput.files[0]);
+
+      fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+        method: "POST",
+        body: formData
       })
       .then(response => {
         if (response.ok) {
-          document.getElementById("status").innerText = "Клиент успешно добавлен!";
+          document.getElementById("status").innerText = "Клиент и фото успешно добавлены!";
           document.getElementById("clientForm").reset();
         } else {
-          document.getElementById("status").innerText = "Ошибка при отправке.";
+          document.getElementById("status").innerText = "Ошибка при отправке фото.";
         }
       })
       .catch(error => {
