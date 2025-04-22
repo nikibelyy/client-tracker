@@ -44,8 +44,6 @@
     }
 
     button {
-      background: #007bff;
-      color: white;
       padding: 12px;
       border: none;
       border-radius: 8px;
@@ -53,8 +51,22 @@
       cursor: pointer;
     }
 
-    button:hover {
+    button[type="submit"] {
+      background: #007bff;
+      color: white;
+    }
+
+    button[type="submit"]:hover {
       background: #0056b3;
+    }
+
+    #whatsappButton {
+      background-color: #25D366;
+      color: white;
+    }
+
+    #whatsappButton:hover {
+      background-color: #1ebe5d;
     }
 
     #status {
@@ -69,11 +81,11 @@
     <h1>Добавление клиентов</h1>
     <form id="clientForm">
       <input type="text" id="name" placeholder="ФИО" required />
-      <input type="tel" id="phone" placeholder="Номер телефона" required />
+      <input type="tel" id="phone" placeholder="Номер телефона (+7...)" required />
       <input type="text" id="car" placeholder="Марка авто" required />
       <input type="text" id="plate" placeholder="Гос номер" required />
       <input type="text" id="insurance" placeholder="Страховка" required />
-      
+
       <select id="address" required>
         <option value="" disabled selected>Выберите адрес осмотра</option>
         <option value="Антонова-Овсиенко 15А корпус 1">Антонова-Овсиенко 15А корпус 1</option>
@@ -83,21 +95,32 @@
 
       <input type="file" id="photo" accept="image/*" required />
       <button type="submit">Добавить клиента</button>
+      <button type="button" id="whatsappButton">Запись на осмотр (WhatsApp)</button>
     </form>
     <p id="status"></p>
   </div>
 
   <script>
+    function isValidPhone(phone) {
+      const digits = phone.replace(/\D/g, '');
+      return digits.length === 11 && /^(7|8)/.test(digits);
+    }
+
     document.getElementById("clientForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
       const car = document.getElementById("car").value;
       const plate = document.getElementById("plate").value;
       const insurance = document.getElementById("insurance").value;
       const address = document.getElementById("address").value;
       const photoInput = document.getElementById("photo");
+
+      if (!isValidPhone(phone)) {
+        alert("Введите корректный номер телефона (11 цифр, начинается с +7, 7 или 8).");
+        return;
+      }
 
       const now = new Date();
       const dateTime = now.toLocaleString('ru-RU');
@@ -116,17 +139,12 @@
       const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
       const chatId = '7523840597';
 
-      // Сначала отправляем текст
       await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-        })
+        body: JSON.stringify({ chat_id: chatId, text: message })
       });
 
-      // Потом отправляем фото
       const formData = new FormData();
       formData.append('chat_id', chatId);
       formData.append('photo', photoInput.files[0]);
@@ -146,6 +164,54 @@
       .catch(error => {
         document.getElementById("status").innerText = "Ошибка соединения.";
         console.error("Ошибка:", error);
+      });
+    });
+
+    document.getElementById("whatsappButton").addEventListener("click", async function () {
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value;
+      const name = document.getElementById("name").value.trim();
+
+      if (!phone || !address || !name) {
+        alert("Пожалуйста, заполните ФИО, номер телефона и выберите адрес.");
+        return;
+      }
+
+      if (!isValidPhone(phone)) {
+        alert("Введите корректный номер телефона для WhatsApp.");
+        return;
+      }
+
+      let formattedPhone = phone.replace(/\D/g, '');
+      if (formattedPhone.startsWith('8')) {
+        formattedPhone = '7' + formattedPhone.slice(1);
+      }
+
+      const now = new Date();
+      const dateTime = now.toLocaleString('ru-RU');
+
+      const clientMessage = `Здравствуйте, ${name}! Вы записаны на осмотр повреждений транспортного средства по адресу: ${address}. Если у вас есть вопросы — пишите.`;
+      const whatsappURL = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(clientMessage)}`;
+      window.open(whatsappURL, '_blank');
+
+      const telegramMessage = `
+Запись на осмотр:
+Дата и время записи: ${dateTime}
+ФИО: ${name}
+Телефон: ${phone}
+Адрес осмотра: ${address}
+      `;
+
+      const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
+      const chatId = '7523840597';
+
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: telegramMessage
+        })
       });
     });
   </script>
