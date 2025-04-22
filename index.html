@@ -35,7 +35,7 @@
       flex-direction: column;
     }
 
-    input {
+    input, select {
       margin-bottom: 15px;
       padding: 12px;
       border: 1px solid #ccc;
@@ -73,6 +73,14 @@
       <input type="text" id="car" placeholder="Марка авто" required />
       <input type="text" id="plate" placeholder="Гос номер" required />
       <input type="text" id="insurance" placeholder="Страховка" required />
+      
+      <select id="address" required>
+        <option value="" disabled selected>Выберите адрес осмотра</option>
+        <option value="Антонова-Овсиенко 15А корпус 1">Антонова-Овсиенко 15А корпус 1</option>
+        <option value="Плехановская 52">Плехановская 52</option>
+        <option value="П.Отрадное, пер. Тамбовский 25">П.Отрадное, пер. Тамбовский 25</option>
+      </select>
+
       <input type="file" id="photo" accept="image/*" required />
       <button type="submit">Добавить клиента</button>
     </form>
@@ -88,6 +96,7 @@
       const car = document.getElementById("car").value;
       const plate = document.getElementById("plate").value;
       const insurance = document.getElementById("insurance").value;
+      const address = document.getElementById("address").value;
       const photoInput = document.getElementById("photo");
 
       const now = new Date();
@@ -101,12 +110,13 @@
 Марка авто: ${car}
 Гос номер: ${plate}
 Страховка: ${insurance}
+Адрес осмотра: ${address}
       `;
 
       const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
       const chatId = '7523840597';
 
-      // 1. Сначала отправляем текстовое сообщение
+      // Сначала отправляем текст
       await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -116,7 +126,7 @@
         })
       });
 
-      // 2. Потом отправляем фото
+      // Потом отправляем фото
       const formData = new FormData();
       formData.append('chat_id', chatId);
       formData.append('photo', photoInput.files[0]);
