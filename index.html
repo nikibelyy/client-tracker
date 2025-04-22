@@ -3,19 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Клиентская база</title>
-  <style>
+  <style id="theme-style">
     body {
       font-family: Arial, sans-serif;
       margin: 30px;
       max-width: 1000px;
       background-color: #f9f9f9;
+      color: #000;
     }
-    h1, h2 {
-      color: #333;
-    }
-    label {
-      font-weight: bold;
-    }
+    h1, h2 { color: #333; }
     input, button {
       padding: 8px;
       margin: 5px 0 15px 0;
@@ -46,11 +42,6 @@
       border: 1px solid #ccc;
       padding: 10px;
       text-align: left;
-      cursor: default;
-    }
-    th.sortable:hover {
-      background-color: #e0e0e0;
-      cursor: pointer;
     }
     .delete-btn {
       background-color: red;
@@ -58,18 +49,11 @@
       border: none;
       padding: 5px 10px;
       border-radius: 4px;
-      cursor: pointer;
-    }
-    .form-group, .filter-group {
-      margin-bottom: 15px;
     }
     .filters {
       display: flex;
       gap: 10px;
       margin-top: 10px;
-    }
-    .filters input {
-      width: 100%;
     }
   </style>
 </head>
@@ -77,56 +61,39 @@
 
   <h1>Клиентская база</h1>
 
+  <label>
+    <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Тёмная тема
+  </label>
+
   <h2>Добавить клиента</h2>
-  <div class="form-group">
-    <label>ФИО клиента:</label>
-    <input type="text" id="fullName" placeholder="Иванов Иван Иванович">
-  </div>
-
-  <div class="form-group">
-    <label>Телефон:</label>
-    <input type="tel" id="phone" placeholder="+7 (900) 123-45-67">
-  </div>
-
-  <div class="form-group">
-    <label>Гос. номер:</label>
-    <input type="text" id="plate" placeholder="А123ВС 77">
-  </div>
-
-  <div class="form-group">
-    <label>Сумма:</label>
-    <input type="number" id="amount" placeholder="1000">
-  </div>
-
+  <input type="text" id="fullName" placeholder="ФИО">
+  <input type="tel" id="phone" placeholder="Телефон">
+  <input type="text" id="plate" placeholder="Гос. номер">
+  <input type="number" id="amount" placeholder="Сумма">
   <button onclick="addClient()">Добавить</button>
-  <button onclick="exportCSV()">Экспорт в Excel (CSV)</button>
 
   <h2>Список клиентов</h2>
-
-  <div class="filters">
-    <input type="text" id="filterName" placeholder="Фильтр по ФИО" oninput="renderTable()">
-    <input type="text" id="filterPlate" placeholder="Фильтр по номеру" oninput="renderTable()">
-    <input type="text" id="filterPhone" placeholder="Фильтр по телефону" oninput="renderTable()">
-  </div>
-
   <table id="clientTable">
     <thead>
       <tr>
-        <th class="sortable" onclick="sortTable('index')">#</th>
-        <th class="sortable" onclick="sortTable('fullName')">ФИО</th>
-        <th class="sortable" onclick="sortTable('phone')">Телефон</th>
-        <th class="sortable" onclick="sortTable('plate')">Гос. номер</th>
-        <th class="sortable" onclick="sortTable('amount')">Сумма</th>
+        <th>#</th>
+        <th>ФИО</th>
+        <th>Телефон</th>
+        <th>Гос. номер</th>
+        <th>Сумма</th>
         <th>Удалить</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
+  <h2>Настройка Telegram</h2>
+  <input type="text" id="botToken" placeholder="Токен Telegram бота">
+  <input type="text" id="chatId" placeholder="Chat ID">
+  <button onclick="sendTelegram()">Отправить тест-напоминание</button>
+
   <script>
     let clients = JSON.parse(localStorage.getItem('clients')) || [];
-    let sortBy = '';
-    let sortAsc = true;
 
     function saveClients() {
       localStorage.setItem('clients', JSON.stringify(clients));
@@ -134,27 +101,8 @@
 
     function renderTable() {
       const tbody = document.querySelector("#clientTable tbody");
-      const nameFilter = document.getElementById("filterName").value.toLowerCase();
-      const plateFilter = document.getElementById("filterPlate").value.toLowerCase();
-      const phoneFilter = document.getElementById("filterPhone").value.toLowerCase();
-
-      let filtered = clients.filter(c =>
-        c.fullName.toLowerCase().includes(nameFilter) &&
-        c.plate.toLowerCase().includes(plateFilter) &&
-        c.phone.toLowerCase().includes(phoneFilter)
-      );
-
-      if (sortBy) {
-        filtered.sort((a, b) => {
-          if (sortBy === 'amount') return sortAsc ? a.amount - b.amount : b.amount - a.amount;
-          return sortAsc
-            ? a[sortBy].localeCompare(b[sortBy], 'ru')
-            : b[sortBy].localeCompare(a[sortBy], 'ru');
-        });
-      }
-
       tbody.innerHTML = "";
-      filtered.forEach((client, index) => {
+      clients.forEach((client, index) => {
         tbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
@@ -162,20 +110,10 @@
             <td>${client.phone}</td>
             <td>${client.plate}</td>
             <td>${client.amount} ₽</td>
-            <td><button class="delete-btn" onclick="deleteClient(${clients.indexOf(client)})">Удалить</button></td>
+            <td><button class="delete-btn" onclick="deleteClient(${index})">Удалить</button></td>
           </tr>
         `;
       });
-    }
-
-    function sortTable(key) {
-      if (sortBy === key) {
-        sortAsc = !sortAsc;
-      } else {
-        sortBy = key;
-        sortAsc = true;
-      }
-      renderTable();
     }
 
     function addClient() {
@@ -185,7 +123,7 @@
       const amount = parseFloat(document.getElementById("amount").value);
 
       if (!fullName || !phone || !plate || isNaN(amount)) {
-        alert("Пожалуйста, заполните все поля корректно.");
+        alert("Пожалуйста, заполните все поля.");
         return;
       }
 
@@ -207,19 +145,36 @@
       }
     }
 
-    function exportCSV() {
-      let csv = "№,ФИО,Телефон,Гос. номер,Сумма\n";
-      clients.forEach((c, i) => {
-        csv += `${i + 1},"${c.fullName}","${c.phone}","${c.plate}",${c.amount}\n`;
-      });
-
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "clients.csv";
-      a.click();
+    function toggleTheme() {
+      const darkMode = document.getElementById("themeToggle").checked;
+      const style = document.getElementById("theme-style");
+      style.innerHTML = darkMode ? `
+        body { background-color: #121212; color: #fff; }
+        input, button { background-color: #333; color: #fff; border: 1px solid #555; }
+        table { background-color: #1e1e1e; }
+        th, td { border-color: #555; }
+        .delete-btn { background-color: #c00; }
+      ` : style.dataset.default;
     }
+
+    function sendTelegram() {
+      const token = document.getElementById("botToken").value.trim();
+      const chatId = document.getElementById("chatId").value.trim();
+      if (!token || !chatId) {
+        alert("Укажите токен и chat ID.");
+        return;
+      }
+
+      const message = encodeURIComponent("Привет! Это напоминание из CRM. Проверь список клиентов.");
+      const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${message}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => alert("Уведомление отправлено!"))
+        .catch(err => alert("Ошибка отправки в Telegram"));
+    }
+
+    // сохранить CSS по умолчанию
+    document.getElementById("theme-style").dataset.default = document.getElementById("theme-style").innerHTML;
 
     renderTable();
   </script>
