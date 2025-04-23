@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Запись на осмотр</title>
+  <title>Добавление клиентов</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -69,7 +69,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Запись на осмотр</h1>
+    <h1>Добавление клиентов</h1>
     <form id="clientForm">
       <input type="text" id="name" placeholder="ФИО" required />
       <input type="tel" id="phone" placeholder="Номер телефона (+7...)" required />
@@ -95,7 +95,13 @@
       return digits.length === 11 && /^(7|8)/.test(digits);
     }
 
-    // Отправка данных и фото в Telegram при нажатии WhatsApp-кнопки
+    // Генерация уникального номера записи
+    function generateUniqueNumber() {
+      const timestamp = Date.now(); // Получаем текущую метку времени
+      const randomPart = Math.floor(Math.random() * 1000); // Генерируем случайное число
+      return `${timestamp}-${randomPart}`; // Уникальный номер состоит из времени и случайного числа
+    }
+
     document.getElementById("whatsappButton").addEventListener("click", async function () {
       const name = document.getElementById("name").value.trim();
       const phone = document.getElementById("phone").value.trim();
@@ -119,11 +125,15 @@
         formattedPhone = '7' + formattedPhone.slice(1);
       }
 
+      // Генерация уникального номера
+      const uniqueNumber = generateUniqueNumber();
+
       const now = new Date();
       const dateTime = now.toLocaleString('ru-RU');
 
-      // WhatsApp-сообщение клиенту
+      // WhatsApp-сообщение клиенту с уникальным номером
       const clientMessage = `Здравствуйте, ${name}!
+Ваш уникальный номер записи: ${uniqueNumber}
 Вы записаны на осмотр повреждений транспортного средства по адресу: ${address}.
 В скором времени с вами свяжется оператор.
 Если у вас есть вопросы — пишите.`;
@@ -131,13 +141,14 @@
       const whatsappURL = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(clientMessage)}`;
       window.open(whatsappURL, '_blank');
 
-      // Отправка в Telegram
+      // Отправка данных в Telegram с уникальным номером
       const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
       const chatId = '7523840597';
 
       const telegramMessage = `
 Запись на осмотр:
 Дата: ${dateTime}
+Номер записи: ${uniqueNumber}
 ФИО: ${name}
 Телефон: ${phone}
 Марка авто: ${car}
