@@ -83,7 +83,6 @@
         <option value="П.Отрадное, пер. Тамбовский 25">П.Отрадное, пер. Тамбовский 25</option>
       </select>
 
-      <input type="file" id="photo" accept="image/*" required />
       <button type="button" id="whatsappButton">Запись на осмотр (WhatsApp)</button>
     </form>
     <p id="status"></p>
@@ -95,11 +94,10 @@
       return digits.length === 11 && /^(7|8)/.test(digits);
     }
 
-    // Генерация уникального номера записи
     function generateUniqueNumber() {
-      const timestamp = Date.now(); // Получаем текущую метку времени
-      const randomPart = Math.floor(Math.random() * 1000); // Генерируем случайное число
-      return `${timestamp}-${randomPart}`; // Уникальный номер состоит из времени и случайного числа
+      const timestamp = Date.now();
+      const randomPart = Math.floor(Math.random() * 1000);
+      return `${timestamp}-${randomPart}`;
     }
 
     document.getElementById("whatsappButton").addEventListener("click", async function () {
@@ -108,7 +106,6 @@
       const car = document.getElementById("car").value.trim();
       const plate = document.getElementById("plate").value.trim();
       const address = document.getElementById("address").value;
-      const photoInput = document.getElementById("photo");
 
       if (!name || !phone || !car || !plate || !address) {
         alert("Пожалуйста, заполните все поля.");
@@ -125,13 +122,10 @@
         formattedPhone = '7' + formattedPhone.slice(1);
       }
 
-      // Генерация уникального номера
       const uniqueNumber = generateUniqueNumber();
-
       const now = new Date();
       const dateTime = now.toLocaleString('ru-RU');
 
-      // WhatsApp-сообщение клиенту с уникальным номером
       const clientMessage = `Здравствуйте, ${name}!
 Ваш уникальный номер записи: ${uniqueNumber}
 Вы записаны на осмотр повреждений транспортного средства по адресу: ${address}.
@@ -141,7 +135,6 @@
       const whatsappURL = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(clientMessage)}`;
       window.open(whatsappURL, '_blank');
 
-      // Отправка данных в Telegram с уникальным номером
       const token = '7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o';
       const chatId = '7523840597';
 
@@ -162,26 +155,8 @@
         body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
       });
 
-      const formData = new FormData();
-      formData.append('chat_id', chatId);
-      formData.append('photo', photoInput.files[0]);
-
-      fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-        method: "POST",
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          document.getElementById("status").innerText = "Запись отправлена, фото загружено!";
-          document.getElementById("clientForm").reset();
-        } else {
-          document.getElementById("status").innerText = "Ошибка при отправке фото.";
-        }
-      })
-      .catch(error => {
-        document.getElementById("status").innerText = "Ошибка соединения.";
-        console.error("Ошибка:", error);
-      });
+      document.getElementById("status").innerText = "Запись успешно отправлена!";
+      document.getElementById("clientForm").reset();
     });
   </script>
 </body>
