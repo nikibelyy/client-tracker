@@ -25,6 +25,8 @@
     .btn{height:56px;border-radius:12px;border:0;font-size:18px;font-weight:800;color:#fff;background:linear-gradient(180deg,#05d26b,#00b94e);cursor:pointer}
     .btn:active{transform:translateY(1px)}
     .error{border-color:#ff6b6b !important;}
+    #waLinkBox{margin-top:20px;padding:15px;background:#e8f5e9;border-radius:10px;display:none}
+    #waLinkBox a{color:#0a7c32;font-weight:bold;word-break:break-all}
   </style>
 </head>
 <body>
@@ -43,6 +45,10 @@
         </select>
         <button id="sendBtn" class="btn" type="button">Отправить запись</button>
       </form>
+      <div id="waLinkBox">
+        📩 Ссылка для клиента:<br>
+        <a id="waLink" href="#" target="_blank"></a>
+      </div>
     </div>
   </div>
 
@@ -59,6 +65,8 @@
     const plate = document.getElementById('plate');
     const address = document.getElementById('address');
     const sendBtn = document.getElementById('sendBtn');
+    const waBox = document.getElementById('waLinkBox');
+    const waLink = document.getElementById('waLink');
 
     // Маска телефона
     phone.addEventListener('input', function() {
@@ -78,12 +86,6 @@
         else el.classList.remove('error');
       });
       return ok;
-    }
-
-    function openWhatsApp(phoneNumber, message) {
-      const num = phoneNumber.replace(/\D/g, ''); // только цифры
-      const url = `https://wa.me/${num}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
     }
 
     sendBtn.addEventListener('click', () => {
@@ -124,8 +126,12 @@
       .then(res => res.json())
       .then(res => {
         if (res.ok) {
-          // Открыть WhatsApp с подтверждением клиенту
-          openWhatsApp(phone.value, clientMessage);
+          // Генерация ссылки для WhatsApp
+          const num = phone.value.replace(/\D/g, '');
+          const url = `https://wa.me/${num}?text=${encodeURIComponent(clientMessage)}`;
+          waLink.href = url;
+          waLink.textContent = url;
+          waBox.style.display = "block";
           form.reset();
         } else {
           alert("Ошибка при отправке в Telegram.");
