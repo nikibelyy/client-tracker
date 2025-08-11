@@ -115,9 +115,17 @@
       .then(res => res.json())
       .then(res => {
         if (res.ok) {
-          // Автоматически открыть WhatsApp с текстом для клиента
-          const num = phone.value.replace(/\D/g, '');
+          // Формируем номер телефона для WhatsApp
+          let rawNum = phone.value.replace(/\D/g, ''); // оставляем только цифры
+          let num = rawNum;
+          if (rawNum.length === 10) {
+            num = '7' + rawNum; // если без кода страны, добавим 7
+          } else if (rawNum.length === 11 && rawNum.startsWith('8')) {
+            num = '7' + rawNum.slice(1); // заменяем 8 на 7
+          }
+
           const url = `https://wa.me/${num}?text=${encodeURIComponent(clientMessage)}`;
+          console.log('WhatsApp URL:', url);
           window.open(url, '_blank');
           document.getElementById('form').reset();
         } else {
