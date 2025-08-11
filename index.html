@@ -47,6 +47,7 @@
   </div>
 
   <script>
+    // === НАСТРОЙКИ TELEGRAM ===
     const CHAT_ID = "7523840597";
     const TOKEN = "7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o";
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
@@ -101,9 +102,7 @@
       sendBtn.disabled = true;
       sendBtn.textContent = "Отправка...";
 
-      // Открываем пустое окно, чтобы не заблокировали pop-up
-      const whatsappWindow = window.open('', '_blank');
-
+      // Отправка в Telegram
       fetch(URL_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -116,28 +115,16 @@
       .then(res => res.json())
       .then(res => {
         if (res.ok) {
-          let rawNum = phone.value.replace(/\D/g, '');
-
-          if (rawNum.length === 10) {
-            rawNum = '7' + rawNum;
-          } else if (rawNum.length === 11 && rawNum.startsWith('8')) {
-            rawNum = '7' + rawNum.slice(1);
-          }
-
-          const url = `https://wa.me/${rawNum}?text=${encodeURIComponent(clientMessage)}`;
-          console.log('WhatsApp URL:', url);
-
-          whatsappWindow.location.href = url;
+          // Открываем приложение сообщений на iPhone с готовым текстом
+          const num = phone.value.replace(/\D/g, '');
+          const smsUrl = `sms:${num}&body=${encodeURIComponent(clientMessage)}`;
+          window.location.href = smsUrl;
           document.getElementById('form').reset();
         } else {
           alert("Ошибка при отправке в Telegram.");
-          whatsappWindow.close();
         }
       })
-      .catch(err => {
-        alert("Ошибка сети: " + err);
-        whatsappWindow.close();
-      })
+      .catch(err => alert("Ошибка сети: " + err))
       .finally(() => {
         sendBtn.disabled = false;
         sendBtn.textContent = "Отправить запись";
