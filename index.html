@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Запись на осмотр</title>
+  <title>Запись на осмотр ДТП</title>
   <style>
     :root{
       --bg:#f4f7fb;
@@ -30,7 +30,7 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Запись на осмотр</h1>
+      <h1>Запись на осмотр ДТП</h1>
       <form id="form" novalidate>
         <input id="fio" class="input" type="text" placeholder="ФИО клиента" required />
         <input id="phone" class="input" type="tel" placeholder="+7 (___) ___-__-__" required />
@@ -47,7 +47,6 @@
   </div>
 
   <script>
-    // === НАСТРОЙКИ TELEGRAM ===
     const CHAT_ID = "7523840597";
     const TOKEN = "7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o";
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
@@ -83,7 +82,7 @@
       if (!validate()) return;
 
       const tgMessage = `
-📄 Новая запись на осмотр
+📄 Новая запись на осмотр ДТП
 👤 ФИО: ${fio.value}
 📞 Телефон: ${phone.value}
 🚗 Марка авто: ${brand.value || '-'}
@@ -92,7 +91,7 @@
       `;
 
       const clientMessage = `Здравствуйте, ${fio.value}!
-Вы записаны на осмотр.
+Вы записаны на осмотр ДТП.
 📍 Адрес: ${address.value}
 🚗 Авто: ${brand.value || '-'} (${plate.value || '-'})
 📞 Телефон для связи: +7 (995) 719-25-23
@@ -102,7 +101,9 @@
       sendBtn.disabled = true;
       sendBtn.textContent = "Отправка...";
 
-      // Отправка в Telegram
+      // Открываем пустое окно, чтобы не заблокировали pop-up
+      const whatsappWindow = window.open('', '_blank');
+
       fetch(URL_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,24 +116,28 @@
       .then(res => res.json())
       .then(res => {
         if (res.ok) {
-          // Формируем номер телефона для WhatsApp
-          let rawNum = phone.value.replace(/\D/g, ''); // оставляем только цифры
-          let num = rawNum;
+          let rawNum = phone.value.replace(/\D/g, '');
+
           if (rawNum.length === 10) {
-            num = '7' + rawNum; // если без кода страны, добавим 7
+            rawNum = '7' + rawNum;
           } else if (rawNum.length === 11 && rawNum.startsWith('8')) {
-            num = '7' + rawNum.slice(1); // заменяем 8 на 7
+            rawNum = '7' + rawNum.slice(1);
           }
 
-          const url = `https://wa.me/${num}?text=${encodeURIComponent(clientMessage)}`;
+          const url = `https://wa.me/${rawNum}?text=${encodeURIComponent(clientMessage)}`;
           console.log('WhatsApp URL:', url);
-          window.open(url, '_blank');
+
+          whatsappWindow.location.href = url;
           document.getElementById('form').reset();
         } else {
           alert("Ошибка при отправке в Telegram.");
+          whatsappWindow.close();
         }
       })
-      .catch(err => alert("Ошибка сети: " + err))
+      .catch(err => {
+        alert("Ошибка сети: " + err);
+        whatsappWindow.close();
+      })
       .finally(() => {
         sendBtn.disabled = false;
         sendBtn.textContent = "Отправить запись";
