@@ -1,0 +1,118 @@
+
+/* Liquid Glass — iOS 26 inspired stylesheet
+   Uses system font stack (San Francisco on Apple devices).
+   Light, translucent panels, rounded corners and subtle blur. */
+
+:root{
+  --bg: #0b0d10;
+  --panel: rgba(255,255,255,0.06);
+  --panel-2: rgba(255,255,255,0.04);
+  --accent: #0b84ff;
+  --glass-border: rgba(255,255,255,0.08);
+  --muted: rgba(255,255,255,0.65);
+  --radius: 16px;
+  --shadow: 0 8px 30px rgba(2,6,23,0.6);
+  --glass-blur: 14px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: -apple-system, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #071017 0%, #0b0d10 100%);
+  color: #fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding-bottom:80px; /* space for tabbar */
+}
+
+/* Top bar */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:40;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 18px;
+  backdrop-filter: blur(8px) saturate(120%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+  border-bottom: 1px solid var(--glass-border);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo-glass{
+  width:44px;height:44px;border-radius:10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 6px 20px rgba(2,6,23,0.5);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+}
+
+/* Page */
+.page{max-width:980px;margin:28px auto;padding:0 16px}
+.hero{
+  padding:28px;border-radius:20px;margin-bottom:20px;
+  box-shadow: var(--shadow);
+}
+.glass{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+}
+
+/* Typography */
+h1{font-size:28px;margin:0 0 8px}
+.lead{color:var(--muted);margin:0 0 18px}
+h2{font-size:20px;margin:6px 0 12px}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:none;
+  background:transparent;color:inherit;font-weight:600;cursor:pointer;text-decoration:none;
+}
+.btn.primary{
+  background:linear-gradient(180deg,var(--accent),#006fe6);
+  color:white;padding:12px 16px;border-radius:16px;box-shadow:0 8px 20px rgba(11,132,255,0.18);
+}
+.btn.secondary{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.04);
+}
+
+/* Cards */
+.container{padding:6px 0 40px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{padding:14px;border-radius:16px}
+.card-header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.icon-circle{width:48px;height:48px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;font-size:22px}
+.muted{color:var(--muted);font-size:14px}
+
+/* Thumb grid */
+.thumb-grid{display:flex;gap:8px}
+.thumb{height:86px;background-size:cover;background-position:center;border-radius:12px;flex:1}
+
+/* Controls */
+.controls .control-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,0.01)}
+.controls .control-row:first-child{border-top:0}
+
+/* Tabbar */
+.tabbar{
+  position:fixed;left:12px;right:12px;bottom:14px;display:flex;justify-content:space-between;gap:8px;padding:8px;border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border:1px solid var(--glass-border);backdrop-filter: blur(14px) saturate(120%);
+  box-shadow: 0 14px 40px rgba(2,6,23,0.6);z-index:60;
+}
+.tab{flex:1;padding:6px 8px;border-radius:14px;background:transparent;border:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px}
+.tab .tab-icon{font-size:18px}
+.tab .tab-label{font-size:11px;color:var(--muted)}
+.tab.active{background:linear-gradient(180deg, rgba(11,132,255,0.12), rgba(11,132,255,0.06));backdrop-filter: blur(8px)}
+
+/* Responsive */
+@media(min-width:880px){
+  .page{padding:0}
+  .brand .app-name{font-weight:700}
+}
+
+/* small details */
+.btn.icon-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.02)}
