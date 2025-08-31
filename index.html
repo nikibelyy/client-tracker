@@ -3,133 +3,104 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Запись на осмотр</title>
-  <style>
-    :root{
-      --bg:#f4f7fb;
-      --card:#fff;
-      --muted:#9aa0a6;
-      --accent:#04c35c;
-      --input-border:rgba(0,0,0,0.07);
-      --shadow:0 12px 30px rgba(18,25,31,0.06);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#f6f8fb, var(--bg)); color:#111;}
-    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px;}
-    .card{width:100%;max-width:720px;background:var(--card);border-radius:26px;box-shadow:var(--shadow);padding:28px;}
-    h1{font-size:34px;margin-bottom:22px;font-weight:800;text-align:center}
-    form{display:flex;flex-direction:column;gap:12px}
-    .input, select {height:56px;padding:0 16px;border-radius:12px;border:1px solid var(--input-border);font-size:17px;color:#222;outline:none}
-    .input::placeholder{color:var(--muted);}
-    select{appearance:none;padding-right:48px;background-image:linear-gradient(45deg,transparent 50%, #888 50%),linear-gradient(135deg,#888 50%, transparent 50%);background-position:calc(100% - 18px) calc(1em + 6px), calc(100% - 13px) calc(1em + 6px);background-size:6px 6px,6px 6px;background-repeat:no-repeat}
-    .btn{height:56px;border-radius:12px;border:0;font-size:18px;font-weight:800;color:#fff;background:linear-gradient(180deg,#05d26b,#00b94e);cursor:pointer}
-    .btn:active{transform:translateY(1px)}
-    .error{border-color:#ff6b6b !important;}
-  </style>
+  <title>Liquid Glass — iOS 26 Style</title>
+  <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Запись на осмотр</h1>
-      <form id="form" novalidate>
-        <input id="fio" class="input" type="text" placeholder="ФИО клиента" required />
-        <input id="phone" class="input" type="tel" placeholder="+7 (___) ___-__-__" required />
-        <input id="brand" class="input" type="text" placeholder="Марка авто" />
-        <input id="plate" class="input" type="text" placeholder="Гос номер" />
-        <select id="address" class="input" required>
-          <option value="" disabled selected>Выберите адрес осмотра</option>
-          <option>г. Воронеж, Антонова-Овсиенко, 15А корпус 1</option>
-          <option>г. Воронеж, Плехановская, 52</option>
-        </select>
-        <button id="sendBtn" class="btn" type="button">Отправить запись</button>
-      </form>
+  <header class="topbar" id="topbar">
+    <div class="topbar-left">
+      <button class="btn icon-btn" aria-label="menu">☰</button>
+      <div class="brand">
+        <div class="logo-glass"></div>
+        <div class="brand-text">
+          <div class="app-name">LiquidGlass</div>
+          <div class="app-sub">iOS 26 inspired UI</div>
+        </div>
+      </div>
     </div>
-  </div>
+    <nav class="topbar-right">
+      <button class="btn primary">Get started</button>
+    </nav>
+  </header>
 
-  <script>
-    // === НАСТРОЙКИ TELEGRAM ===
-    const CHAT_ID = "7523840597";
-    const TOKEN = "7875147914:AAGEAZ1Bxg82z54OeSO4Q_zGaeHWeG1xJ1o";
-    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+  <main class="page">
+    <section class="hero glass">
+      <h1>Дизайн «Liquid Glass» — iOS 26</h1>
+      <p class="lead">Готовый фронтенд-шаблон в стиле iOS 26: стек шрифтов San Francisco, полупрозрачные панели с размытиями, плавная анимация и адаптивный таб‑бар.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#download">Скачать</a>
+        <a class="btn secondary" href="#components">Компоненты</a>
+      </div>
+    </section>
 
-    const fio = document.getElementById('fio');
-    const phone = document.getElementById('phone');
-    const brand = document.getElementById('brand');
-    const plate = document.getElementById('plate');
-    const address = document.getElementById('address');
-    const sendBtn = document.getElementById('sendBtn');
+    <section id="components" class="container">
+      <h2>Компоненты</h2>
 
-    // Маска телефона
-    phone.addEventListener('input', function() {
-      let x = phone.value.replace(/\D/g, '').substring(1);
-      let formatted = "+7";
-      if (x.length > 0) formatted += " (" + x.substring(0, 3);
-      if (x.length >= 4) formatted += ") " + x.substring(3, 6);
-      if (x.length >= 7) formatted += "-" + x.substring(6, 8);
-      if (x.length >= 9) formatted += "-" + x.substring(8, 10);
-      phone.value = formatted;
-    });
+      <div class="cards">
+        <article class="card glass">
+          <div class="card-header">
+            <div class="icon-circle">📷</div>
+            <div>
+              <h3>Галерея</h3>
+              <p class="muted">Адаптивная сетка изображений с живыми тенями.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="thumb-grid">
+              <div class="thumb" style="background-image:url('static/img/thumb1.jpg')"></div>
+              <div class="thumb" style="background-image:url('static/img/thumb2.jpg')"></div>
+              <div class="thumb" style="background-image:url('static/img/thumb3.jpg')"></div>
+            </div>
+          </div>
+        </article>
 
-    function validate() {
-      let ok = true;
-      [fio, phone, address].forEach(el => {
-        if (!el.value || el.value.length < 4) { el.classList.add('error'); ok = false; }
-        else el.classList.remove('error');
-      });
-      return ok;
-    }
+        <article class="card glass">
+          <div class="card-header">
+            <div class="icon-circle">⚙️</div>
+            <div>
+              <h3>Настройки</h3>
+              <p class="muted">Карточка с переключателями и компактными контролами.</p>
+            </div>
+          </div>
+          <div class="card-body controls">
+            <label class="control-row">Тёмная тема <input type="checkbox" id="themeToggle"></label>
+            <label class="control-row">Notifications <input type="checkbox" checked></label>
+            <label class="control-row">Location <input type="checkbox"></label>
+          </div>
+        </article>
+      </div>
+    </section>
 
-    sendBtn.addEventListener('click', () => {
-      if (!validate()) return;
+    <section class="download glass" id="download">
+      <h2>Скачать файлы</h2>
+      <p class="muted">В архиве — готовый проект: HTML/CSS/JS и запасные мини-изображения. Просто распакуй и залей в GitHub.</p>
+      <a class="btn primary" href="ios26_liquid_glass_site.zip" download>Скачать ZIP</a>
+    </section>
+  </main>
 
-      const tgMessage = `
-📄 Новая запись на осмотр
-👤 ФИО: ${fio.value}
-📞 Телефон: ${phone.value}
-🚗 Марка авто: ${brand.value || '-'}
-🔢 Гос номер: ${plate.value || '-'}
-📍 Адрес осмотра: ${address.value}
-      `;
+  <nav class="tabbar" id="tabbar">
+    <button class="tab">
+      <div class="tab-icon">🏠</div>
+      <div class="tab-label">Главная</div>
+    </button>
+    <button class="tab">
+      <div class="tab-icon">🔍</div>
+      <div class="tab-label">Поиск</div>
+    </button>
+    <button class="tab active">
+      <div class="tab-icon">➕</div>
+      <div class="tab-label">Создать</div>
+    </button>
+    <button class="tab">
+      <div class="tab-icon">💬</div>
+      <div class="tab-label">Чат</div>
+    </button>
+    <button class="tab">
+      <div class="tab-icon">👤</div>
+      <div class="tab-label">Профиль</div>
+    </button>
+  </nav>
 
-      const clientMessage = `Здравствуйте, ${fio.value}!
-Вы записаны на осмотр.
-📍 Адрес: ${address.value}
-🚗 Авто: ${brand.value || '-'} (${plate.value || '-'})
-📞 Телефон для связи: +7 (995) 719-25-23
-С вами свяжутся по телефону для подтверждения времени записи.
-Спасибо за обращение!`;
-
-      sendBtn.disabled = true;
-      sendBtn.textContent = "Отправка...";
-
-      // Отправка в Telegram
-      fetch(URL_API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: tgMessage,
-          parse_mode: "HTML"
-        })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.ok) {
-          // Открываем приложение сообщений на iPhone с готовым текстом
-          const num = phone.value.replace(/\D/g, '');
-          const smsUrl = `sms:${num}&body=${encodeURIComponent(clientMessage)}`;
-          window.location.href = smsUrl;
-          document.getElementById('form').reset();
-        } else {
-          alert("Ошибка при отправке в Telegram.");
-        }
-      })
-      .catch(err => alert("Ошибка сети: " + err))
-      .finally(() => {
-        sendBtn.disabled = false;
-        sendBtn.textContent = "Отправить запись";
-      });
-    });
-  </script>
+  <script src="static/script.js"></script>
 </body>
 </html>
