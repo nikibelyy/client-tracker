@@ -2,437 +2,212 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Аварийный комиссар — экстренная помощь на месте ДТП</title>
-  <meta name="description" content="Аварийный комиссар — выезд на ДТП, оформление, сопровождение, быстрая подача экипажей. Звоните +7 (908) 134-37-22" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#0f1724">
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Аварийный комиссар",
-    "telephone": "+7 (908) 134-37-22",
-    "description": "Выезд на ДТП, оформление, взаимодействие со страховыми, быстрая подача экипажей и профессиональная помощь на месте.",
-    "url": "",
-    "areaServed": "Россия"
-  }
-  </script>
-
+  <meta name="description" content="Аварийный комиссар: выезд на ДТП 24/7, оформление, сопровождение. Быстрая подача экипажей и профессиональная помощь. Телефон: +7 (908) 134-37-22">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#071024;
-      --card:#0d1b2a;
-      --accent1:#00d4ff;
-      --accent2:#7b61ff;
-      --glass: rgba(255,255,255,0.04);
-      --muted: rgba(255,255,255,0.65);
-      --success: #2ee6a9;
-      --radius: 14px;
-      --ease: cubic-bezier(.2,.9,.3,1);
+    :root {
+      --bg: #0A0F1C;
+      --card: #111827;
+      --accent1: #06D6A0;
+      --accent2: #118AB2;
+      --muted: rgba(255,255,255,0.7);
+      --radius: 18px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      background:
-        radial-gradient(1200px 600px at -10% -10%, rgba(123,97,255,0.12), transparent 8%),
-        radial-gradient(900px 450px at 110% 110%, rgba(0,212,255,0.06), transparent 6%),
-        var(--bg);
-      color:#e8eef8;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.4;
-      padding-bottom:80px;
+    *{box-sizing:border-box;}
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a{text-decoration:none;color:inherit;}
+
+    header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(17,24,39,0.9);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--accent1);
+    }
+    .call-btn {
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color: #0A0F1C;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: transform .25s;
+    }
+    .call-btn:active {transform: scale(0.96);}
+
+    .hero {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .hero p {
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-size: 1rem;
     }
 
-    /* Wrapper */
-    .container{max-width:1100px;margin:0 auto;padding:36px 20px}
+    .features {
+      display: grid;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .feature {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      text-align: left;
+      transition: transform .25s;
+    }
+    .feature:active {transform: scale(0.97);}
+    .feature h3 {
+      color: var(--accent1);
+      margin: 0 0 6px;
+      font-size: 1.2rem;
+    }
+    .feature p {margin:0;color:var(--muted);font-size:0.9rem;}
 
-    /* Header */
-    header{
-      display:flex;align-items:center;justify-content:space-between;gap:16px;
-      margin-bottom:18px;
+    .section {
+      padding: 40px 20px;
     }
-    .brand{
-      display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
-    }
-    .logo{
-      width:56px;height:56px;border-radius:12px;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      display:grid;place-items:center;font-weight:800;color:#041024;font-family: "Playfair Display", serif;
-      box-shadow: 0 6px 24px rgba(11,20,34,0.6);
-      transform: rotate(-6deg);
-    }
-    .brand h1{font-size:1rem;margin:0}
-    .brand p{margin:0;font-size:0.8rem;color:var(--muted)}
-
-    /* Call button */
-    .call{
-      display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,var(--accent1),var(--accent2));
-      color:#04202b;padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 8px 30px rgba(123,97,255,0.16);
-      text-decoration:none;
-      transition:transform .36s var(--ease), box-shadow .36s var(--ease);
-    }
-    .call:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(123,97,255,0.22)}
-    .call .phone{font-feature-settings: "tnum";}
-
-    /* Hero */
-    .hero{
-      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:6px;
-    }
-    @media (max-width:900px){ .hero{grid-template-columns:1fr;}}
-    .hero-left{
-      padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-radius:var(--radius);backdrop-filter: blur(6px);
-      box-shadow: 0 6px 40px rgba(3,8,18,0.6);
-      overflow:hidden;position:relative;
-    }
-    .eyebrow{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent1));font-weight:700;color:#001020;font-size:12px}
-    h2{font-family: "Playfair Display", serif;font-size:32px;margin:12px 0 6px}
-    p.lead{color:var(--muted);margin:0 0 18px}
-    .features{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-    .feature{
-      background:var(--glass);padding:12px 14px;border-radius:12px;min-width:160px;
-      display:flex;flex-direction:column;gap:6px;transition:transform .4s var(--ease), box-shadow .4s var(--ease);
-    }
-    .feature:hover{transform:translateY(-6px); box-shadow: 0 14px 40px rgba(2,6,18,0.6)}
-    .feature .num{font-weight:800;color:var(--accent1);font-size:18px}
-    .cta-row{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
-    .btn-primary{
-      padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,var(--accent2),var(--accent1));
-      color:#00101a;font-weight:800;border:none;cursor:pointer;text-decoration:none;
-      transition:transform .28s var(--ease);
-    }
-    .btn-primary:hover{transform:translateY(-4px)}
-    .btn-ghost{
-      padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);text-decoration:none;
+    .section h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
     }
 
-    /* Right card: animated vehicle + info */
-    .hero-right{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:16px;padding:20px;backdrop-filter: blur(6px);box-shadow: 0 12px 40px rgba(3,8,18,0.6);
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 16px;
+      transition: transform .25s;
     }
-    .vehicle{
-      height:180px;border-radius:12px;overflow:hidden;position:relative;background:
-        linear-gradient(180deg, rgba(7,18,36,0.6), rgba(3,6,12,0.3));
-      display:flex;align-items:center;justify-content:center;
+    .card:active {transform: scale(0.97);}
+    .card h3 {margin:0 0 8px;}
+    .card p {margin:0;color:var(--muted);}
+
+    .cta {
+      margin: 30px 0;
+      text-align: center;
     }
-    /* simple animated car silhouette */
-    .car{
-      width:260px;height:80px;position:relative;transform-origin:center;animation:float 4s ease-in-out infinite;
+    .cta .big-call {
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color: #0A0F1C;
+      padding: 16px 28px;
+      border-radius: 999px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: inline-block;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+      transition: transform .25s;
     }
-    .car .body{width:100%;height:60%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:20px 20px 12px 12px;box-shadow:0 12px 30px rgba(11,20,34,0.6)}
-    .car .roof{position:absolute;left:44px;top:-12px;width:120px;height:44px;background:linear-gradient(90deg,#ffffff22,#00000014);border-radius:14px}
-    .wheel{position:absolute;bottom:-6px;width:40px;height:40px;border-radius:50%;background:#081623;box-shadow:inset 0 -6px 10px rgba(255,255,255,0.02)}
-    .wheel:after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;background:rgba(255,255,255,0.08);border-radius:50%;transform:translate(-50%,-50%)}
-    .wheel.left{left:56px}
-    .wheel.right{right:56px}
-    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+    .cta .big-call:active {transform: scale(0.95);}
 
-    /* Why us / advantages */
-    .why{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;
+    footer {
+      background: #0C1428;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
     }
-    @media (max-width:900px){ .why{grid-template-columns:1fr}}
-    .adv{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      padding:18px;border-radius:12px;min-height:130px;position:relative;overflow:hidden;
-      transition:transform .32s var(--ease);
+
+    /* Animation */
+    @keyframes fadeUp {
+      from {opacity:0; transform: translateY(20px);}
+      to {opacity:1; transform: translateY(0);}
     }
-    .adv:hover{transform:translateY(-8px)}
-    .adv h3{margin:0 0 8px}
-    .adv p{margin:0;color:var(--muted);font-size:0.95rem}
-
-    /* Animated arrival timeline */
-    .timeline{
-      margin-top:22px;padding:18px;border-radius:12px;background:linear-gradient(90deg,#00121a11,#08142411);
-      display:flex;gap:12px;align-items:center;overflow:hidden;
-    }
-    .eta{
-      min-width:120px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#001f2a,#072131);
-      text-align:center;
-    }
-    .eta h4{margin:0;color:var(--success);font-size:22px}
-    .eta p{margin:6px 0 0;color:var(--muted);font-size:13px}
-    .progress{
-      flex:1;height:12px;background:#00121a;border-radius:999px;position:relative;overflow:hidden;
-    }
-    .bar{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 6px 24px rgba(123,97,255,0.12);transition:width 2.2s var(--ease)}
-    .stops{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--muted)}
-
-    /* Services */
-    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
-    @media (max-width:900px){ .services{grid-template-columns:1fr}}
-    .service-card{background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:16px;border-radius:12px;transition:transform .32s var(--ease)}
-    .service-card:hover{transform:translateY(-8px)}
-    .service-card h4{margin:0 0 8px}
-    .service-card p{margin:0;color:var(--muted);font-size:0.95rem}
-
-    /* Team / specialists */
-    .team{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
-    .member{background:linear-gradient(180deg,#00141a11,#07182611);padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;min-width:260px}
-    .avatar{width:64px;height:64px;border-radius:12px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:grid;place-items:center;font-weight:800;color:#021020}
-    .member h5{margin:0;font-size:1rem}
-    .member p{margin:2px 0 0;color:var(--muted);font-size:0.9rem}
-
-    /* Footer */
-    footer{margin-top:40px;padding:20px;border-radius:12px;background:linear-gradient(180deg,#061227,#041523);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    footer .legal{color:var(--muted);font-size:0.9rem}
-    footer .phonebig{font-weight:800}
-
-    /* small util */
-    .muted{color:var(--muted)}
-    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#001821;color:var(--accent1);font-weight:700}
-
-    /* subtle entrance animations */
-    .fade-up{transform:translateY(10px);opacity:0;animation:fadeUp .8s forwards}
-    .delay-1{animation-delay:.12s}.delay-2{animation-delay:.22s}.delay-3{animation-delay:.32s}.delay-4{animation-delay:.42s}
-    @keyframes fadeUp{to{transform:none;opacity:1}}
-
-    /* contact form */
-    form.contact{display:flex;flex-direction:column;gap:8px}
-    input, textarea{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:12px;border-radius:10px;color:inherit;outline:none}
-    input::placeholder, textarea::placeholder{color:rgba(255,255,255,0.35)}
-    .small{font-size:13px;color:var(--muted)}
+    .fade {animation: fadeUp .8s ease forwards;}
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <a class="brand" href="#">
-        <div class="logo">AK</div>
-        <div>
-          <h1>Аварийный комиссар</h1>
-          <p>Выезд на место ДТП • Оформление • Сопровождение</p>
-        </div>
-      </a>
+  <header>
+    <div class="logo">Аварийный комиссар</div>
+    <a href="tel:+79081343722" class="call-btn">Позвонить</a>
+  </header>
 
-      <a class="call" href="tel:+79081343722" aria-label="Позвонить +7 (908) 134-37-22">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 16.5v3a1.5 1.5 0 0 1-1.7 1.5c-2.3-.4-4.6-1.6-6.6-3.6S10.9 14.9 10.5 12.6A1.5 1.5 0 0 1 12 10h3a1 1 0 0 0 1-1V6.5A1.5 1.5 0 0 0 15.5 5h-3A1.5 1.5 0 0 0 11 6.5c0 .4.5 2.2 1.4 4.1 1 2 2.4 3.9 4.4 5.9 2 2 3.2 3.3 3.6 3.6.2.2.4.3.7.3.2 0 .4-.1.6-.1z" fill="currentColor" /></svg>
-        <span class="phone">+7 (908) 134-37-22</span>
-      </a>
-    </header>
+  <section class="hero fade">
+    <h1>Помощь на месте ДТП — быстро и профессионально</h1>
+    <p>Выезд 24/7, оформление документов, сопровождение. Среднее время подачи экипажа — от 5 минут.</p>
+    <div class="cta">
+      <a href="tel:+79081343722" class="big-call">📞 +7 (908) 134-37-22</a>
+    </div>
+  </section>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-left fade-up delay-1" role="region" aria-labelledby="hero-title">
-        <span class="eyebrow">Круглосуточно • Выезд 24/7</span>
-        <h2 id="hero-title">Экстренный выезд на ДТП — быстро, профессионально, с гарантией</h2>
-        <p class="lead">Наша служба обеспечивает полный комплекс действий на месте — от оценки ситуации и оформления ДТП до взаимодействия со страховыми и эвакуации. Экипажи готовы выехать сразу после звонка.</p>
-
-        <div class="features">
-          <div class="feature">
-            <div class="num">5–15 минут</div>
-            <div class="muted">Среднее время подачи экипажа в пределах города*</div>
-          </div>
-          <div class="feature">
-            <div class="num">Опыт 7+ лет</div>
-            <div class="muted">Каждый специалист прошёл обучение и сертификацию</div>
-          </div>
-          <div class="feature">
-            <div class="num">100% сопровождение</div>
-            <div class="muted">Оформление, фотофиксация, протоколы и помощь при страховых</div>
-          </div>
-        </div>
-
-        <div class="cta-row">
-          <a class="btn-primary" href="tel:+79081343722" aria-label="Позвонить сейчас +7 (908) 134-37-22">Позвонить сейчас</a>
-          <a class="btn-ghost" href="#services">Наши услуги</a>
-        </div>
-
-        <div class="timeline" aria-hidden="false" style="margin-top:18px">
-          <div class="eta">
-            <h4 id="etaCounter">8</h4>
-            <p>минут — средняя подача</p>
-          </div>
-          <div class="progress" aria-hidden>
-            <div class="bar" id="progressBar" style="width:0%"></div>
-          </div>
-        </div>
-        <div class="stops muted">Вызов — Маршрут — Прибытие</div>
-        <p class="small" style="margin-top:10px;color:var(--muted)">*Время ориентировочное и зависит от местоположения и дорожной ситуации</p>
+  <section class="section fade">
+    <h2>Почему именно мы</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>🚗 Быстрая подача</h3>
+        <p>Экипажи прибывают в среднем за 5–15 минут по городу.</p>
       </div>
-
-      <aside class="hero-right fade-up delay-2" aria-label="Интерактивный демонстрационный блок">
-        <div class="vehicle" role="img" aria-hidden="true">
-          <div class="car" aria-hidden="true">
-            <div class="body"></div>
-            <div class="roof"></div>
-            <div class="wheel left"></div>
-            <div class="wheel right"></div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;margin-top:12px;align-items:center;justify-content:space-between">
-          <div>
-            <div style="font-weight:800">Экипажи по всему городу</div>
-            <div class="muted">Быстрое распределение и GPS-трекинг в реальном времени</div>
-          </div>
-          <div style="text-align:right">
-            <div class="pill">Гарантия качества</div>
-            <div class="muted" style="margin-top:6px">Документы и подписание акта на месте</div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- WHY US -->
-    <section class="why fade-up delay-3" aria-labelledby="why-title">
-      <h2 id="why-title" style="grid-column:1/-1;font-family:Playfair Display;margin-bottom:6px">Почему именно мы</h2>
-
-      <div class="adv">
-        <h3>Молниеносная подача экипажей</h3>
-        <p>Мы логистически оптимизировали маршрутизацию — диспетчер видит свободные экипажи и направляет ближайший. Часто выезд занимает 5–15 минут в черте города.</p>
+      <div class="feature">
+        <h3>👨‍💼 Профессионалы</h3>
+        <p>Каждый специалист обучен и сертифицирован.</p>
       </div>
-
-      <div class="adv">
-        <h3>Профессиональные специалисты</h3>
-        <p>Наши аваркомы имеют профильное обучение, практику в оформлении ДТП и опыт взаимодействия со страховыми компаниями — это экономит ваши силы и время.</p>
+      <div class="feature">
+        <h3>📑 Полное сопровождение</h3>
+        <p>Оформление ДТП, помощь со страховой, эвакуация.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="adv">
-        <h3>Комплексное сопровождение</h3>
-        <p>Фиксация повреждений, составление протоколов, помощь с эвакуацией и последующим взаимодействием со страховой — у нас есть чек-лист действий на каждый случай.</p>
-      </div>
-    </section>
+  <section class="section fade">
+    <h2>Наши услуги</h2>
+    <div class="card">
+      <h3>Выезд на ДТП</h3>
+      <p>Мгновенная реакция, осмотр и оформление всех документов.</p>
+    </div>
+    <div class="card">
+      <h3>Оформление протоколов</h3>
+      <p>Полный пакет документов для страховой компании.</p>
+    </div>
+    <div class="card">
+      <h3>Эвакуация авто</h3>
+      <p>Организация эвакуатора и сопровождение до СТО.</p>
+    </div>
+  </section>
 
-    <!-- SERVICES -->
-    <section id="services" class="services fade-up delay-4" aria-labelledby="services-title">
-      <h2 id="services-title" style="grid-column:1/-1;font-family:Playfair Display;margin-bottom:6px">Наши услуги</h2>
+  <section class="section fade">
+    <h2>Контакты</h2>
+    <div class="card">
+      <h3>📞 Телефон</h3>
+      <p><a href="tel:+79081343722" style="color:var(--accent1);font-weight:700;">+7 (908) 134-37-22</a></p>
+    </div>
+    <div class="card">
+      <h3>🕐 Режим работы</h3>
+      <p>Круглосуточно, без выходных</p>
+    </div>
+  </section>
 
-      <div class="service-card">
-        <h4>Выезд на место ДТП</h4>
-        <p>Оперативная подача экипажа, осмотр, фотофиксация, оформление всех необходимых документов.</p>
-      </div>
-
-      <div class="service-card">
-        <h4>Оформление ДТП и протоколы</h4>
-        <p>Составляем акты и заявления, готовим пакеты документов для страховой компании и органов.</p>
-      </div>
-
-      <div class="service-card">
-        <h4>Эвакуация и техпомощь</h4>
-        <p>Организация эвакуатора, помощь при блокировке колеса, при необходимости — сопровождение транспорта до СТО.</p>
-      </div>
-    </section>
-
-    <!-- TEAM -->
-    <section class="team" aria-labelledby="team-title">
-      <h2 id="team-title" style="width:100%;font-family:Playfair Display;margin-bottom:6px">Наши экипажи</h2>
-
-      <div class="member">
-        <div class="avatar">А.В</div>
-        <div>
-          <h5>Андрей — старший комиссар</h5>
-          <p class="muted">Опыт 9 лет, эксперт по взаимодействию со страховыми</p>
-        </div>
-      </div>
-
-      <div class="member">
-        <div class="avatar">Е.С</div>
-        <div>
-          <h5>Елена — логистика</h5>
-          <p class="muted">Диспетчер, оптимизация маршрутов и связь с экипажами</p>
-        </div>
-      </div>
-
-      <div class="member">
-        <div class="avatar">М.К</div>
-        <div>
-          <h5>Максим — аварком</h5>
-          <p class="muted">Специалист по оценке ущерба и эвакуации</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT & SMALL FORM -->
-    <section style="margin-top:28px;display:grid;grid-template-columns:1fr 360px;gap:18px">
-      <div style="padding:18px;border-radius:12px;background:linear-gradient(180deg,#00131a11,#07182611)">
-        <h3 style="font-family:Playfair Display;margin-top:0">Связаться с нами</h3>
-        <p class="muted">Телефон — самый быстрый способ вызвать экипаж. Мы принимаем звонки круглосуточно.</p>
-        <p style="font-size:20px;font-weight:800;margin:8px 0">+7 (908) 134-37-22</p>
-        <a class="btn-primary" href="tel:+79081343722">Позвонить сейчас</a>
-
-        <div style="margin-top:14px">
-          <p class="small">Или оставьте заявку — мы перезвоним.</p>
-          <form class="contact" onsubmit="event.preventDefault(); alert('Заявка отправлена. Ожидайте звонка на указанный контакт.');">
-            <input type="text" placeholder="Ваше имя" required aria-label="Ваше имя">
-            <input type="tel" placeholder="+7 (___) ___-__-__" required aria-label="Телефон">
-            <textarea placeholder="Кратко опишите ситуацию (опционально)" rows="3"></textarea>
-            <button class="btn-primary" type="submit" style="width:fit-content">Оставить заявку</button>
-          </form>
-        </div>
-      </div>
-
-      <div style="padding:18px;border-radius:12px;background:linear-gradient(180deg,#071423,#05121b);display:flex;flex-direction:column;gap:10px;align-items:flex-start;justify-content:center">
-        <h4 style="margin:0">Что у нас в комплекте</h4>
-        <ul class="muted" style="margin:6px 0 0 18px">
-          <li>Фотофиксация и замер повреждений</li>
-          <li>Полный пакет документов</li>
-          <li>Сопровождение до страховой</li>
-          <li>Возможность срочной эвакуации</li>
-        </ul>
-        <div style="margin-top:10px;color:var(--muted)">Работаем честно, по закону и с полной отчётностью.</div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <div class="legal">
-        © <span id="year"></span> Аварийный комиссар — все права защищены.
-        <div class="muted" style="font-size:13px;margin-top:4px">Административные и консультационные услуги, оформление ДТП.</div>
-      </div>
-      <div style="text-align:right">
-        <div class="phonebig">+7 (908) 134-37-22</div>
-        <div class="muted" style="font-size:13px">Круглосуточно • Быстрый выезд</div>
-      </div>
-    </footer>
-
-  </div>
+  <footer>
+    © <span id="year"></span> Аварийный комиссар. Все права защищены.
+  </footer>
 
   <script>
-    // Fill year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Animated ETA counter & progress bar - best-effort demo (uses fixed numbers, change if needed)
-    (function(){
-      const target = 8; // минут (показательное)
-      const el = document.getElementById('etaCounter');
-      const bar = document.getElementById('progressBar');
-      // animate number from 20 down to target
-      let start = 20;
-      const steps = 40;
-      let cur = start;
-      const delta = (start - target) / steps;
-      let i=0;
-      const t = setInterval(()=>{
-        i++;
-        cur = Math.round((start - delta*i));
-        if(cur <= target || i>=steps){ cur = target; clearInterval(t); }
-        el.textContent = cur;
-        // progress width inverse to minutes (lower minutes = more filled)
-        const pct = Math.min(100, Math.round(((30 - cur)/30)*100));
-        bar.style.width = pct + '%';
-      }, 60);
-    })();
-
-    // Smooth scroll for internal anchors
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        const target = document.querySelector(a.getAttribute('href'));
-        if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
-      });
-    });
-
-    // small accessibility: focus outline on keyboard navigation
-    document.body.addEventListener('keyup', (e)=>{
-      if(e.key === 'Tab') document.body.classList.add('keyboard-nav');
-    });
   </script>
 </body>
 </html>
