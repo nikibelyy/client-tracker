@@ -1,185 +1,478 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>Белашков.рф — Аварийный комиссар</title>
-  <meta name="description" content="Белашков.рф — Аварийный комиссар. Оперативный выезд на ДТП 24/7. Оформление, сопровождение, помощь. Телефон: +7 (908) 134-37-22.">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Автосервис136 — Надёжный ремонт и обслуживание | автосервис136.рф</title>
+  <meta name="description" content="Автосервис136 — диагностика, кузовной ремонт, подвеска, тормоза, трансмиссия и многое другое. Звоните +7 (960) 124-32-32" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --blue: #003399;
-      --red: #cc0000;
-      --white: #ffffff;
-      --gray: #f5f5f5;
-      --dark: #1a1a1a;
+    :root{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --accent: #ff6600;
+      --muted: #9aa6b2;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --white: #f8fafc;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: var(--gray);
-      color: var(--dark);
-      line-height: 1.5;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #071022 0%, #071827 60%), url('') no-repeat center/cover;
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      line-height:1.45;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
     }
-    header {
-      background: var(--blue);
-      color: var(--white);
-      padding: 16px;
-      text-align: center;
-      border-bottom: 4px solid var(--red);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(8,12,20,0.6), rgba(8,12,20,0.35));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
-    header h1 {
-      font-size: 1.4rem;
-      margin: 0;
-      font-weight: 700;
+    .container{
+      max-width:1200px; margin:0 auto; padding:18px;
+      display:flex; gap:16px; align-items:center; justify-content:space-between;
     }
-    header p {
-      margin: 4px 0 0;
-      font-size: 0.9rem;
-      opacity: 0.9;
+    .brand{
+      display:flex; gap:12px; align-items:center;
     }
-    .hero {
-      background: var(--white);
-      padding: 30px 20px;
-      text-align: center;
-      border-bottom: 4px solid var(--blue);
+    .logo{
+      width:56px;height:56px;border-radius:10px;
+      display:grid;place-items:center;font-weight:800;
+      background:linear-gradient(135deg,var(--accent),#ff8a2b);
+      color:#081018; font-size:18px;
+      box-shadow: 0 6px 24px rgba(255,102,0,0.12);
     }
-    .hero h2 {
-      font-size: 1.6rem;
-      color: var(--blue);
-      margin-bottom: 12px;
+    .brand h1{margin:0;font-size:16px;line-height:1;color:var(--white)}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    nav{display:flex; gap:14px; align-items:center}
+    nav a{
+      color:var(--muted); text-decoration:none; font-weight:600;
+      padding:8px 12px; border-radius:10px; transition:all .2s;
     }
-    .hero p {
-      margin-bottom: 20px;
+    nav a:hover{ color:var(--white); background:var(--glass) }
+
+    /* Hero */
+    .hero{
+      padding:48px 18px 28px;
+      display:flex; gap:28px; align-items:center;
     }
-    .cta-btn {
-      display: inline-block;
-      background: var(--red);
-      color: var(--white);
-      padding: 14px 24px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: background .2s;
+    .hero-grid{
+      max-width:1200px; margin:0 auto; display:grid;
+      grid-template-columns: 1fr 420px; gap:32px; align-items:center;
     }
-    .cta-btn:active {background:#a30000;}
-    .section {
-      padding: 30px 20px;
-      background: var(--white);
-      margin-top: 12px;
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:28px; border-radius:14px; box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
     }
-    .section h3 {
-      margin-bottom: 16px;
-      font-size: 1.3rem;
-      color: var(--blue);
-      border-left: 6px solid var(--red);
-      padding-left: 10px;
+    .hero h2{margin:0 0 10px;font-size:28px}
+    .hero p.lead{color:var(--muted); margin:0 0 18px}
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap;
     }
-    .card {
-      background: var(--gray);
-      padding: 16px;
-      border-radius: 6px;
-      margin-bottom: 12px;
+    .btn{
+      display:inline-flex; gap:10px; align-items:center; border:0; cursor:pointer;
+      padding:10px 14px; border-radius:10px; font-weight:700; text-decoration:none;
+      transition:transform .15s ease, box-shadow .15s;
     }
-    .card h4 {
-      margin-bottom: 6px;
-      font-size: 1.1rem;
-      color: var(--dark);
+    .btn:active{ transform:translateY(1px) }
+    .btn-primary{ background:linear-gradient(90deg,var(--accent), #ff8a2b); color:#071018; box-shadow:0 10px 30px rgba(255,102,0,0.14) }
+    .btn-ghost{ border:1px solid rgba(255,255,255,0.06); color:var(--white); background:transparent }
+
+    /* Right card (fast contacts) */
+    .info{
+      padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
     }
-    .card p {font-size: 0.95rem;}
-    footer {
-      background: var(--blue);
-      color: var(--white);
-      text-align: center;
-      padding: 16px;
-      font-size: 0.9rem;
-      border-top: 4px solid var(--red);
-      margin-top: 20px;
+    .phone{
+      display:flex; gap:12px; align-items:center;
     }
-    .phone {
-      font-weight: 700;
-      font-size: 1.2rem;
-      display: block;
-      margin: 10px 0;
-      color: var(--red);
+    .phone .num{font-weight:800; font-size:18px}
+    .badge{font-size:12px;color:var(--muted); padding:6px 8px; border-radius:8px; background:var(--glass-2)}
+
+    /* Services */
+    section{padding:36px 18px}
+    .section-title{max-width:1200px;margin:0 auto 18px; display:flex; justify-content:space-between; align-items:center}
+    .cards{max-width:1200px;margin:0 auto; display:grid; grid-template-columns: repeat(3,1fr); gap:18px}
+    .service{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+      transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .25s;
     }
-    @media (min-width:768px) {
-      .features {
-        display: flex;
-        gap: 16px;
-      }
-      .card {flex:1;}
+    .service:hover{ transform:translateY(-8px); box-shadow:0 20px 40px rgba(2,6,23,0.7) }
+    .service h3{margin:0 0 6px}
+    .service p{margin:0;color:var(--muted);font-size:14px}
+
+    /* Price table */
+    .price-table{
+      max-width:1200px;margin:18px auto 60px; border-radius:12px; overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
     }
+    table{
+      width:100%; border-collapse:collapse; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    }
+    thead tr{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+    th,td{padding:14px 18px; text-align:left; border-bottom:1px dashed rgba(255,255,255,0.02)}
+    th{font-weight:700; color:var(--muted); font-size:13px}
+    td.price{font-weight:800; color:var(--accent); text-align:right; width:170px}
+
+    .note{
+      padding:16px 18px; color:var(--muted); font-size:14px; background:rgba(255,255,255,0.01);
+    }
+
+    /* Footer */
+    footer{margin-top:auto;padding:22px 18px;color:var(--muted); border-top:1px solid rgba(255,255,255,0.02)}
+    .footer-grid{max-width:1200px;margin:0 auto; display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap}
+    .small{font-size:13px}
+
+    /* Fixed bottom action bar */
+    .bottom-bar{
+      position:fixed; left:12px; right:12px; bottom:16px; z-index:120;
+      display:flex; gap:10px; justify-content:center;
+      max-width:760px; margin:0 auto;
+      pointer-events:auto;
+    }
+    .action-btn{
+      flex:1; min-width:0; display:inline-flex; gap:10px; align-items:center; justify-content:center;
+      padding:12px 14px;border-radius:12px;border:0; font-weight:700; cursor:pointer;
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      transition:transform .14s, box-shadow .14s;
+      background:linear-gradient(90deg,#0b2540, #062033);
+      color:var(--white);
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .action-btn:hover{ transform:translateY(-4px) }
+    .action-left{background:linear-gradient(90deg,#0b1530,#0b2038); border:1px solid rgba(255,255,255,0.03)}
+    .action-mid{background:linear-gradient(90deg,#093846,#074d3b); border:1px solid rgba(255,255,255,0.03)}
+    .action-right{background:linear-gradient(90deg,#1c163a,#3a0f2b); border:1px solid rgba(255,255,255,0.03)}
+
+    .action-svg{width:18px;height:18px; display:inline-block; vertical-align:middle}
+
+    /* Animations (on-scroll) */
+    .reveal{opacity:0; transform:translateY(18px) scale(.995); transition: all .7s cubic-bezier(.2,.9,.2,1) }
+    .reveal.visible{opacity:1; transform:none}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .hero-grid{grid-template-columns: 1fr 340px}
+      .cards{grid-template-columns: repeat(2,1fr)}
+    }
+    @media (max-width:720px){
+      .hero-grid{grid-template-columns: 1fr; gap:12px}
+      .cards{grid-template-columns: 1fr}
+      .container{padding:12px}
+      .hero{padding-top:18px}
+      .brand h1{font-size:15px}
+      .hero h2{font-size:22px}
+      .bottom-bar{left:10px; right:10px; bottom:12px}
+      .action-btn{padding:12px; font-size:14px}
+    }
+
+    /* micro animations */
+    @keyframes float {
+      0%{ transform: translateY(0px) }
+      50%{ transform: translateY(-6px) }
+      100%{ transform: translateY(0px) }
+    }
+    .logo{animation: float 6s ease-in-out infinite}
   </style>
 </head>
 <body>
-  <header>
-    <h1>Белашков.рф</h1>
-    <p>Аварийный комиссар — помощь на месте ДТП</p>
+  <header class="header" role="banner">
+    <div class="container">
+      <div class="brand" aria-label="Автосервис136">
+        <div class="logo" aria-hidden="true">А136</div>
+        <div>
+          <h1>Автосервис136</h1>
+          <p>Профессиональный ремонт — бережно, быстро, прозрачно</p>
+        </div>
+      </div>
+      <nav role="navigation" aria-label="Главное меню">
+        <a href="#services">Услуги</a>
+        <a href="#price">Прайс-лист</a>
+        <a href="#about">О нас</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+    </div>
   </header>
 
-  <section class="hero">
-    <h2>Экстренный выезд 24/7</h2>
-    <p>Наши экипажи оперативно прибывают на место ДТП, помогают с оформлением документов и взаимодействием со страховой компанией.</p>
-    <a href="tel:+79081343722" class="cta-btn">📞 Вызвать комиссара</a>
-    <span class="phone">+7 (908) 134-37-22</span>
-  </section>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-card reveal" data-delay="0">
+          <h2>Надёжный автосервис в вашем районе — Автосервис136</h2>
+          <p class="lead">Диагностика, кузовной ремонт, подвеска, рулевое, тормоза, трансмиссия и выхлоп — всё под одной крышей. Работаем с легковыми и небольшими коммерческими авто.</p>
 
-  <section class="section">
-    <h3>Почему именно мы</h3>
-    <div class="features">
-      <div class="card">
-        <h4>Быстрая подача</h4>
-        <p>Среднее время прибытия экипажа — 5–15 минут по городу.</p>
-      </div>
-      <div class="card">
-        <h4>Опытные специалисты</h4>
-        <p>Каждый аварийный комиссар имеет профессиональную подготовку и практику в оформлении ДТП.</p>
-      </div>
-      <div class="card">
-        <h4>Полное сопровождение</h4>
-        <p>Документы для страховой, фотофиксация, помощь с эвакуацией автомобиля.</p>
-      </div>
-    </div>
-  </section>
+          <div class="cta">
+            <a class="btn btn-primary" href="tel:+79601243232" aria-label="Позвонить +7 960 124-32-32">
+              📞 Позвонить
+            </a>
+            <a class="btn btn-ghost" href="#price" aria-label="Узнать прайс">
+              💡 Прайс-лист
+            </a>
+            <a class="btn btn-ghost" href="#contacts" aria-label="Как проехать">
+              📍 Как проехать
+            </a>
+          </div>
 
-  <section class="section">
-    <h3>Наши услуги</h3>
-    <div class="card">
-      <h4>Выезд на ДТП</h4>
-      <p>Осмотр, фотофиксация и оформление необходимых документов.</p>
-    </div>
-    <div class="card">
-      <h4>Протоколы и заявления</h4>
-      <p>Подготовка пакета документов для страховой компании.</p>
-    </div>
-    <div class="card">
-      <h4>Эвакуация</h4>
-      <p>Организация эвакуатора и помощь при транспортировке авто.</p>
-    </div>
-  </section>
+          <div style="margin-top:18px; display:flex; gap:12px; align-items:center;">
+            <div style="flex:1">
+              <strong>Гарантия на работы</strong>
+              <div style="color:var(--muted); font-size:13px">на все виды ремонта — от 30 до 365 дней в зависимости от услуги</div>
+            </div>
+            <div style="text-align:right">
+              <div class="badge">Работаем ежедневно</div>
+            </div>
+          </div>
+        </div>
 
-  <section class="section">
-    <h3>Контакты</h3>
-    <div class="card">
-      <h4>Телефон:</h4>
-      <p><a href="tel:+79081343722" style="color:var(--red);font-weight:700;">+7 (908) 134-37-22</a></p>
-    </div>
-    <div class="card">
-      <h4>Режим работы:</h4>
-      <p>Круглосуточно, без выходных</p>
-    </div>
-  </section>
+        <aside class="info reveal" data-delay="120">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+            <div>
+              <div style="color:var(--muted); font-size:13px">Быстрый контакт</div>
+              <div class="phone"><div style="font-size:12px; color:var(--muted)">Телефон</div></div>
+              <div class="num" style="margin-top:6px">+7 (960) 124-32-32</div>
+            </div>
+            <div style="text-align:right">
+              <div style="color:var(--muted); font-size:12px">Часы работы</div>
+              <div style="font-weight:700">8:00 — 20:00</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <a class="btn btn-primary" href="tel:+79601243232" aria-label="Позвонить">📞 Позвонить</a>
+            <a class="btn btn-ghost" href="https://wa.me/79601243232?text=Здравствуйте!%20Хочу%20узнать%20цену%20и%20записаться." target="_blank" rel="noopener" aria-label="WhatsApp">💬 WhatsApp</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <div class="section-title">
+        <h3 style="margin:0">Наши услуги</h3>
+        <div style="color:var(--muted)">Коротко и по делу</div>
+      </div>
+
+      <div class="cards">
+        <article class="service reveal" data-delay="60">
+          <h3>Диагностика авто</h3>
+          <p>Компьютерная диагностика, проверка систем и узлов — быстро и информативно.</p>
+        </article>
+
+        <article class="service reveal" data-delay="80">
+          <h3>Кузовной ремонт</h3>
+          <p>Шпатлёвка, покраска, восстановление геометрии — качественно и аккуратно.</p>
+        </article>
+
+        <article class="service reveal" data-delay="100">
+          <h3>Ремонт подвески</h3>
+          <p>Замена стоек, амортизаторов, сайлентблоков и втулок.</p>
+        </article>
+
+        <article class="service reveal" data-delay="120">
+          <h3>Ремонт рулевого управления</h3>
+          <p>Ремонт рейки, замена наконечников, устранение стуков и люфтов.</p>
+        </article>
+
+        <article class="service reveal" data-delay="140">
+          <h3>Ремонт тормозной системы</h3>
+          <p>Замена тормозных колодок, дисков, прокачка, ремонт суппортов.</p>
+        </article>
+
+        <article class="service reveal" data-delay="160">
+          <h3>Ремонт трансмиссии</h3>
+          <p>Диагностика и ремонт МКПП/АКПП, замена сальников и сцепления.</p>
+        </article>
+
+        <article class="service reveal" data-delay="180">
+          <h3>Ремонт выхлопной системы</h3>
+          <p>Замена глушителей, резонаторов, ремонт швов и фланцев.</p>
+        </article>
+
+        <article class="service reveal" data-delay="200">
+          <h3>Дополнительные работы</h3>
+          <p>Шиномонтаж, техническое обслуживание, замена расходников.</p>
+        </article>
+
+        <article class="service reveal" data-delay="220">
+          <h3>Гарантия и консультации</h3>
+          <p>Консультация по телефону, прозрачная смета и сопровождение после ремонта.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Price list -->
+    <section id="price">
+      <div class="section-title">
+        <h3 style="margin:0">Прайс-лист</h3>
+        <div style="color:var(--muted)">Ориентировочные цены — точную стоимость уточните по телефону</div>
+      </div>
+
+      <div class="price-table reveal" data-delay="60">
+        <table role="table" aria-label="Прайс-лист автосервис136">
+          <thead>
+            <tr>
+              <th>Вид услуг</th>
+              <th style="text-align:right">Стоимость</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Диагностика авто</td>
+              <td class="price">от 500 ₽</td>
+            </tr>
+            <tr>
+              <td>Кузовной ремонт</td>
+              <td class="price">от 2 000 ₽</td>
+            </tr>
+            <tr>
+              <td>Ремонт подвески</td>
+              <td class="price">от 500 ₽</td>
+            </tr>
+            <tr>
+              <td>Ремонт рулевого управления</td>
+              <td class="price">от 1 000 ₽</td>
+            </tr>
+            <tr>
+              <td>Ремонт тормозной системы</td>
+              <td class="price">от 500 ₽</td>
+            </tr>
+            <tr>
+              <td>Ремонт трансмиссии</td>
+              <td class="price">от 1 000 ₽</td>
+            </tr>
+            <tr>
+              <td>Ремонт выхлопной системы</td>
+              <td class="price">от 1 000 ₽</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          Чтобы узнать точную цену ремонта и запчастей, просто позвоните нам: <strong>+7 (960) 124-32-32</strong>.
+        </div>
+      </div>
+    </section>
+
+    <!-- About / Contacts -->
+    <section id="about">
+      <div style="max-width:1200px;margin:0 auto;padding:0 18px;">
+        <div style="display:flex; gap:18px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:280px;" class="reveal" data-delay="60">
+            <h3>О нас</h3>
+            <p style="color:var(--muted)">Автосервис136 — команда опытных механиков с многолетним опытом. Мы ценим время клиента: диагностика и первичный осмотр выполняются оперативно, а стоимость заранее согласуется.</p>
+            <ul style="color:var(--muted); margin-top:8px">
+              <li>Прозрачные сметы</li>
+              <li>Оригинальные запчасти и качественные аналоги</li>
+              <li>Гарантии на выполненные работы</li>
+            </ul>
+          </div>
+
+          <div style="width:360px; min-width:220px;" class="reveal" data-delay="80" id="contacts">
+            <h3>Контакты</h3>
+            <p style="margin:6px 0"><strong>Телефон:</strong> <a href="tel:+79601243232" style="color:var(--accent); text-decoration:none">+7 (960) 124-32-32</a></p>
+            <p style="margin:6px 0"><strong>WhatsApp:</strong> <a href="https://wa.me/79601243232" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none">Написать в WhatsApp</a></p>
+            <p style="margin:6px 0"><strong>Адрес:</strong> г. (укажите ваш город), ул. (укажите улицу), дом (укажите)</p>
+            <p style="margin-top:12px;color:var(--muted)">Запись по телефону, предварительная запись ускоряет обслуживание.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    © <span id="year"></span> Белашков.рф — Аварийный комиссар. Все права защищены.
+    <div class="footer-grid">
+      <div>
+        <div style="font-weight:700">Автосервис136</div>
+        <div class="small" style="color:var(--muted)">© <span id="year"></span> Все права защищены</div>
+      </div>
+
+      <div style="color:var(--muted)" class="small">Тел: <a href="tel:+79601243232" style="color:var(--muted); text-decoration:none">+7 (960) 124-32-32</a> · WhatsApp: <a href="https://wa.me/79601243232" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:none">Написать</a></div>
+    </div>
   </footer>
 
+  <!-- Fixed bottom actions -->
+  <div class="bottom-bar" role="dialog" aria-label="Быстрая панель действий">
+    <!-- Вызвать эвакуатор (ссылка на звонок) -->
+    <a class="action-btn action-left" href="tel:+79601243232" aria-label="Вызвать эвакуатор — позвонить">
+      <svg class="action-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11h12v6H3z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 11l3-3 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      Вызвать эвакуатор
+    </a>
+
+    <!-- WhatsApp (случай с предзаполненным сообщением) -->
+    <a class="action-btn action-mid" href="https://wa.me/79601243232?text=Здравствуйте!%20Хочу%20узнать%20цену%20и%20записаться." target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
+      <svg class="action-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.1A9 9 0 1 0 11.9 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2l-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Узнать цену в WhatsApp
+    </a>
+
+    <!-- Позвонить -->
+    <a class="action-btn action-right" href="tel:+79601243232" aria-label="Позвонить в автосервис">
+      <svg class="action-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a1 1 0 0 1 1 0.75c.12.74.35 1.45.68 2.12a1 1 0 0 1-.24 1L8.21 8.79a15 15 0 0 0 7 7l1.92-1.23a1 1 0 0 1 1 .04c.67.33 1.38.56 2.12.68A1 1 0 0 1 22 16.92z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Позвонить
+    </a>
+  </div>
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal on scroll
+    (function(){
+      const items = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) {
+            const el = e.target;
+            const delay = parseInt(el.getAttribute('data-delay') || 0);
+            setTimeout(()=> el.classList.add('visible'), delay);
+            io.unobserve(el);
+          }
+        });
+      }, {threshold: 0.12});
+      items.forEach(i=> io.observe(i));
+    })();
+
+    // Accessibility: keyboard focus for bottom buttons
+    document.querySelectorAll('.action-btn').forEach(b=>{
+      b.addEventListener('keyup', (e)=>{
+        if(e.key === 'Enter') b.click();
+      });
+    });
+
+    // Progressive enhancement: if user clicks "Вызвать эвакуатор", show small confirm on non-mobile
+    const tow = document.querySelector('.action-left');
+    tow && tow.addEventListener('click', function(e){
+      // nothing required — simple tel: link triggers phone dial on mobile; desktop will prompt
+      // we keep this handler to allow future extension if needed
+    });
+
+    // Small tilt effect on hero card (mouse)
+    const heroCard = document.querySelector('.hero-card');
+    if(heroCard){
+      heroCard.addEventListener('mousemove', (ev)=>{
+        const r = heroCard.getBoundingClientRect();
+        const x = (ev.clientX - r.left) / r.width - 0.5;
+        const y = (ev.clientY - r.top) / r.height - 0.5;
+        heroCard.style.transform = `translateY(${ -y * 6 }px) translateX(${ x * 6 }px)`;
+      });
+      heroCard.addEventListener('mouseleave', ()=> heroCard.style.transform = '');
+    }
   </script>
 </body>
 </html>
