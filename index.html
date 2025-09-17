@@ -2,108 +2,403 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Водяной знак — вызовдтп.рф</title>
 <style>
-  body{margin:0;font-family:sans-serif;background:#f7f7f7}
-  .wrap{max-width:800px;margin:auto;padding:10px}
-  h1{font-size:18px;margin:10px 0}
-  .drop{border:2px dashed #ccc;border-radius:8px;padding:20px;text-align:center;background:#fff;margin-bottom:12px;cursor:pointer}
-  .controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .btn{padding:10px 14px;border-radius:6px;border:none;font-weight:600;cursor:pointer}
-  .btn.primary{background:#2b6cb0;color:#fff}
-  .btn.secondary{background:#e6eefc;color:#2b6cb0}
-  .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-  .thumb{background:#fff;padding:8px;border-radius:6px;text-align:center}
-  .thumb img{max-width:100%;height:auto;border-radius:4px}
-  .actions{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-  .actions a,.actions button{font-size:12px;padding:6px 8px}
-  .small{font-size:12px;color:#555}
+  /* Mobile-first, простая и понятная верстка */
+  :root{
+    --bg:#F4F6FB;
+    --card:#ffffff;
+    --accent:#0b74d1;
+    --muted:#6b7280;
+    --success:#059669;
+  }
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter, Roboto, Arial, sans-serif;color:#0b1220}
+  .app{max-width:980px;margin:0 auto;padding:12px;}
+  header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  h1{font-size:18px;margin:0}
+  .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(11,17,32,0.06)}
+  .u-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .picker{
+    flex:1 1 auto;
+    background:#fff;border-radius:10px;padding:12px;border:1px dashed #d7e5ff;text-align:center;cursor:pointer;
+    min-height:78px;display:flex;align-items:center;justify-content:center;
+  }
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.ghost{background:transparent;border:1px solid #e6eefc;color:var(--accent)}
+  .small{font-size:13px;color:var(--muted)}
+  .sliders{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  input[type="range"]{width:140px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+  .cardItem{background:#fbfdff;border-radius:8px;padding:8px;display:flex;flex-direction:column;align-items:stretch;gap:8px}
+  .thumb{width:100%;aspect-ratio:4/3;background:#eef6ff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .meta{font-size:13px;color:#334155;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .actions{display:flex;gap:6px;flex-wrap:wrap}
+  .progress{height:6px;background:#e6eefc;border-radius:6px;overflow:hidden;margin-top:6px}
+  .progress > i{display:block;height:100%;background:var(--accent);width:0%}
+  footer{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+  /* small screens tweaks */
+  @media (max-width:520px){
+    header{gap:8px}
+    .sliders input[type="range"]{width:120px}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Водяной знак — вызовдтп.рф</h1>
+  <div class="app">
+    <header>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="#0b74d1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3H7a2 2 0 0 0-2 2v2h14V5a2 2 0 0 0-2-2z" stroke="#0b74d1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h1>Водяной знак — <span class="small">вызовдтп.рф</span></h1>
+    </header>
 
-  <label class="drop">
-    📸 Нажми, чтобы выбрать фото (или перетащи сюда)
-    <input id="fileInput" type="file" accept="image/*" multiple capture="environment" style="display:none" />
-  </label>
+    <section class="card" aria-live="polite">
+      <div class="u-row" style="margin-bottom:10px">
+        <label id="picker" class="picker" tabindex="0">
+          <div>
+            <div style="font-size:16px;font-weight:600">Нажми или выбери фото</div>
+            <div class="small">Поддерживается несколько фото • Можно сфотографировать (на телефоне)</div>
+          </div>
+          <!-- скрытый input: accept + capture для мобильного -->
+          <input id="fileInput" type="file" accept="image/*" multiple capture="environment" style="display:none">
+        </label>
 
-  <div class="controls">
-    <label>Непрозрачность <input id="opacity" type="range" min="0.05" max="0.3" step="0.01" value="0.1"></label>
-    <label>Размер текста <input id="scale" type="range" min="4" max="20" step="1" value="10"></label>
-    <button id="clearBtn" class="btn secondary">Очистить</button>
-    <button id="zipBtn" class="btn primary">Скачать всё (.zip)</button>
+        <div class="controls" style="margin-left:auto">
+          <div class="sliders">
+            <label class="small">Непрозрачность <span id="opacityVal">0.10</span>
+              <input id="opacity" type="range" min="0.02" max="0.30" step="0.01" value="0.10" />
+            </label>
+            <label class="small">Размер <span id="sizeVal">10%</span>
+              <input id="size" type="range" min="4" max="20" step="1" value="10" />
+            </label>
+          </div>
+          <button id="clearBtn" class="btn ghost">Очистить</button>
+          <button id="zipBtn" class="btn primary">Скачать всё (.zip)</button>
+        </div>
+      </div>
+
+      <div class="small" style="margin-bottom:8px">
+        Исполнение: повторяющийся полупрозрачный текст «вызовдтп.рф» по диагонали. Обработка выполняется локально в браузере; изображения не отправляются на сервер.
+      </div>
+
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <footer>© Водяной знак — вызовдтп.рф · Работает локально</footer>
+    </section>
   </div>
 
-  <div id="grid" class="grid"></div>
-</div>
+  <!-- JSZip CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@4.1.0/dist/jszip.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/jszip@4.1.0/dist/jszip.min.js"></script>
-<script>
-const fileInput=document.getElementById('fileInput');
-const grid=document.getElementById('grid');
-const opacity=document.getElementById('opacity');
-const scale=document.getElementById('scale');
-const clearBtn=document.getElementById('clearBtn');
-const zipBtn=document.getElementById('zipBtn');
-let processed=[];
+  <script>
+  /*** Параметры безопасности/производительности ***/
+  const MAX_DIMENSION = 2000;   // максимальная сторона (px) после ресайза — уменьшает потребление памяти
+  const MAX_RENDER_DPR = 2;     // максимум физического множителя для canvas (чтобы не выделять гигабайты)
+  const OUTPUT_FORMAT = 'image/jpeg'; // можно переключить на 'image/png' если нужно
+  const OUTPUT_QUALITY = 0.92;
 
-fileInput.addEventListener('change',()=>handleFiles(fileInput.files));
-clearBtn.onclick=()=>{grid.innerHTML='';processed=[];fileInput.value='';};
-zipBtn.onclick=async()=>{
-  if(!processed.length) return alert('Нет изображений');
-  const zip=new JSZip();
-  for(const p of processed){zip.file(p.name,await p.blob.arrayBuffer());}
-  const content=await zip.generateAsync({type:'blob'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(content);a.download='images.zip';a.click();
-};
+  // UI элементы
+  const picker = document.getElementById('picker');
+  const fileInput = document.getElementById('fileInput');
+  const grid = document.getElementById('grid');
+  const clearBtn = document.getElementById('clearBtn');
+  const zipBtn = document.getElementById('zipBtn');
+  const opacity = document.getElementById('opacity');
+  const size = document.getElementById('size');
+  const opacityVal = document.getElementById('opacityVal');
+  const sizeVal = document.getElementById('sizeVal');
 
-function handleFiles(list){
-  [...list].forEach(f=>{
-    if(f.type.startsWith('image/')){
-      const r=new FileReader();
-      r.onload=e=>{
-        const img=new Image();
-        img.onload=async()=>{const {blob,url}=await watermark(img);addThumb(f.name,blob,url);};
-        img.src=e.target.result;
-      };
-      r.readAsDataURL(f);
-    }
+  // Обработанные файлы (для zip / удаления)
+  const processed = []; // {name, blob, url}
+
+  // Простая очередь, чтобы избежать одновременной работы со слишком большим количеством больших картинок
+  let processingQueue = [];
+  let isProcessing = false;
+
+  // Обновляем подписи слайдеров
+  function updateLabels(){ opacityVal.textContent = parseFloat(opacity.value).toFixed(2); sizeVal.textContent = size.value + '%'; }
+  opacity.addEventListener('input', updateLabels);
+  size.addEventListener('input', updateLabels);
+  updateLabels();
+
+  // Открыть файловый диалог при клике на picker
+  picker.addEventListener('click', () => fileInput.click());
+  picker.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') fileInput.click(); });
+
+  // Drag & drop поддержка
+  ['dragenter','dragover'].forEach(ev => {
+    picker.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); picker.style.borderColor = '#9cc2ff'; });
   });
-}
+  ['dragleave','drop'].forEach(ev => {
+    picker.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); picker.style.borderColor = ''; });
+  });
+  picker.addEventListener('drop', e => {
+    const dt = e.dataTransfer;
+    if(dt && dt.files) handleFiles(dt.files);
+  });
 
-async function watermark(img){
-  const maxSide=2000; // ограничим для телефонов
-  let w=img.naturalWidth,h=img.naturalHeight;
-  if(Math.max(w,h)>maxSide){
-    const ratio=maxSide/Math.max(w,h);w=Math.round(w*ratio);h=Math.round(h*ratio);
+  fileInput.addEventListener('change', ()=> handleFiles(fileInput.files));
+  clearBtn.addEventListener('click', clearAll);
+  zipBtn.addEventListener('click', downloadZip);
+
+  function handleFiles(fileList){
+    const files = Array.from(fileList).filter(f => f.type && f.type.startsWith('image/'));
+    if(files.length === 0){
+      alert('Нет изображений. Выберите файлы формата JPG/PNG/WEBP и т.д.');
+      return;
+    }
+    // Добавляем в очередь
+    files.forEach(f => {
+      const card = createCard(f.name, f.size);
+      processingQueue.push({file: f, card});
+    });
+    // Запускаем обработку очереди
+    processQueue();
   }
-  const c=document.createElement('canvas');c.width=w;c.height=h;
-  const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);
-  ctx.fillStyle=`rgba(20,20,20,${opacity.value})`;
-  ctx.font=`${Math.round(Math.min(w,h)*(scale.value/100))}px sans-serif`;
-  ctx.rotate(-Math.PI/6);
-  for(let x=-w;x<w*2;x+=200){
-    for(let y=-h;y<h*2;y+=150){
-      ctx.fillText('вызовдтп.рф',x,y);
+
+  async function processQueue(){
+    if(isProcessing) return;
+    isProcessing = true;
+    while(processingQueue.length){
+      const job = processingQueue.shift();
+      await processOne(job.file, job.card);
+      // small pause to keep UI responsive
+      await new Promise(r => setTimeout(r, 50));
+    }
+    isProcessing = false;
+  }
+
+  // Создаёт карточку с прогрессом
+  function createCard(name, sizeBytes){
+    const div = document.createElement('div'); div.className = 'cardItem';
+    const thumb = document.createElement('div'); thumb.className = 'thumb';
+    const meta = document.createElement('div'); meta.className = 'meta';
+    meta.innerHTML = `<div style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</div><div class="small">${humanSize(sizeBytes)}</div>`;
+    const progress = document.createElement('div'); progress.className = 'progress'; const progBar = document.createElement('i'); progress.appendChild(progBar);
+    const actions = document.createElement('div'); actions.className = 'actions';
+    const info = document.createElement('div'); info.className = 'small'; info.textContent = 'Ожидание...';
+    div.appendChild(thumb); div.appendChild(meta); div.appendChild(info); div.appendChild(progress); div.appendChild(actions);
+    grid.prepend(div); // показываем сверху
+    return {container:div, thumb, meta, progressBar:progBar, actions, info};
+  }
+
+  // Обработка одного файла: загрузить, ресайз, наложить watermark, вывести результат
+  async function processOne(file, card){
+    try{
+      card.info.textContent = 'Загружаю...';
+      // Загружаем картинку эффективно: createImageBitmap (если поддерживается), иначе Image
+      const bitmap = await loadImageBitmap(file);
+      const originalW = bitmap.width, originalH = bitmap.height;
+      // Решаем размер итогового холста (без перегрузки памяти)
+      const scaleFactor = Math.min(1, MAX_DIMENSION / Math.max(originalW, originalH));
+      const targetW = Math.max(1, Math.round(originalW * scaleFactor));
+      const targetH = Math.max(1, Math.round(originalH * scaleFactor));
+      // Рендер-множитель (для чёткости на ретинах), но ограничиваем
+      const dpr = Math.min(window.devicePixelRatio || 1, MAX_RENDER_DPR);
+
+      card.info.textContent = `Обработка ${targetW}×${targetH}...`;
+
+      // Создаем canvas в физическом разрешении, но используем ctx.scale для рисования в css-пикселях
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(targetW * dpr);
+      canvas.height = Math.round(targetH * dpr);
+      const ctx = canvas.getContext('2d', {alpha: true});
+      // Установим масштаб, чтобы дальше оперировать в логических пикселях
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Нарисуем изображение под размер (чтобы избежать растягивания)
+      ctx.drawImage(bitmap, 0, 0, originalW, originalH, 0, 0, targetW, targetH);
+
+      // Если мы получили ImageBitmap — можем закрыть его (релиз памяти) (если поддерживается)
+      if(typeof bitmap.close === 'function') try{ bitmap.close(); } catch(e){}
+
+      // Наложение водяного знака: повторяющийся текст по диагонали
+      const text = 'вызовдтп.рф';
+      const opacityVal = parseFloat(opacity.value);
+      const sizePercent = parseFloat(size.value) / 100.0;
+      const base = Math.min(targetW, targetH);
+      const fontPx = Math.max(12, Math.round(base * sizePercent)); // минимум 12px
+      ctx.save();
+      ctx.globalAlpha = opacityVal;
+      ctx.fillStyle = '#111';
+      ctx.font = `${fontPx}px -apple-system, Roboto, Arial, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // Повернем холст и рисуем текст-сетку — это даёт надёжный диагональный паттерн
+      const angle = -35 * Math.PI / 180;
+      ctx.translate(targetW/2, targetH/2);
+      ctx.rotate(angle);
+
+      // Размер шага между текстами зависит от длины текста и шрифта
+      const textWidthEstimate = ctx.measureText(text).width || fontPx * text.length * 0.5;
+      const stepX = Math.max(textWidthEstimate * 1.8, fontPx * 6);
+      const stepY = Math.max(fontPx * 4, Math.round(fontPx * 4.5));
+
+      // Покрываем область (в "поворотных" координатах) — диаметр достаточный для покрытия всей картинки
+      const diag = Math.sqrt(targetW*targetW + targetH*targetH);
+      const start = -diag;
+      for(let x = start; x < diag; x += stepX){
+        for(let y = start; y < diag; y += stepY){
+          ctx.fillText(text, x, y);
+        }
+      }
+
+      ctx.restore();
+
+      // Готовим blob — по умолчанию JPEG (меньше весит). Можно сменить на PNG если нужно
+      card.info.textContent = 'Сохранение…';
+      const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, OUTPUT_FORMAT, OUTPUT_QUALITY);
+      });
+
+      // Создаём объектную ссылку (URL) и обновляем UI
+      const url = URL.createObjectURL(blob);
+
+      // Превью (сжатое, чтобы не перегружать UI) — используем маленький canvas
+      const thumbImg = document.createElement('img');
+      thumbImg.src = url;
+      // очистим контейнер и вставим превью
+      card.thumb.innerHTML = '';
+      card.thumb.appendChild(thumbImg);
+
+      // Добавляем кнопки: Скачать, Открыть, Удалить
+      const dl = document.createElement('a');
+      dl.className = 'btn primary';
+      dl.href = url;
+      dl.download = ensurePNGName(file.name); // сохраняем как .jpg/.png — в имени заменяем расширение
+      dl.textContent = 'Скачать';
+
+      const view = document.createElement('button');
+      view.className = 'btn ghost';
+      view.textContent = 'Открыть';
+      view.addEventListener('click', ()=> window.open(url, '_blank'));
+
+      const del = document.createElement('button');
+      del.className = 'btn ghost';
+      del.textContent = 'Удалить';
+      del.addEventListener('click', ()=> {
+        // удаляем UI и очищаем ссылку / processed
+        try{ URL.revokeObjectURL(url); }catch(e){}
+        const idx = processed.findIndex(p => p.url === url);
+        if(idx !== -1) processed.splice(idx,1);
+        card.container.remove();
+      });
+
+      // очистим старые actions и добавим новые
+      card.actions.innerHTML = '';
+      card.actions.appendChild(dl); card.actions.appendChild(view); card.actions.appendChild(del);
+      card.progressBar.style.width = '100%';
+      card.info.textContent = 'Готово';
+      processed.push({name: dl.download, blob, url});
+    } catch(err){
+      console.error('Ошибка обработки', err);
+      card.info.textContent = 'Ошибка: ' + (err && err.message ? err.message : 'неизвестная');
+      card.progressBar.style.width = '0%';
+      alert('Ошибка при обработке изображения: ' + (err && err.message ? err.message : 'см. консоль'));
     }
   }
-  ctx.rotate(Math.PI/6);
-  const blob=await new Promise(r=>c.toBlob(r,'image/png',0.9));
-  return{blob,url:URL.createObjectURL(blob)};
-}
 
-function addThumb(name,blob,url){
-  const div=document.createElement('div');div.className='thumb';
-  div.innerHTML=`<img src="${url}"><div class="actions">
-  <a href="${url}" download="${name.replace(/\.[^.]+$/,'')}.png" class="btn primary">Скачать</a>
-  </div>`;
-  grid.appendChild(div);
-  processed.push({name:name.replace(/\.[^.]+$/,'.png'),blob});
-}
-</script>
+  // Загружает ImageBitmap (быстрее и экономнее памяти) или Image как fallback
+  async function loadImageBitmap(file){
+    // try createImageBitmap (в современных браузерах это лучше)
+    if(window.createImageBitmap){
+      try{
+        // use options to request image orientation applied? (not standardized across browsers)
+        const bitmap = await createImageBitmap(file);
+        return bitmap;
+      }catch(e){
+        // fallback ниже
+        console.warn('createImageBitmap failed, fallback to Image', e);
+      }
+    }
+    // fallback: load via Image + objectURL
+    return await new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        // draw image into an offscreen canvas and convert to ImageBitmap if possible
+        try{
+          // createImageBitmap from image element if supported (some browsers allow)
+          if(window.createImageBitmap){
+            createImageBitmap(img).then(b => {
+              URL.revokeObjectURL(url);
+              resolve(b);
+            }).catch(_=> {
+              URL.revokeObjectURL(url);
+              resolve(img); // resolve HTMLImageElement
+            });
+          } else {
+            URL.revokeObjectURL(url);
+            resolve(img);
+          }
+        }catch(e){
+          URL.revokeObjectURL(url);
+          resolve(img);
+        }
+      };
+      img.onerror = (err) => {
+        URL.revokeObjectURL(url);
+        reject(new Error('Не удалось загрузить изображение'));
+      };
+      img.src = url;
+    });
+  }
+
+  function ensurePNGName(name){
+    // Возвращаем имя с расширением .jpg (или .png при необходимости)
+    const ext = OUTPUT_FORMAT.includes('png') ? '.png' : '.jpg';
+    if(/\.[^/.]+$/.test(name)) return name.replace(/\.[^/.]+$/, ext);
+    return name + ext;
+  }
+
+  // Zip скачивание
+  async function downloadZip(){
+    if(processed.length === 0){
+      alert('Нет готовых изображений для скачивания.');
+      return;
+    }
+    zipBtn.disabled = true; zipBtn.textContent = 'Готовлю .zip…';
+    try{
+      const zip = new JSZip();
+      for(const p of processed){
+        const buf = await p.blob.arrayBuffer();
+        zip.file(p.name, buf);
+      }
+      const content = await zip.generateAsync({type:'blob'});
+      const url = URL.createObjectURL(content);
+      const a = document.createElement('a'); a.href = url; a.download = 'watermarked_images.zip'; a.click();
+      setTimeout(()=> URL.revokeObjectURL(url), 10000);
+    }catch(e){
+      alert('Ошибка при создании zip: ' + (e && e.message ? e.message : 'см. консоль'));
+      console.error(e);
+    } finally {
+      zipBtn.disabled = false; zipBtn.textContent = 'Скачать всё (.zip)';
+    }
+  }
+
+  function clearAll(){
+    // удаляем все превью и освобождаем URLы
+    processed.forEach(p=> { try{ URL.revokeObjectURL(p.url)}catch(e){} });
+    processed.length = 0;
+    grid.innerHTML = '';
+    processingQueue.length = 0;
+    isProcessing = false;
+    fileInput.value = '';
+  }
+
+  function humanSize(bytes){
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024*1024) return (bytes/1024).toFixed(1)+' KB';
+    return (bytes/(1024*1024)).toFixed(2)+' MB';
+  }
+
+  // Пара мелких полировок: при выходе со страницы очищаем URLы
+  window.addEventListener('beforeunload', ()=> {
+    processed.forEach(p=> { try{ URL.revokeObjectURL(p.url)}catch(e){} });
+  });
+
+  </script>
 </body>
 </html>
