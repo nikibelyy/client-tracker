@@ -1,279 +1,431 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Автосервис136 — профессиональный ремонт | автосервис136.рф</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --accent: #ff6600;
-      --bg1: #0f172a;
-      --bg2: #1e293b;
-      --text: #f8fafc;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    header {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(15,23,42,0.8);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .container {
-      max-width: 1200px; margin: 0 auto;
-      padding: 16px; display: flex;
-      justify-content: space-between; align-items: center;
-    }
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #cbd5e1;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-    nav a:hover { color: var(--accent); }
-    .hero {
-      min-height: 80vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; padding: 40px 20px;
-      background: url('https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1400&q=80') no-repeat center/cover;
-      position: relative;
-    }
-    .hero::after {
-      content: "";
-      position: absolute; inset: 0;
-      background: rgba(15,23,42,0.7);
-    }
-    .hero-content {
-      position: relative; z-index: 1;
-      max-width: 800px;
-    }
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 900;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-    .hero p {
-      font-size: 18px;
-      margin-bottom: 30px;
-      color: #cbd5e1;
-    }
-    .btn {
-      display: inline-block;
-      padding: 14px 26px;
-      margin: 8px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 700;
-      transition: all 0.3s ease;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(255,102,0,0.5);
-    }
-    .btn-primary:hover { background: #e05500; }
-    .btn-outline {
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      background: transparent;
-    }
-    .btn-outline:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-    section {
-      padding: 60px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    h2 {
-      text-align: center;
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 40px;
-    }
-    /* Услуги */
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-    .service {
-      background: rgba(255,255,255,0.05);
-      padding: 24px;
-      border-radius: 16px;
-      text-align: center;
-      backdrop-filter: blur(8px);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .service:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-    .service h3 { margin-bottom: 10px; font-size: 20px; }
-    .service p { color: #cbd5e1; font-size: 14px; }
-    /* Прайс */
-    .price {
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: var(--text);
-    }
-    th, td {
-      padding: 16px;
-      text-align: left;
-    }
-    th { background: rgba(255,255,255,0.1); font-weight: 700; }
-    tr:nth-child(even) { background: rgba(255,255,255,0.02); }
-    td.price { color: var(--accent); font-weight: 700; text-align: right; }
-    /* Контакты */
-    .contacts {
-      text-align: center;
-    }
-    .contacts p { margin: 8px 0; color: #cbd5e1; }
-    .contacts a { color: var(--accent); text-decoration: none; font-weight: 600; }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #cbd5e1;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      background: rgba(15,23,42,0.8);
-    }
-    /* Нижняя панель */
-    .bottom-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(15,23,42,0.9);
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-around;
-      padding: 12px;
-      z-index: 100;
-    }
-    .bottom-bar a {
-      flex: 1;
-      margin: 0 6px;
-      text-align: center;
-      background: var(--accent);
-      color: #fff;
-      padding: 14px 10px;
-      border-radius: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.3s;
-      box-shadow: 0 4px 20px rgba(255,102,0,0.5);
-    }
-    .bottom-bar a:hover { background: #e05500; }
-    /* Анимации */
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 28px; }
-      .hero p { font-size: 16px; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Водяной знак — вызовдтп.рф</title>
+<style>
+  :root{
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --accent:#2b6cb0;
+    --muted:#6b7280;
+  }
+  body{
+    margin:0;
+    font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    background:var(--bg);
+    color:#0b1220;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  .wrap{
+    max-width:980px;
+    margin:28px auto;
+    padding:20px;
+  }
+  header{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  header h1{
+    margin:0;
+    font-size:18px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:10px;
+    box-shadow:0 6px 20px rgba(15,23,42,0.06);
+    padding:18px;
+  }
+  .controls{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .drop{
+    flex:1 1 420px;
+    border:2px dashed #dbe4f2;
+    border-radius:8px;
+    min-height:86px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2));
+  }
+  .btn{
+    background:var(--accent);
+    color:white;
+    padding:10px 14px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+  }
+  .btn.secondary{
+    background:#e6eefc;
+    color:var(--accent);
+  }
+  .options{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-left:auto;
+  }
+  label.small{ font-size:13px; color:var(--muted); }
+  input[type="range"]{ width:160px; }
+  .grid{
+    margin-top:16px;
+    display:grid;
+    gap:12px;
+    grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
+  }
+  .thumb{
+    background:#fbfdff;
+    border-radius:8px;
+    padding:10px;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .thumb canvas{
+    width:120px;
+    height:80px;
+    border-radius:6px;
+    object-fit:cover;
+    background:#eef6ff;
+  }
+  .meta{ flex:1; }
+  .meta p{ margin:0 0 8px 0; font-size:13px; color:#334155; }
+  .meta .small{ font-size:12px; color:var(--muted); }
+  .actions{ display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+  a.download{ text-decoration:none; padding:7px 10px; border-radius:7px; background:#0ea5a3; color:white; font-weight:600; font-size:13px; }
+  .muted{ color:var(--muted); font-size:13px; margin-top:8px; }
+  footer{ margin-top:16px; font-size:13px; color:var(--muted); text-align:center; }
+  @media (max-width:520px){
+    .controls{ flex-direction:column; align-items:stretch; }
+    .options{ margin-left:0; justify-content:space-between; }
+  }
+</style>
 </head>
 <body>
+<div class="wrap">
   <header>
-    <div class="container">
-      <div style="font-weight:900; font-size:20px; color:var(--accent)">Автосервис136</div>
-      <nav>
-        <a href="#services">Услуги</a>
-        <a href="#price">Прайс</a>
-        <a href="#contacts">Контакты</a>
-      </nav>
-    </div>
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="#2b6cb0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3H7a2 2 0 0 0-2 2v2h14V5a2 2 0 0 0-2-2z" stroke="#2b6cb0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>Водяной знак — <small class="small">вызовдтп.рф</small></h1>
   </header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Премиальный ремонт и обслуживание авто</h1>
-      <p>Кузовной ремонт · Диагностика · Подвеска · Тормоза · Трансмиссия · Выхлоп</p>
-      <a href="tel:+79601243232" class="btn btn-primary">📞 Позвонить</a>
-      <a href="https://wa.me/79601243232" target="_blank" class="btn btn-outline">💬 WhatsApp</a>
+  <div class="card">
+    <div class="controls">
+      <div id="drop" class="drop">
+        Перетащи сюда фото или нажми «Выбрать файлы»
+      </div>
+
+      <div style="display:flex;gap:8px;">
+        <label class="btn">
+          Выбрать файлы
+          <input id="fileInput" type="file" accept="image/*" multiple style="display:none" />
+        </label>
+        <button id="clearBtn" class="btn secondary">Очистить</button>
+      </div>
+
+      <div class="options">
+        <label class="small">Непрозрачность: <span id="opacityLabel">0.10</span></label>
+        <input id="opacityRange" type="range" min="0.02" max="0.30" step="0.01" value="0.10" />
+        <label class="small">Размер текста: <span id="scaleLabel">10%</span></label>
+        <input id="scaleRange" type="range" min="4" max="22" step="1" value="10" />
+      </div>
     </div>
-  </section>
 
-  <section id="services">
-    <h2 class="reveal">Наши услуги</h2>
-    <div class="services">
-      <div class="service reveal"><h3>Диагностика авто</h3><p>Компьютерная проверка всех систем.</p></div>
-      <div class="service reveal"><h3>Кузовной ремонт</h3><p>Покраска, сварка и восстановление геометрии.</p></div>
-      <div class="service reveal"><h3>Подвеска</h3><p>Замена стоек, амортизаторов и сайлентблоков.</p></div>
-      <div class="service reveal"><h3>Рулевое управление</h3><p>Ремонт рейки, наконечников и устранение люфтов.</p></div>
-      <div class="service reveal"><h3>Тормоза</h3><p>Замена колодок и дисков, ремонт суппортов.</p></div>
-      <div class="service reveal"><h3>Трансмиссия</h3><p>Ремонт КПП, замена сцепления.</p></div>
-      <div class="service reveal"><h3>Выхлопная система</h3><p>Ремонт и замена глушителя и труб.</p></div>
+    <div class="muted">Логотип наносится на каждое изображение — текст повторяется по диагонали. Сохраняется исходное разрешение (работа выполняется локально в браузере).</div>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+
+    <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+      <button id="zipBtn" class="btn">Скачать всё (.zip)</button>
+      <div class="muted" style="margin-left:8px;">Если .zip не нужен — скачивай по одному.</div>
     </div>
-  </section>
-
-  <section id="price">
-    <h2 class="reveal">Прайс-лист</h2>
-    <div class="price reveal">
-      <table>
-        <thead>
-          <tr><th>Вид услуг</th><th>Стоимость</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Диагностика авто</td><td class="price">от 500 ₽</td></tr>
-          <tr><td>Кузовной ремонт</td><td class="price">от 2 000 ₽</td></tr>
-          <tr><td>Ремонт подвески</td><td class="price">от 500 ₽</td></tr>
-          <tr><td>Рулевое управление</td><td class="price">от 1 000 ₽</td></tr>
-          <tr><td>Тормозная система</td><td class="price">от 500 ₽</td></tr>
-          <tr><td>Трансмиссия</td><td class="price">от 1 000 ₽</td></tr>
-          <tr><td>Выхлопная система</td><td class="price">от 1 000 ₽</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="text-align:center; margin-top:16px;">Точные цены уточняйте по телефону: <strong>+7 (960) 124-32-32</strong></p>
-  </section>
-
-  <section id="contacts" class="contacts">
-    <h2 class="reveal">Контакты</h2>
-    <p>📍 Адрес: г. (ваш город), ул. (ваша улица)</p>
-    <p>📞 Телефон: <a href="tel:+79601243232">+7 (960) 124-32-32</a></p>
-    <p>💬 WhatsApp: <a href="https://wa.me/79601243232" target="_blank">написать</a></p>
-  </section>
-
-  <footer>
-    © <span id="year"></span> Автосервис136. Все права защищены.
-  </footer>
-
-  <div class="bottom-bar">
-    <a href="tel:+79601243232">🚗 Вызвать эвакуатор</a>
-    <a href="https://wa.me/79601243232" target="_blank">💬 Узнать цену</a>
-    <a href="tel:+79601243232">📞 Позвонить</a>
   </div>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('visible');
-          io.unobserve(e.target);
-        }
-      });
-    },{threshold:0.2});
-    reveals.forEach(el=>io.observe(el));
-  </script>
+  <footer>© Водяной знак — вызовдтп.рф · Работает локально в браузере</footer>
+</div>
+
+<!-- JSZip (CDN) для скачивания всех файлов в zip -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@4.1.0/dist/jszip.min.js"></script>
+
+<script>
+/*
+  Важные моменты реализации:
+  - Обработка множества файлов сразу (batch).
+  - Канвас отрисовывается в реальном разрешении изображения (с учётом devicePixelRatio) для качества.
+  - Водяной знак: повторяющийся текст по диагонали, с заданной прозрачностью и относительным размером.
+  - Возможность скачать отдельные файлы и архив (.zip) со всеми водяными изображениями.
+*/
+
+const fileInput = document.getElementById('fileInput');
+const drop = document.getElementById('drop');
+const grid = document.getElementById('grid');
+const clearBtn = document.getElementById('clearBtn');
+const zipBtn = document.getElementById('zipBtn');
+const opacityRange = document.getElementById('opacityRange');
+const opacityLabel = document.getElementById('opacityLabel');
+const scaleRange = document.getElementById('scaleRange');
+const scaleLabel = document.getElementById('scaleLabel');
+
+let processed = []; // {name, blob}
+
+function humanSize(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024*1024) return (bytes/1024).toFixed(1)+' KB';
+  return (bytes/(1024*1024)).toFixed(2)+' MB';
+}
+
+function setLabels(){
+  opacityLabel.textContent = parseFloat(opacityRange.value).toFixed(2);
+  scaleLabel.textContent = scaleRange.value + '%';
+}
+setLabels();
+
+opacityRange.addEventListener('input', setLabels);
+scaleRange.addEventListener('input', setLabels);
+
+drop.addEventListener('click', ()=> fileInput.click());
+
+['dragenter','dragover','dragleave','drop'].forEach(ev=>{
+  drop.addEventListener(ev, (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+  });
+});
+drop.addEventListener('dragover', ()=> drop.style.borderColor = '#8fb6ff');
+drop.addEventListener('dragleave', ()=> drop.style.borderColor = '#dbe4f2');
+drop.addEventListener('drop', e=>{
+  drop.style.borderColor = '#dbe4f2';
+  const dt = e.dataTransfer;
+  if(dt && dt.files) handleFiles(dt.files);
+});
+
+fileInput.addEventListener('change', ()=> handleFiles(fileInput.files));
+clearBtn.addEventListener('click', ()=> {
+  grid.innerHTML = '';
+  processed = [];
+  fileInput.value = '';
+});
+
+zipBtn.addEventListener('click', async ()=>{
+  if(processed.length === 0){
+    alert('Нет обработанных изображений для скачивания.');
+    return;
+  }
+  zipBtn.textContent = 'Готовлю .zip…';
+  zipBtn.disabled = true;
+  try{
+    const zip = new JSZip();
+    for(const p of processed){
+      const data = await p.blob.arrayBuffer();
+      zip.file(p.name, data);
+    }
+    const content = await zip.generateAsync({type:'blob'});
+    const url = URL.createObjectURL(content);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'watermarked_images.zip';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }catch(err){
+    console.error(err);
+    alert('Ошибка при формировании zip: ' + err.message);
+  } finally {
+    zipBtn.textContent = 'Скачать всё (.zip)';
+    zipBtn.disabled = false;
+  }
+});
+
+function handleFiles(fileList){
+  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  if(files.length === 0){
+    alert('Файлы не изображений не обрабатываются. Выберите изображения.');
+    return;
+  }
+  files.forEach(file => processImage(file));
+}
+
+function processImage(file){
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    const img = new Image();
+    img.onload = async ()=>{
+      try{
+        const {blob, url} = await createWatermarkedBlob(img, file.name);
+        addThumb(file.name, blob, url, file.size);
+        processed.push({name: ensureSuffixPNG(file.name), blob});
+      } catch(err){
+        console.error('Ошибка обработки', err);
+        alert('Ошибка при обработке ' + file.name + ': ' + err.message);
+      }
+    };
+    img.onerror = ()=> {
+      alert('Не удалось загрузить изображение: ' + file.name);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function ensureSuffixPNG(name){
+  // сохраняем как .png, если расширение другое — заменяем
+  if(/\.(jpe?g|png|webp|gif|bmp)$/i.test(name)){
+    return name.replace(/\.[^.]+$/, '.png');
+  }
+  return name + '.png';
+}
+
+async function createWatermarkedBlob(img, originalName){
+  // Параметры
+  const text = 'вызовдтп.рф';
+  const opacity = parseFloat(opacityRange.value); // 0.02 .. 0.30
+  const scalePercent = parseFloat(scaleRange.value); // 4 .. 22 % (процент от меньшей стороны)
+
+  // Используем натуральный размер изображения
+  const w = img.naturalWidth || img.width;
+  const h = img.naturalHeight || img.height;
+
+  // Поддержка высокого разрешения экранов
+  const ratio = window.devicePixelRatio || 1;
+
+  // Создаём canvas в физическом разрешении
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(w * ratio));
+  canvas.height = Math.max(1, Math.round(h * ratio));
+  const ctx = canvas.getContext('2d', {alpha:true});
+  ctx.scale(ratio, ratio);
+
+  // Нарисовать исходное изображение (подгоняем по размеру блока - используем оригинальные пиксели)
+  // Для точной передачи размеров используем drawImage с координатами в CSS-пикселях (без учета ratio)
+  ctx.drawImage(img, 0, 0, w, h);
+
+  // Параметры текста
+  // Размер шрифта — процент от меньшей стороны
+  const base = Math.min(w, h);
+  const fontPx = Math.max(12, Math.round(base * (scalePercent / 100)));
+  ctx.font = `${fontPx}px "Arial", "Helvetica", sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = `rgba(20,20,20,${opacity})`; // тёмный полупрозрачный текст
+  ctx.globalCompositeOperation = 'source-over';
+
+  // Нарисуем повторяющийся диагональный водяной знак.
+  // Подход: повернуть канвас на -35 градусов и рисовать текст в сетке.
+  const angle = -35 * Math.PI / 180;
+  ctx.save();
+  // Центрируем трансформацию
+  ctx.translate(w/2, h/2);
+  ctx.rotate(angle);
+
+  // Размер клетки (шаг) делаем зависящим от fontPx
+  const stepX = fontPx * 8; // расстояние между текстовыми блоками по x
+  const stepY = fontPx * 6; // по y
+  // Вычисляем область рисования (в "повёрнутой" системе координат)
+  const diagW = Math.sqrt(w*w + h*h);
+
+  // Начальная точка — левее и выше, чтобы покрыть всю картинку
+  const startX = -diagW;
+  const startY = -diagW;
+
+  for(let x = startX; x < diagW; x += stepX){
+    for(let y = startY; y < diagW; y += stepY){
+      ctx.fillText(text, x, y);
+    }
+  }
+
+  ctx.restore();
+
+  // Преобразуем в blob PNG (поддержка прозрачности)
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.92));
+  const url = URL.createObjectURL(blob);
+  return {blob, url};
+}
+
+function addThumb(name, blob, url, originalSize){
+  const div = document.createElement('div');
+  div.className = 'thumb';
+
+  const canvasThumb = document.createElement('canvas');
+  canvasThumb.width = 240; canvasThumb.height = 160;
+  const ctx = canvasThumb.getContext('2d');
+
+  const img = new Image();
+  img.onload = ()=>{
+    // Уместим картинку в миниатюру сохраняя aspect
+    const sw = img.width, sh = img.height;
+    const scale = Math.min(canvasThumb.width / sw, canvasThumb.height / sh);
+    const dw = sw * scale, dh = sh * scale;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0,0,canvasThumb.width,canvasThumb.height);
+    ctx.drawImage(img, 0, 0, sw, sh, (canvasThumb.width-dw)/2, (canvasThumb.height-dh)/2, dw, dh);
+
+    // Наложим маленький watermark preview (полупрозрачно)
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = 'rgba(20,20,20,0.15)';
+    ctx.textAlign = 'center';
+    ctx.fillText('вызовдтп.рф', canvasThumb.width/2, canvasThumb.height - 14);
+  };
+  img.src = url;
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.innerHTML = `<p>${escapeHtml(name)}</p><div class="small">Оригинал: ${humanSize(originalSize)} · Сохранено как PNG</div>`;
+
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+
+  // Ссылка для скачивания конкретного изображения
+  const a = document.createElement('a');
+  a.className = 'download';
+  a.href = url;
+  a.download = ensureSuffixPNG(name);
+  a.textContent = 'Скачать';
+  actions.appendChild(a);
+
+  // Просмотр в новой вкладке
+  const view = document.createElement('button');
+  view.className = 'btn secondary';
+  view.textContent = 'Открыть';
+  view.addEventListener('click', ()=> window.open(url, '_blank'));
+  actions.appendChild(view);
+
+  // Удалить этот элемент
+  const rem = document.createElement('button');
+  rem.className = 'btn secondary';
+  rem.textContent = 'Удалить';
+  rem.addEventListener('click', ()=>{
+    div.remove();
+    // удаляем из processed
+    const idx = processed.findIndex(p => p.name === ensureSuffixPNG(name));
+    if(idx !== -1) processed.splice(idx,1);
+    try{ URL.revokeObjectURL(url); }catch(e){}
+  });
+  actions.appendChild(rem);
+
+  meta.appendChild(actions);
+
+  div.appendChild(canvasThumb);
+  div.appendChild(meta);
+  grid.appendChild(div);
+}
+
+// Очень простая функция экранирования для названий файлов/иннерHTML
+function escapeHtml(text){
+  return text.replace(/[&<>"']/g, (m)=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+</script>
 </body>
 </html>
