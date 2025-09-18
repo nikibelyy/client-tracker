@@ -1,51 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Вызов аварийного комиссара в вашем городе. Быстро, официально, 24/7.">
-    <title>Вызов аварийного комиссара | вызовдтп.рф</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ВызовДТП.рф — Аварийный Комиссар</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    :root {
+      --bg1: #0a0f1d;
+      --bg2: #141b2e;
+      --accent1: #00e0ff;
+      --accent2: #a855f7;
+      --muted: rgba(255,255,255,0.7);
+    }
+    * { margin:0; padding:0; box-sizing:border-box }
+    body {
+      font-family: "Montserrat", sans-serif;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,224,255,0.07), transparent 5%),
+                  linear-gradient(120deg, var(--bg1), var(--bg2));
+      color:#fff;
+      overflow-x:hidden;
+    }
+    .container { max-width:1100px; margin:0 auto; padding:32px 20px; }
+    header { display:flex; justify-content:space-between; align-items:center; }
+    .brand h1 { font-size:24px; font-weight:800; background:linear-gradient(90deg,var(--accent1),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    nav a { margin-left:20px; text-decoration:none; color:var(--muted); font-weight:600; transition:.3s; }
+    nav a:hover { color:#fff; }
+    .hero { text-align:center; padding:80px 20px; }
+    .hero h2 { font-size:36px; margin-bottom:16px; font-weight:800; }
+    .hero p { max-width:700px; margin:0 auto 32px; color:var(--muted); }
+    .btn-call { display:inline-block; background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#fff; font-weight:700; padding:16px 28px; border-radius:50px; text-decoration:none; font-size:18px; box-shadow:0 0 15px rgba(0,224,255,0.6); transition:.3s; }
+    .btn-call:hover { transform:scale(1.05); box-shadow:0 0 25px rgba(168,85,247,0.8); }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; margin-top:60px; }
+    .card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; backdrop-filter:blur(6px); transition:.3s; }
+    .card:hover { transform:translateY(-8px); box-shadow:0 10px 30px rgba(0,224,255,0.25); }
+    .card h3 { font-size:20px; margin-bottom:12px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .card p { color:var(--muted); }
+    footer { text-align:center; color:var(--muted); margin-top:60px; padding:20px; font-size:14px; }
+    #map { height:500px; border-radius:16px; margin-top:20px; }
+  </style>
 </head>
 <body>
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Вызов аварийного комиссара</h1>
-            <p>Работаю быстро, официально, 24/7</p>
-            <a href="tel:+79990000000" class="call-btn">📞 Вызвать сейчас</a>
-        </div>
+  <div class="container">
+    <header>
+      <div class="brand"><h1>ВызовДТП.рф</h1></div>
+      <nav>
+        <a href="#about">О нас</a>
+        <a href="#services">Услуги</a>
+        <a href="#map-section">Зона выезда</a>
+      </nav>
     </header>
 
-    <section class="about">
-        <h2>Обо мне</h2>
-        <p>Меня зовут Никита. Я аварийный комиссар с опытом работы более 5 лет. Помогаю оформить ДТП официально и без лишней волокиты.</p>
+    <section class="hero">
+      <h2>Аварийный комиссар в Воронеже</h2>
+      <p>Оперативный выезд на место ДТП. Оформление документов, помощь с эвакуацией и страховой. Работаем по Воронежу и области.</p>
+      <a href="tel:+79957192523" class="btn-call">📞 Вызвать экипаж</a>
     </section>
 
-    <section class="steps">
-        <h2>Как я работаю</h2>
-        <div class="step">
-            <h3>1. Звонок</h3>
-            <p>Вы вызываете меня по телефону.</p>
-        </div>
-        <div class="step">
-            <h3>2. Приезд</h3>
-            <p>Я приезжаю на место ДТП и оформляю документы.</p>
-        </div>
-        <div class="step">
-            <h3>3. Решение</h3>
-            <p>Вы получаете всё для страховой компании.</p>
-        </div>
+    <section id="services" class="cards">
+      <div class="card"><h3>🚗 Быстрый выезд</h3><p>Приезжаем максимально быстро в Воронеже и Воронежской области.</p></div>
+      <div class="card"><h3>📝 Оформление ДТП</h3><p>Оформляем по европротоколу, фиксируем всё правильно и профессионально.</p></div>
+      <div class="card"><h3>🛠 Эвакуация и ремонт</h3><p>Организуем эвакуатор, помогаем с ремонтом и страховой компанией.</p></div>
     </section>
 
-    <section class="contacts">
-        <h2>Контакты</h2>
-        <a href="tel:+79990000000" class="contact-btn">📞 Позвонить</a>
-        <a href="https://t.me/username" class="contact-btn">💬 Telegram</a>
-        <a href="https://wa.me/79990000000" class="contact-btn">💬 WhatsApp</a>
+    <section id="about" style="margin-top:60px; text-align:center;">
+      <h2>О нас</h2>
+      <p style="margin-top:16px; color:var(--muted); max-width:800px; margin-inline:auto;">
+        Мы — команда профессиональных аварийных комиссаров. Работаем круглосуточно в Воронеже и по всей Воронежской области. 
+        Приезжаем быстро, помогаем качественно и избавляем от лишних хлопот.
+      </p>
+    </section>
+
+    <!-- Карта с зоной выезда -->
+    <section id="map-section" style="margin-top:60px; text-align:center;">
+      <h2>Зона выезда</h2>
+      <div id="map"></div>
+      <p style="color:var(--muted); margin-top:8px;">Выезжаем по всему Воронежу и его районам</p>
+    </section>
+
+    <section id="contacts" style="margin-top:60px; text-align:center;">
+      <a href="tel:+79957192523" class="btn-call" style="margin-top:20px; display:inline-block;">Позвонить сейчас</a>
     </section>
 
     <footer>
-        <p>© 2025 вызовдтп.рф | Никита, аварийный комиссар</p>
+      © <span id="year"></span> ВызовДТП.рф — Аварийный комиссар, Воронеж
     </footer>
+  </div>
+
+  <!-- Плавающая кнопка WhatsApp -->
+  <a href="https://wa.me/79957192523" target="_blank" 
+     style="position:fixed; bottom:90px; right:20px; background:#25D366; color:white; padding:16px; border-radius:50%; box-shadow:0 0 15px rgba(0,0,0,0.3); text-decoration:none; font-size:22px; z-index:10;">
+     💬
+  </a>
+
+  <!-- Плавающая кнопка звонка -->
+  <a href="tel:+79957192523" style="position:fixed; bottom:20px; right:20px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:white; padding:16px; border-radius:50%; box-shadow:0 0 15px rgba(0,224,255,0.7); text-decoration:none; font-size:22px; z-index:10;">
+    📞
+  </a>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Инициализация карты
+    var map = L.map('map').setView([51.675, 39.208], 12); // центр Воронежа
+
+    // Добавляем слой карты
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Координаты полигона Воронежа (пример, приближенно)
+    var voronezhPolygon = [
+      [51.735, 39.070],
+      [51.735, 39.340],
+      [51.625, 39.420],
+      [51.555, 39.260],
+      [51.555, 39.070],
+      [51.635, 39.010],
+      [51.735, 39.070]
+    ];
+
+    // Рисуем полигон
+    L.polygon(voronezhPolygon, {
+      color: '#00e0ff',
+      fillColor: '#00e0ff',
+      fillOpacity: 0.2
+    }).addTo(map).bindPopup("Зона выезда: весь Воронеж");
+
+  </script>
 </body>
 </html>
