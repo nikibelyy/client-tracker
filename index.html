@@ -1,344 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Никита — автоэксперт в Воронеже | Диагностика · Оценка · Консультации</title>
-  <meta name="description" content="Никита — профессиональный автоэксперт в Воронеже. Диагностика, независимая оценка, помощь при покупке и страховых случаях. Быстро, честно, с отчётом. Звоните!">
-  <meta name="theme-color" content="#0b3d91">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Никита — автоэксперт в Воронеже" />
-  <meta property="og:description" content="Диагностика, независимая оценка, помощь при покупке и страховых случаях." />
-  <meta property="og:type" content="website" />
-
-  <!-- Basic styles (вставлен для простоты) -->
-  <style>
-    :root{
-      --accent:#0b3d91;
-      --accent-2:#1466d6;
-      --bg:#f7f9fc;
-      --card:#ffffff;
-      --text:#0f1723;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.45;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    header{
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:#fff;
-      padding:28px 18px;
-      position:sticky;
-      top:0;
-      z-index:40;
-      box-shadow:0 4px 18px rgba(11,61,145,0.12);
-    }
-    .container{max-width:1100px;margin:0 auto;padding:0 18px;}
-    .top{
-      display:flex;
-      gap:16px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{
-      width:48px;height:48px;border-radius:8px;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;
-      font-size:20px;
-    }
-    nav a{color:rgba(255,255,255,0.95);text-decoration:none;margin-left:14px;font-weight:600}
-    .hero{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:18px;
-      align-items:center;
-      padding:28px 0 36px;
-    }
-    .hero-main{
-      background:transparent;padding:18px 0;
-    }
-    h1{margin:6px 0 8px;font-size:28px}
-    p.lead{margin:0 0 14px;color:rgba(255,255,255,0.95);max-width:640px}
-    .cta{
-      display:flex;gap:10px;flex-wrap:wrap;
-    }
-    .btn{
-      background:#fff;color:var(--accent);padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700;box-shadow:0 6px 20px rgba(11,61,145,0.12)
-    }
-    .btn-ghost{background:transparent;border:2px solid rgba(255,255,255,0.22);color:#fff}
-    main{margin:22px 0 80px}
-    section.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:12px}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(20,33,62,0.06)}
-    .service-title{font-weight:700;margin:8px 0}
-    .price{font-weight:800;color:var(--accent-2);font-size:18px}
-    .two-col{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start}
-    @media (max-width:880px){.two-col{grid-template-columns:1fr}}
-    .contact-card{position:relative;padding:20px;border-radius:12px;background:linear-gradient(180deg,#fff,#f3f7ff);box-shadow:0 10px 30px rgba(11,61,145,0.06)}
-    label{display:block;margin:10px 0 6px;font-weight:600}
-    input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #d6dbe8;background:#fff;font-size:15px}
-    textarea{min-height:110px;resize:vertical}
-    .small{font-size:13px;color:#475569}
-    footer{padding:18px 0;text-align:center;color:#475569}
-    .grid-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(11,61,145,0.08);color:var(--accent);font-weight:700}
-    .test-slider{display:flex;gap:12px;overflow:auto;padding:6px 0}
-    .test{min-width:260px;background:linear-gradient(180deg,#fff,#fcfcff);padding:12px;border-radius:10px}
-    .muted{color:#6b7280}
-    /* small helper */
-    .mt{margin-top:12px}
-    nav.mobile{display:none}
-    @media (max-width:720px){
-      header{padding:14px}
-      nav{display:none}
-      nav.mobile{display:block;margin-top:10px}
-    }
-  </style>
-
-  <!-- Structured data (LocalBusiness) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "AutomotiveBusiness",
-    "name": "Никита — Автоэксперт",
-    "description": "Независимая диагностика, оценка и консультации по автомобилям в Воронеже. Помощь при покупке, ДТП и со страховыми.",
-    "telephone": "YOUR_PHONE",
-    "email": "YOUR_EMAIL",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Воронеж",
-      "addressCountry": "RU"
-    },
-    "areaServed": "Воронеж",
-    "url": "YOUR_WEBSITE_URL_IF_ANY"
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Вызов аварийного комиссара в вашем городе. Быстро, официально, 24/7.">
+    <title>Вызов аварийного комиссара | вызовдтп.рф</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="container top">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">Н</div>
-        <div>
-          <div style="font-weight:800">Никита</div>
-          <div style="font-size:13px;opacity:.9">Автоэксперт — Воронеж</div>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Вызов аварийного комиссара</h1>
+            <p>Работаю быстро, официально, 24/7</p>
+            <a href="tel:+79990000000" class="call-btn">📞 Вызвать сейчас</a>
         </div>
-      </div>
+    </header>
 
-      <nav aria-label="Главная навигация">
-        <a href="#services">Услуги</a>
-        <a href="#about">Обо мне</a>
-        <a href="#reviews">Отзывы</a>
-        <a href="#contact" class="btn-ghost">Связаться</a>
-      </nav>
-
-      <div class="mobile">
-        <a href="#contact" class="btn">Позвонить</a>
-      </div>
-    </div>
-
-    <div class="container hero">
-      <div class="hero-main">
-        <h1>Независимая проверка авто и оценка — Никита, Воронеж</h1>
-        <p class="lead">Экспресс-диагностика, полная пред-покупочная проверка и независимая оценка авто. Честно, без "скрытых дефектов", с фотоотчётом и письменным заключением.</p>
-
-        <div class="cta">
-          <a class="btn" href="tel:YOUR_PHONE">Позвонить: YOUR_PHONE</a>
-          <a class="btn btn-ghost" href="#contact">Оставить заявку</a>
-        </div>
-      </div>
-      <!-- дополнительные элементы заголовка можно вставить сюда -->
-    </div>
-  </header>
-
-  <main class="container">
-    <!-- Услуги -->
-    <section id="services" aria-labelledby="services-title">
-      <h2 id="services-title">Услуги</h2>
-      <div class="cards mt">
-        <div class="card">
-          <div class="badge">Проверка при покупке</div>
-          <div class="service-title">Полная пред-покупочная диагностика</div>
-          <div class="small">Проверка двигателя, коробки, электроники, кузова, пробега, юридическая история.</div>
-          <div class="mt price">от 2 000 ₽</div>
-        </div>
-
-        <div class="card">
-          <div class="badge">ДТП / Страхование</div>
-          <div class="service-title">Независимая оценка и отчёт</div>
-          <div class="small">Оценка ущерба, консультация для страховых споров, подготовка отчёта для суда.</div>
-          <div class="mt price">от 3 000 ₽</div>
-        </div>
-
-        <div class="card">
-          <div class="badge">Диагностика</div>
-          <div class="service-title">Диагностика на выезде / в гараже</div>
-          <div class="small">Осмотр на месте с диагностикой узлов, дорожные тесты и фотофиксация.</div>
-          <div class="mt price">от 1 500 ₽</div>
-        </div>
-
-        <div class="card">
-          <div class="badge">Консультации</div>
-          <div class="service-title">Консультация по покупке и ремонту</div>
-          <div class="small">Как выбрать, на что смотреть, какие работы обязательны — экономия при покупке и ремонте.</div>
-          <div class="mt price">от 800 ₽</div>
-        </div>
-      </div>
+    <section class="about">
+        <h2>Обо мне</h2>
+        <p>Меня зовут Никита. Я аварийный комиссар с опытом работы более 5 лет. Помогаю оформить ДТП официально и без лишней волокиты.</p>
     </section>
 
-    <!-- Две колонки: описание + контакт -->
-    <section id="about" class="mt" aria-labelledby="about-title">
-      <h2 id="about-title">Обо мне</h2>
-      <div class="two-col mt">
-        <div>
-          <div class="card">
-            <p><strong>Никита — автоэксперт из Воронежа.</strong> Помогаю людям покупать исправные машины, защищаю интересы при ДТП и спорах со страховщиками. Работаю аккуратно, с фотоотчётом и понятной письменной формой заключения.</p>
-
-            <ul class="mt small">
-              <li>Более N лет практики (вставь реальное число)</li>
-              <li>Осмотр + тест-драйв + проверка истории</li>
-              <li>Отчёт с фотографиями и рекомендациями</li>
-              <li>Возможен выезд по Воронежу</li>
-            </ul>
-
-            <div class="mt">
-              <strong>Почему со мной удобно:</strong>
-              <div class="grid-rows mt">
-                <div class="card small">Быстрый выезд</div>
-                <div class="card small">Трехуровневая проверка: внешний вид • техчасть • электроника</div>
-                <div class="card small">Письменный отчёт</div>
-                <div class="card small">Помощь при переговорах с продавцом/СТО</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt card">
-            <h3 style="margin:6px 0">Часто задаваемые вопросы</h3>
-            <div class="small mt"><strong>Выезд платный?</strong> — Возможен бесплатный выезд по договорённости в пределах города; уточняю при звонке.</div>
-            <div class="small mt"><strong>Сколько длится осмотр?</strong> — Обычно 40–90 минут в зависимости от объёма проверки.</div>
-            <div class="small mt"><strong>Можно получить отчёт?</strong> — Да, предоставляю фотоотчёт и письменное заключение по электронной почте или в мессенджер.</div>
-          </div>
+    <section class="steps">
+        <h2>Как я работаю</h2>
+        <div class="step">
+            <h3>1. Звонок</h3>
+            <p>Вы вызываете меня по телефону.</p>
         </div>
-
-        <!-- Контакт / форма -->
-        <aside class="contact-card" id="contact" aria-labelledby="contact-title">
-          <h3 id="contact-title">Связаться со мной</h3>
-          <p class="small">Быстрое сообщение — и я свяжусь с вами для согласования времени.</p>
-
-          <!-- Форма: использует mailto в качестве простого способа отправки; для продвинутой отправки подключи Formspree / Zapier -->
-          <form id="contactForm" onsubmit="return submitForm(event)">
-            <label for="name">Имя</label>
-            <input id="name" name="name" type="text" placeholder="Ваше имя" required>
-
-            <label for="phone">Телефон</label>
-            <input id="phone" name="phone" type="tel" placeholder="+7 9.." required>
-
-            <label for="service">Услуга (коротко)</label>
-            <select id="service" name="service">
-              <option>Пред-покупочная проверка</option>
-              <option>Оценка после ДТП</option>
-              <option>Диагностика на выезде</option>
-              <option>Консультация</option>
-            </select>
-
-            <label for="msg">Коротко о задаче</label>
-            <textarea id="msg" name="msg" placeholder="Где машина, модель, желаемое время..." ></textarea>
-
-            <div style="margin-top:10px;display:flex;gap:8px;">
-              <button type="submit" class="btn">Отправить заявку</button>
-              <a class="btn btn-ghost" href="tel:YOUR_PHONE">Позвонить</a>
-            </div>
-
-            <div class="small mt muted">Или напиши в WhatsApp / Telegram: <strong>YOUR_PHONE</strong></div>
-          </form>
-
-          <script>
-            function submitForm(e){
-              e.preventDefault();
-              const n = document.getElementById('name').value.trim();
-              const p = document.getElementById('phone').value.trim();
-              const s = document.getElementById('service').value;
-              const m = document.getElementById('msg').value.trim();
-              if(!n||!p){
-                alert('Пожалуйста, укажите имя и телефон.');
-                return false;
-              }
-              // Простая отправка через mailto (браузер откроет почтовый клиент)
-              const subject = encodeURIComponent('Заявка с сайта — ' + s);
-              const body = encodeURIComponent('Имя: ' + n + '\\nТелефон: ' + p + '\\nУслуга: ' + s + '\\nКомментарий: ' + m);
-              window.location.href = 'mailto:YOUR_EMAIL?subject=' + subject + '&body=' + body;
-              return false;
-            }
-          </script>
-        </aside>
-      </div>
+        <div class="step">
+            <h3>2. Приезд</h3>
+            <p>Я приезжаю на место ДТП и оформляю документы.</p>
+        </div>
+        <div class="step">
+            <h3>3. Решение</h3>
+            <p>Вы получаете всё для страховой компании.</p>
+        </div>
     </section>
 
-    <!-- Отзывы -->
-    <section id="reviews" class="mt" aria-labelledby="reviews-title">
-      <h2 id="reviews-title">Отзывы</h2>
-      <div class="test-slider mt" aria-live="polite">
-        <div class="test card">
-          <div style="font-weight:800">Александр</div>
-          <div class="small muted">Проверил машину перед покупкой, Никита нашёл скрытую ржавчину. Сэкономил мне 80 000 ₽.</div>
-        </div>
-        <div class="test card">
-          <div style="font-weight:800">Мария</div>
-          <div class="small muted">Отчёт и фото — всё подробно. Помог решить выплату по страховке.</div>
-        </div>
-        <div class="test card">
-          <div style="font-weight:800">Игорь</div>
-          <div class="small muted">Выезд вечером, всё быстро. Рекомендую.</div>
-        </div>
-      </div>
+    <section class="contacts">
+        <h2>Контакты</h2>
+        <a href="tel:+79990000000" class="contact-btn">📞 Позвонить</a>
+        <a href="https://t.me/username" class="contact-btn">💬 Telegram</a>
+        <a href="https://wa.me/79990000000" class="contact-btn">💬 WhatsApp</a>
     </section>
 
-    <!-- Пример карты (замени src на реальный iframe Google Maps если хочешь) -->
-    <section class="mt" aria-label="Карта и зона работы">
-      <h2>Где я работаю</h2>
-      <div class="card mt">
-        <p class="small">Выезд по Воронежу и ближайшим пригородам. Точный адрес и зону работы уточняйте по телефону.</p>
-        <!-- Поставь сюда iframe от Google Maps, например:
-             <iframe src="https://www.google.com/maps/embed?pb=...Voronezh..." width="100%" height="300" style="border:0;border-radius:8px"></iframe>
-        -->
-        <div style="padding:12px;background:#fff;border-radius:8px;margin-top:8px" class="small muted">Замените блок картой Google Maps при желании.</div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-        <div>
-          <strong>Никита — автоэксперт</strong> · Воронеж
-          <div class="muted small">Телефон: <a href="tel:YOUR_PHONE">YOUR_PHONE</a> · Почта: <a href="mailto:YOUR_EMAIL">YOUR_EMAIL</a></div>
-        </div>
-        <div class="muted small">© <span id="year"></span> Все права защищены</div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Подставляем текущий год
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Плавная прокрутка для якорей
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        const id = a.getAttribute('href');
-        if(id.length>1){
-          e.preventDefault();
-          const el = document.querySelector(id);
-          if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-        }
-      });
-    });
-  </script>
+    <footer>
+        <p>© 2025 вызовдтп.рф | Никита, аварийный комиссар</p>
+    </footer>
 </body>
 </html>
