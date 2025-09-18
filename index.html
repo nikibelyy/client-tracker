@@ -3,235 +3,206 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>экспертворонеж.рф — Независимая экспертиза Воронеж</title>
-  <meta name="description" content="экспертворонеж.рф — Никита, независимая экспертиза в Воронеже. Помощь по страховым выплатам, оформление ДТП, консультации. Звоните +7 (995) 719-25-23">
+  <title>экспертворонеж.рф — Независимая экспертиза</title>
+  <meta name="description" content="экспертворонеж.рф — Независимая экспертиза в Воронеже. Помощь Никиты при ДТП и страховых выплатах. Телефон: +7 (995) 719-25-23" />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --accent: #0080ff;
-      --accent-hover: #0066cc;
-      --text-dark: #0d1b2a;
-      --text-muted: #556575;
-      --bg-light: #ffffff;
-      --bg-section: #f6f8fa;
+      --accent: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      --text-dark: #1c1e21;
+      --text-light: #555;
+      --bg: #ffffff;
       --radius: 14px;
-      --shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
       color: var(--text-dark);
-      background: var(--bg-light);
-      line-height: 1.5;
+      line-height:1.6;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 8%;
-      background: var(--bg-light);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 10%;
+      background:#fff;
+      border-bottom:1px solid #eee;
+      position:sticky;
+      top:0;
+      z-index:100;
     }
 
     header h1 {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--accent);
+      font-size:20px;
+      font-weight:800;
+      background:var(--accent);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
 
-    header a.call-btn {
-      background: var(--accent);
-      color: white;
-      text-decoration: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      box-shadow: var(--shadow);
-      transition: background 0.2s ease;
+    header a {
+      text-decoration:none;
+      font-weight:600;
+      color:#fff;
+      background:var(--accent);
+      padding:10px 18px;
+      border-radius:var(--radius);
+      transition:.2s;
     }
+    header a:hover { opacity:.9; }
 
-    header a.call-btn:hover { background: var(--accent-hover); }
-
-    /* Hero */
     .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 60px 8%;
-      flex-wrap: wrap;
-      background: var(--bg-section);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:60px 10%;
+      flex-wrap:wrap;
+      gap:40px;
     }
-
     .hero-text {
-      max-width: 550px;
-      flex: 1;
-      margin-bottom: 20px;
+      flex:1 1 400px;
     }
-
     .hero-text h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 16px;
-      line-height: 1.2;
+      font-size:36px;
+      font-weight:800;
+      margin-bottom:20px;
     }
-
     .hero-text p {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 20px;
+      font-size:18px;
+      color:var(--text-light);
+      margin-bottom:28px;
+    }
+    .hero-text .btn {
+      display:inline-block;
+      padding:14px 24px;
+      font-size:16px;
+      font-weight:700;
+      border-radius:var(--radius);
+      text-decoration:none;
+      background:var(--accent);
+      color:#fff;
+      box-shadow:0 4px 15px rgba(0,0,0,0.15);
+      transition:.25s;
+    }
+    .hero-text .btn:hover { transform:translateY(-3px); }
+
+    .hero img {
+      flex:1 1 320px;
+      max-width:480px;
+      width:100%;
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,0.1);
     }
 
-    .hero-text .cta {
-      display: flex;
-      gap: 12px;
+    section {
+      padding:60px 10%;
     }
 
-    .hero-text .cta a {
-      display: inline-block;
-      padding: 14px 20px;
-      border-radius: var(--radius);
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: var(--shadow);
-    }
-
-    .btn-primary:hover { background: var(--accent-hover); }
-
-    .btn-secondary {
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      background: transparent;
-    }
-
-    .btn-secondary:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* Services */
     .services {
-      padding: 60px 8%;
-      background: var(--bg-light);
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+      gap:24px;
+      margin-top:30px;
     }
-
-    .services h3 {
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 40px;
-      font-weight: 800;
+    .service {
+      padding:24px;
+      border-radius:var(--radius);
+      background:#f9fafc;
+      border:1px solid #eee;
+      transition:.25s;
     }
+    .service:hover { transform:translateY(-4px); box-shadow:0 6px 18px rgba(0,0,0,0.08); }
+    .service h3 { margin-bottom:12px; font-size:18px; }
+    .service p { color:var(--text-light); font-size:15px; }
 
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+    .contact {
+      text-align:center;
+      background:#f1f7fb;
+      border-radius:var(--radius);
+      padding:40px 20px;
     }
-
-    .service-card {
-      background: var(--bg-section);
-      padding: 20px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .contact h3 { font-size:24px; margin-bottom:20px; }
+    .contact a {
+      display:inline-block;
+      font-size:20px;
+      font-weight:700;
+      color:#fff;
+      background:var(--accent);
+      padding:16px 26px;
+      border-radius:var(--radius);
+      text-decoration:none;
+      transition:.2s;
     }
+    .contact a:hover { opacity:.9; }
 
-    .service-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.12);
-    }
-
-    .service-card h4 {
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-    }
-
-    .service-card p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    /* Footer */
     footer {
-      background: var(--bg-section);
-      padding: 20px 8%;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-top: 40px;
+      padding:20px 10%;
+      background:#111;
+      color:#aaa;
+      font-size:14px;
+      text-align:center;
     }
 
-    /* Mobile */
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 40px 5%;
-      }
-      .hero-text h2 {
-        font-size: 1.8rem;
-      }
-      .hero-text .cta {
-        flex-direction: column;
-      }
+    /* Мобильная адаптация */
+    @media (max-width:768px){
+      .hero { flex-direction:column; padding:40px 6%; }
+      .hero-text h2 { font-size:28px; }
+      section { padding:40px 6%; }
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>экспертворонеж.рф</h1>
-    <a class="call-btn" href="tel:+79957192523">Позвонить</a>
+    <a href="tel:+79957192523">Позвонить</a>
   </header>
 
   <section class="hero">
     <div class="hero-text">
-      <h2>Независимая экспертиза и помощь при ДТП в Воронеже</h2>
-      <p>Меня зовут <strong>Никита</strong>. Я помогаю с выплатами по страховым случаям, оформлением ДТП и быстро решаю вопросы на дороге. Дам консультацию и выеду на место при необходимости.</p>
-      <div class="cta">
-        <a class="btn-primary" href="tel:+79957192523">Позвонить сейчас</a>
-        <a class="btn-secondary" href="#services">Посмотреть услуги</a>
+      <h2>Независимая экспертиза в Воронеже</h2>
+      <p>Меня зовут <strong>Никита</strong>. Я помогаю по выплатам в страховой, провожу независимую экспертизу и решаю вопросы на дороге.</p>
+      <a href="tel:+79957192523" class="btn">Позвонить Никите</a>
+    </div>
+    <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3d46?auto=format&fit=crop&w=1000&q=80" alt="Автоэкспертиза">
+  </section>
+
+  <section>
+    <h2>Мои услуги</h2>
+    <div class="services">
+      <div class="service">
+        <h3>Оценка ущерба</h3>
+        <p>Независимая оценка стоимости ремонта и составление отчёта для страховой компании.</p>
+      </div>
+      <div class="service">
+        <h3>Помощь со страховой</h3>
+        <p>Подготовка документов и сопровождение, чтобы вы получили выплату максимально быстро.</p>
+      </div>
+      <div class="service">
+        <h3>Оформление ДТП</h3>
+        <p>Выезд на место, фотофиксация, протоколы и правильное оформление происшествия.</p>
+      </div>
+      <div class="service">
+        <h3>Консультации</h3>
+        <p>Советы по правам, порядок действий, помощь с претензиями и юридическое сопровождение.</p>
       </div>
     </div>
   </section>
 
-  <section class="services" id="services">
-    <h3>Мои услуги</h3>
-    <div class="service-grid">
-      <div class="service-card">
-        <h4>Оценка ущерба</h4>
-        <p>Подробный отчёт о повреждениях для страховой компании. Быстро и официально.</p>
-      </div>
-      <div class="service-card">
-        <h4>Помощь со страховой</h4>
-        <p>Соберу документы, подскажу, как ускорить выплату и отстоять ваши права.</p>
-      </div>
-      <div class="service-card">
-        <h4>Выезд на ДТП</h4>
-        <p>Оформлю протокол, проведу фотофиксацию и помогу избежать ошибок на месте.</p>
-      </div>
-      <div class="service-card">
-        <h4>Консультация</h4>
-        <p>Подскажу, как действовать в сложных ситуациях. Доступно онлайн или по телефону.</p>
-      </div>
-    </div>
+  <section class="contact">
+    <h3>Свяжитесь со мной прямо сейчас</h3>
+    <a href="tel:+79957192523">+7 (995) 719-25-23</a>
   </section>
 
   <footer>
-    © 2025 экспертворонеж.рф — Никита | Тел: <a href="tel:+79957192523" style="color:inherit;text-decoration:none;">+7 (995) 719-25-23</a>
+    © экспертворонеж.рф · Никита · Независимая экспертиза, помощь при ДТП
   </footer>
+
 </body>
 </html>
