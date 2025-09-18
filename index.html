@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ВызовДТП.рф — Аварийный Комиссар</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     :root {
       --bg1: #0a0f1d;
@@ -38,7 +37,25 @@
     .card h3 { font-size:20px; margin-bottom:12px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     .card p { color:var(--muted); }
     footer { text-align:center; color:var(--muted); margin-top:60px; padding:20px; font-size:14px; }
-    #map { height:500px; border-radius:16px; margin-top:20px; }
+    #map { width:100%; height:500px; border-radius:16px; margin-top:20px; }
+    /* Плавающие кнопки */
+    .floating-btn {
+      position:fixed;
+      right:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      z-index:999;
+      transition:transform .3s;
+    }
+    .floating-btn:hover { transform:scale(1.1); }
+    .floating-btn svg { width:28px; height:28px; }
+    .btn-phone { bottom:20px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); }
+    .btn-whatsapp { bottom:100px; background:#25D366; }
   </style>
 </head>
 <body>
@@ -72,10 +89,10 @@
       </p>
     </section>
 
-    <!-- Карта с зоной выезда -->
+    <!-- Карта Яндекс -->
     <section id="map-section" style="margin-top:60px; text-align:center;">
       <h2>Зона выезда</h2>
-      <div id="map"></div>
+      <iframe id="map" src="https://yandex.ru/map-widget/v1/?um=constructor%3A8f1a1f2b9b5e7a9f0b8f28f2c8b1b3e1c5e9e8f2a2b5c2f6&source=constructor" frameborder="0"></iframe>
       <p style="color:var(--muted); margin-top:8px;">Выезжаем по всему Воронежу и его районам</p>
     </section>
 
@@ -89,46 +106,17 @@
   </div>
 
   <!-- Плавающая кнопка WhatsApp -->
-  <a href="https://wa.me/79957192523" target="_blank" 
-     style="position:fixed; bottom:90px; right:20px; background:#25D366; color:white; padding:16px; border-radius:50%; box-shadow:0 0 15px rgba(0,0,0,0.3); text-decoration:none; font-size:22px; z-index:10;">
-     💬
+  <a href="https://wa.me/79957192523" target="_blank" class="floating-btn btn-whatsapp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M380.9 97.1C339-44.7 195.1-22.5 121.5 52.1c-74.2 74.3-95.1 218.6-23.7 311.5L3.6 509l149-94.3c92.7 70.5 234 51.3 308.3-22.9 74.3-74.2 72.9-194.3-79.8-294.7z"/></svg>
   </a>
 
-  <!-- Плавающая кнопка звонка -->
-  <a href="tel:+79957192523" style="position:fixed; bottom:20px; right:20px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:white; padding:16px; border-radius:50%; box-shadow:0 0 15px rgba(0,224,255,0.7); text-decoration:none; font-size:22px; z-index:10;">
-    📞
+  <!-- Плавающая кнопка телефона -->
+  <a href="tel:+79957192523" class="floating-btn btn-phone">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M493.4 24.6l-104-24c-11.7-2.7-23.7 3.2-29 13.8L304 108c-5.5 10.6-3 23.4 5.7 31.8l60.6 60.6c-36.1 72.9-95.8 132.6-168.7 168.7l-60.6-60.6c-8.4-8.4-21.2-11.2-31.8-5.7L34 358.4c-10.6 5.3-16.5 17.3-13.8 29l24 104c2.7 11.8 13.5 20 25.5 20C260.2 512 512 260.2 512 64c0-12-8.2-22.8-20-25.4z"/></svg>
   </a>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Инициализация карты
-    var map = L.map('map').setView([51.675, 39.208], 12); // центр Воронежа
-
-    // Добавляем слой карты
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Координаты полигона Воронежа (пример, приближенно)
-    var voronezhPolygon = [
-      [51.735, 39.070],
-      [51.735, 39.340],
-      [51.625, 39.420],
-      [51.555, 39.260],
-      [51.555, 39.070],
-      [51.635, 39.010],
-      [51.735, 39.070]
-    ];
-
-    // Рисуем полигон
-    L.polygon(voronezhPolygon, {
-      color: '#00e0ff',
-      fillColor: '#00e0ff',
-      fillOpacity: 0.2
-    }).addTo(map).bindPopup("Зона выезда: весь Воронеж");
-
   </script>
 </body>
 </html>
