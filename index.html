@@ -1,404 +1,332 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Водяной знак — вызовдтп.рф</title>
-<style>
-  /* Mobile-first, простая и понятная верстка */
-  :root{
-    --bg:#F4F6FB;
-    --card:#ffffff;
-    --accent:#0b74d1;
-    --muted:#6b7280;
-    --success:#059669;
-  }
-  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter, Roboto, Arial, sans-serif;color:#0b1220}
-  .app{max-width:980px;margin:0 auto;padding:12px;}
-  header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  h1{font-size:18px;margin:0}
-  .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(11,17,32,0.06)}
-  .u-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .picker{
-    flex:1 1 auto;
-    background:#fff;border-radius:10px;padding:12px;border:1px dashed #d7e5ff;text-align:center;cursor:pointer;
-    min-height:78px;display:flex;align-items:center;justify-content:center;
-  }
-  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .btn{padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-  .btn.primary{background:var(--accent);color:#fff}
-  .btn.ghost{background:transparent;border:1px solid #e6eefc;color:var(--accent)}
-  .small{font-size:13px;color:var(--muted)}
-  .sliders{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  input[type="range"]{width:140px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
-  .cardItem{background:#fbfdff;border-radius:8px;padding:8px;display:flex;flex-direction:column;align-items:stretch;gap:8px}
-  .thumb{width:100%;aspect-ratio:4/3;background:#eef6ff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .thumb img{width:100%;height:100%;object-fit:cover}
-  .meta{font-size:13px;color:#334155;display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .actions{display:flex;gap:6px;flex-wrap:wrap}
-  .progress{height:6px;background:#e6eefc;border-radius:6px;overflow:hidden;margin-top:6px}
-  .progress > i{display:block;height:100%;background:var(--accent);width:0%}
-  footer{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
-  /* small screens tweaks */
-  @media (max-width:520px){
-    header{gap:8px}
-    .sliders input[type="range"]{width:120px}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Независимая экспертиза Воронеж — Никита</title>
+  <meta name="description" content="Независимая экспертиза в Воронеже. Помощь по выплатам в страховой, урегулирование вопросов на дороге. Контакт: +7 (995) 719-25-23" />
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#00c2a8;
+      --accent-2:#3bb7ff;
+      --muted:#98a0b3;
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      --max-width:1100px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(59,183,255,0.06), transparent 10%),
+                  linear-gradient(180deg,#071026 0%, #071022 60%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    .wrap{
+      max-width:var(--max-width);
+      margin:24px auto;
+      padding:24px;
+    }
+
+    /* Header / hero */
+    header.hero{
+      background: linear-gradient(135deg, rgba(0,194,168,0.06), rgba(59,183,255,0.03));
+      border-radius:20px;
+      padding:28px;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+      min-height:260px;
+    }
+    .hero-left{flex:1; z-index:2}
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .logo{
+      width:68px;height:68px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:700;
+      color:#041017;font-size:22px;box-shadow: 0 6px 20px rgba(3,12,22,0.6);
+    }
+    h1{
+      margin:0 0 10px 0;
+      font-size:26px;
+      letter-spacing: -0.4px;
+    }
+    p.lead{
+      margin:0 0 16px 0;
+      color:var(--muted);
+      max-width:56ch;
+    }
+
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 16px;border-radius:12px;border:0;cursor:pointer;
+      font-weight:600;background:var(--accent);color:#042027;text-decoration:none;
+      box-shadow: 0 8px 18px rgba(0,194,168,0.12);transition:transform .18s ease,box-shadow .18s;
+    }
+    .btn.secondary{
+      background:transparent;color:var(--accent);border:1px solid rgba(0,194,168,0.12);
+      box-shadow:none;
+    }
+    .btn:active{transform:translateY(1px)}
+    .contact{
+      font-size:14px;color:var(--muted);margin-top:10px;
+    }
+
+    /* Right column card */
+    .hero-right{
+      width:320px;flex-shrink:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow: 0 18px 50px rgba(2,8,18,0.6);
+    }
+    .card-title{font-weight:700;margin:0 0 6px 0}
+    .card-sub{color:var(--muted);font-size:14px;margin-bottom:10px}
+    .stat{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px dashed rgba(255,255,255,0.03)}
+    .phone{
+      display:inline-flex;align-items:center;gap:10px;font-weight:700;color:var(--accent);
+    }
+
+    /* Services */
+    .services{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;
+    }
+    .service{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+      min-height:110px;transition:transform .25s ease,box-shadow .25s ease;
+    }
+    .service:hover{transform:translateY(-6px);box-shadow:0 14px 40px rgba(3,12,22,0.6)}
+    .service h3{margin:0 0 8px 0}
+    .service p{margin:0;color:var(--muted);font-size:14px}
+
+    /* About */
+    .about{
+      display:flex;gap:20px;align-items:center;margin-top:22px;
+    }
+    .avatar{
+      width:120px;height:120px;border-radius:14px;background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:#031018;font-size:32px;
+      flex-shrink:0;
+    }
+    .about p{margin:0;color:var(--muted)}
+    .badges{display:flex;gap:10px;margin-top:10px}
+    .badge{background:var(--glass);padding:8px 10px;border-radius:10px;font-weight:600;color:var(--muted);font-size:13px}
+
+    /* Footer */
+    footer{
+      margin-top:28px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);
+      display:flex;justify-content:space-between;align-items:center;gap:16px;
+      flex-wrap:wrap;border:1px solid rgba(255,255,255,0.02);
+    }
+    .footer-left{color:var(--muted);font-size:14px}
+
+    /* Floating animated shapes */
+    .float-shape{
+      position:absolute;width:220px;height:220px;border-radius:50%;
+      filter:blur(36px);opacity:0.12;z-index:1;transform-origin:center;
+    }
+    .s1{right:-40px;top:-40px;background:linear-gradient(180deg,var(--accent),transparent);animation:floaty 8s ease-in-out infinite}
+    .s2{left:-80px;bottom:-60px;background:linear-gradient(180deg,var(--accent-2),transparent);animation:floaty 11s ease-in-out infinite}
+    @keyframes floaty{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-18px) rotate(15deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    /* Small screens */
+    @media (max-width:880px){
+      .hero{flex-direction:column;align-items:flex-start;padding:18px}
+      .hero-right{width:100%}
+      .services{grid-template-columns:repeat(2,1fr)}
+      .about{flex-direction:column;align-items:flex-start}
+    }
+    @media (max-width:520px){
+      .services{grid-template-columns:1fr}
+      h1{font-size:22px}
+      .logo{width:56px;height:56px;font-size:20px}
+      .avatar{width:96px;height:96px;font-size:28px}
+      .wrap{padding:16px;margin:12px}
+    }
+
+    /* Simple fade/slide reveal */
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    
+    /* subtle pulse on phone */
+    .pulse{position:relative}
+    .pulse::after{
+      content:"";position:absolute;inset:0;border-radius:12px;box-shadow:0 0 0 0 rgba(0,194,168,0.12);animation:pulse 2.8s infinite;
+    }
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(0,194,168,0.12)}
+      70%{box-shadow:0 0 0 10px rgba(0,194,168,0.00)}
+      100%{box-shadow:0 0 0 0 rgba(0,194,168,0.00)}
+    }
+
+  </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="#0b74d1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3H7a2 2 0 0 0-2 2v2h14V5a2 2 0 0 0-2-2z" stroke="#0b74d1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <h1>Водяной знак — <span class="small">вызовдтп.рф</span></h1>
-    </header>
+  <div class="wrap">
+    <header class="hero" role="banner" aria-label="Независимая экспертиза Воронеж">
+      <div class="float-shape s1" aria-hidden="true"></div>
+      <div class="float-shape s2" aria-hidden="true"></div>
 
-    <section class="card" aria-live="polite">
-      <div class="u-row" style="margin-bottom:10px">
-        <label id="picker" class="picker" tabindex="0">
+      <div class="hero-left">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">NE</div>
           <div>
-            <div style="font-size:16px;font-weight:600">Нажми или выбери фото</div>
-            <div class="small">Поддерживается несколько фото • Можно сфотографировать (на телефоне)</div>
+            <div style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Независимая экспертиза</div>
+            <div style="font-weight:800;font-size:14px">Воронеж — помощь на дороге</div>
           </div>
-          <!-- скрытый input: accept + capture для мобильного -->
-          <input id="fileInput" type="file" accept="image/*" multiple capture="environment" style="display:none">
-        </label>
+        </div>
 
-        <div class="controls" style="margin-left:auto">
-          <div class="sliders">
-            <label class="small">Непрозрачность <span id="opacityVal">0.10</span>
-              <input id="opacity" type="range" min="0.02" max="0.30" step="0.01" value="0.10" />
-            </label>
-            <label class="small">Размер <span id="sizeVal">10%</span>
-              <input id="size" type="range" min="4" max="20" step="1" value="10" />
-            </label>
-          </div>
-          <button id="clearBtn" class="btn ghost">Очистить</button>
-          <button id="zipBtn" class="btn primary">Скачать всё (.zip)</button>
+        <h1 class="reveal">Никита — независимая автоэкспертиза и помощь по выплатам</h1>
+        <p class="lead reveal">Я помогаю добиться правильных выплат от страховой, оформляю экспертизы и решаю вопросы на дороге — быстро и без лишней бюрократии.</p>
+
+        <div class="cta-row reveal">
+          <a class="btn" href="tel:+79957192523" aria-label="Позвонить Никите">
+            📞 Позвонить — +7 (995) 719-25-23
+          </a>
+          <a class="btn secondary" href="#services" aria-label="Услуги и цены">Услуги и цены</a>
+        </div>
+
+        <div class="contact reveal" style="margin-top:12px">
+          Работаю по Воронежу и области. Выезд на место ДТП — консультация по страховым выплатам и оценке ущерба.
         </div>
       </div>
 
-      <div class="small" style="margin-bottom:8px">
-        Исполнение: повторяющийся полупрозрачный текст «вызовдтп.рф» по диагонали. Обработка выполняется локально в браузере; изображения не отправляются на сервер.
-      </div>
+      <aside class="hero-right reveal" aria-label="Краткая информация">
+        <div class="card-title">Контакт для связи</div>
+        <div class="card-sub">Свяжитесь со мной в один клик</div>
 
-      <div id="grid" class="grid" aria-live="polite"></div>
-      <footer>© Водяной знак — вызовдтп.рф · Работает локально</footer>
+        <div class="stat">
+          <div>
+            <div style="font-size:12px;color:var(--muted)">Специалист</div>
+            <div style="font-weight:700">Никита — независимая экспертиза</div>
+          </div>
+          <div style="text-align:right">
+            <div class="phone pulse">+7 (995) 719-25-23</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Работаю 7 дней в неделю</div>
+          </div>
+        </div>
+
+        <div class="stat" style="border-bottom:none">
+          <div>
+            <div style="font-size:12px;color:var(--muted)">Услуги</div>
+            <div style="font-weight:700">Оценка, экспертиза, подача в страховую</div>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <!-- Услуги -->
+    <section id="services" aria-labelledby="services-title">
+      <h2 id="services-title" style="margin-top:22px">Услуги</h2>
+      <div class="services">
+        <article class="service reveal">
+          <h3>Независимая оценка ущерба</h3>
+          <p>Полная экспертиза автомобиля после ДТП: фотофиксация, смета ремонта и разбор спорных вопросов со страховой.</p>
+        </article>
+        <article class="service reveal">
+          <h3>Помощь с выплатами</h3>
+          <p>Подготовлю документы для страховой, проконтролирую расчет выплат и помогу добиться справедливой компенсации.</p>
+        </article>
+        <article class="service reveal">
+          <h3>Выезд на место ДТП</h3>
+          <p>Экспертный выезд, оформление ДТП, консультация по следующим шагам — быстро и аккуратно.</p>
+        </article>
+      </div>
     </section>
+
+    <!-- О специалисте -->
+    <section class="about" aria-labelledby="about-title">
+      <div class="avatar reveal" aria-hidden="true">Н</div>
+      <div>
+        <h3 id="about-title" style="margin:0 0 10px 0">О специалисте — Никита</h3>
+        <p class="reveal">Я — Никита. Занимаюсь независимой экспертизой и помогаю клиентам получать честные выплаты от страховых. Решаю вопросы на дороге: от правильного оформления ДТП до обжалования решения страховщика.</p>
+        <div class="badges reveal" aria-hidden="true">
+          <div class="badge">Выезд по Воронежу</div>
+          <div class="badge">Опытные экспертизы</div>
+          <div class="badge">Поддержка при спорах</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Простые отзывы -->
+    <section style="margin-top:20px">
+      <h3>Что говорят клиенты</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
+        <div style="background:var(--card);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)" class="reveal">
+          <strong>Ольга</strong>
+          <p style="margin:8px 0 0 0;color:var(--muted)">Быстро приехал, помог с документами и объяснил всё понятным языком. Выплата была больше, чем ожидала.</p>
+        </div>
+        <div style="background:var(--card);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)" class="reveal">
+          <strong>Алексей</strong>
+          <p style="margin:8px 0 0 0;color:var(--muted)">Профессионально, без лишней волокиты. Рекомендую.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        © <span id="year"></span> Независимая экспертиза — Никита · Воронеж
+      </div>
+      <div>
+        <a class="btn" href="tel:+79957192523">📞 +7 (995) 719-25-23</a>
+      </div>
+    </footer>
   </div>
 
-  <!-- JSZip CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@4.1.0/dist/jszip.min.js"></script>
-
   <script>
-  /*** Параметры безопасности/производительности ***/
-  const MAX_DIMENSION = 2000;   // максимальная сторона (px) после ресайза — уменьшает потребление памяти
-  const MAX_RENDER_DPR = 2;     // максимум физического множителя для canvas (чтобы не выделять гигабайты)
-  const OUTPUT_FORMAT = 'image/jpeg'; // можно переключить на 'image/png' если нужно
-  const OUTPUT_QUALITY = 0.92;
+    // Вставляем текущий год
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  // UI элементы
-  const picker = document.getElementById('picker');
-  const fileInput = document.getElementById('fileInput');
-  const grid = document.getElementById('grid');
-  const clearBtn = document.getElementById('clearBtn');
-  const zipBtn = document.getElementById('zipBtn');
-  const opacity = document.getElementById('opacity');
-  const size = document.getElementById('size');
-  const opacityVal = document.getElementById('opacityVal');
-  const sizeVal = document.getElementById('sizeVal');
-
-  // Обработанные файлы (для zip / удаления)
-  const processed = []; // {name, blob, url}
-
-  // Простая очередь, чтобы избежать одновременной работы со слишком большим количеством больших картинок
-  let processingQueue = [];
-  let isProcessing = false;
-
-  // Обновляем подписи слайдеров
-  function updateLabels(){ opacityVal.textContent = parseFloat(opacity.value).toFixed(2); sizeVal.textContent = size.value + '%'; }
-  opacity.addEventListener('input', updateLabels);
-  size.addEventListener('input', updateLabels);
-  updateLabels();
-
-  // Открыть файловый диалог при клике на picker
-  picker.addEventListener('click', () => fileInput.click());
-  picker.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') fileInput.click(); });
-
-  // Drag & drop поддержка
-  ['dragenter','dragover'].forEach(ev => {
-    picker.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); picker.style.borderColor = '#9cc2ff'; });
-  });
-  ['dragleave','drop'].forEach(ev => {
-    picker.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); picker.style.borderColor = ''; });
-  });
-  picker.addEventListener('drop', e => {
-    const dt = e.dataTransfer;
-    if(dt && dt.files) handleFiles(dt.files);
-  });
-
-  fileInput.addEventListener('change', ()=> handleFiles(fileInput.files));
-  clearBtn.addEventListener('click', clearAll);
-  zipBtn.addEventListener('click', downloadZip);
-
-  function handleFiles(fileList){
-    const files = Array.from(fileList).filter(f => f.type && f.type.startsWith('image/'));
-    if(files.length === 0){
-      alert('Нет изображений. Выберите файлы формата JPG/PNG/WEBP и т.д.');
-      return;
-    }
-    // Добавляем в очередь
-    files.forEach(f => {
-      const card = createCard(f.name, f.size);
-      processingQueue.push({file: f, card});
-    });
-    // Запускаем обработку очереди
-    processQueue();
-  }
-
-  async function processQueue(){
-    if(isProcessing) return;
-    isProcessing = true;
-    while(processingQueue.length){
-      const job = processingQueue.shift();
-      await processOne(job.file, job.card);
-      // small pause to keep UI responsive
-      await new Promise(r => setTimeout(r, 50));
-    }
-    isProcessing = false;
-  }
-
-  // Создаёт карточку с прогрессом
-  function createCard(name, sizeBytes){
-    const div = document.createElement('div'); div.className = 'cardItem';
-    const thumb = document.createElement('div'); thumb.className = 'thumb';
-    const meta = document.createElement('div'); meta.className = 'meta';
-    meta.innerHTML = `<div style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</div><div class="small">${humanSize(sizeBytes)}</div>`;
-    const progress = document.createElement('div'); progress.className = 'progress'; const progBar = document.createElement('i'); progress.appendChild(progBar);
-    const actions = document.createElement('div'); actions.className = 'actions';
-    const info = document.createElement('div'); info.className = 'small'; info.textContent = 'Ожидание...';
-    div.appendChild(thumb); div.appendChild(meta); div.appendChild(info); div.appendChild(progress); div.appendChild(actions);
-    grid.prepend(div); // показываем сверху
-    return {container:div, thumb, meta, progressBar:progBar, actions, info};
-  }
-
-  // Обработка одного файла: загрузить, ресайз, наложить watermark, вывести результат
-  async function processOne(file, card){
-    try{
-      card.info.textContent = 'Загружаю...';
-      // Загружаем картинку эффективно: createImageBitmap (если поддерживается), иначе Image
-      const bitmap = await loadImageBitmap(file);
-      const originalW = bitmap.width, originalH = bitmap.height;
-      // Решаем размер итогового холста (без перегрузки памяти)
-      const scaleFactor = Math.min(1, MAX_DIMENSION / Math.max(originalW, originalH));
-      const targetW = Math.max(1, Math.round(originalW * scaleFactor));
-      const targetH = Math.max(1, Math.round(originalH * scaleFactor));
-      // Рендер-множитель (для чёткости на ретинах), но ограничиваем
-      const dpr = Math.min(window.devicePixelRatio || 1, MAX_RENDER_DPR);
-
-      card.info.textContent = `Обработка ${targetW}×${targetH}...`;
-
-      // Создаем canvas в физическом разрешении, но используем ctx.scale для рисования в css-пикселях
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(targetW * dpr);
-      canvas.height = Math.round(targetH * dpr);
-      const ctx = canvas.getContext('2d', {alpha: true});
-      // Установим масштаб, чтобы дальше оперировать в логических пикселях
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // Нарисуем изображение под размер (чтобы избежать растягивания)
-      ctx.drawImage(bitmap, 0, 0, originalW, originalH, 0, 0, targetW, targetH);
-
-      // Если мы получили ImageBitmap — можем закрыть его (релиз памяти) (если поддерживается)
-      if(typeof bitmap.close === 'function') try{ bitmap.close(); } catch(e){}
-
-      // Наложение водяного знака: повторяющийся текст по диагонали
-      const text = 'вызовдтп.рф';
-      const opacityVal = parseFloat(opacity.value);
-      const sizePercent = parseFloat(size.value) / 100.0;
-      const base = Math.min(targetW, targetH);
-      const fontPx = Math.max(12, Math.round(base * sizePercent)); // минимум 12px
-      ctx.save();
-      ctx.globalAlpha = opacityVal;
-      ctx.fillStyle = '#111';
-      ctx.font = `${fontPx}px -apple-system, Roboto, Arial, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-
-      // Повернем холст и рисуем текст-сетку — это даёт надёжный диагональный паттерн
-      const angle = -35 * Math.PI / 180;
-      ctx.translate(targetW/2, targetH/2);
-      ctx.rotate(angle);
-
-      // Размер шага между текстами зависит от длины текста и шрифта
-      const textWidthEstimate = ctx.measureText(text).width || fontPx * text.length * 0.5;
-      const stepX = Math.max(textWidthEstimate * 1.8, fontPx * 6);
-      const stepY = Math.max(fontPx * 4, Math.round(fontPx * 4.5));
-
-      // Покрываем область (в "поворотных" координатах) — диаметр достаточный для покрытия всей картинки
-      const diag = Math.sqrt(targetW*targetW + targetH*targetH);
-      const start = -diag;
-      for(let x = start; x < diag; x += stepX){
-        for(let y = start; y < diag; y += stepY){
-          ctx.fillText(text, x, y);
+    // Reveal on scroll (intersection observer)
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
         }
-      }
-
-      ctx.restore();
-
-      // Готовим blob — по умолчанию JPEG (меньше весит). Можно сменить на PNG если нужно
-      card.info.textContent = 'Сохранение…';
-      const blob = await new Promise(resolve => {
-        canvas.toBlob(resolve, OUTPUT_FORMAT, OUTPUT_QUALITY);
       });
+    }, {threshold:0.12});
 
-      // Создаём объектную ссылку (URL) и обновляем UI
-      const url = URL.createObjectURL(blob);
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-      // Превью (сжатое, чтобы не перегружать UI) — используем маленький canvas
-      const thumbImg = document.createElement('img');
-      thumbImg.src = url;
-      // очистим контейнер и вставим превью
-      card.thumb.innerHTML = '';
-      card.thumb.appendChild(thumbImg);
-
-      // Добавляем кнопки: Скачать, Открыть, Удалить
-      const dl = document.createElement('a');
-      dl.className = 'btn primary';
-      dl.href = url;
-      dl.download = ensurePNGName(file.name); // сохраняем как .jpg/.png — в имени заменяем расширение
-      dl.textContent = 'Скачать';
-
-      const view = document.createElement('button');
-      view.className = 'btn ghost';
-      view.textContent = 'Открыть';
-      view.addEventListener('click', ()=> window.open(url, '_blank'));
-
-      const del = document.createElement('button');
-      del.className = 'btn ghost';
-      del.textContent = 'Удалить';
-      del.addEventListener('click', ()=> {
-        // удаляем UI и очищаем ссылку / processed
-        try{ URL.revokeObjectURL(url); }catch(e){}
-        const idx = processed.findIndex(p => p.url === url);
-        if(idx !== -1) processed.splice(idx,1);
-        card.container.remove();
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        const t = document.querySelector(this.getAttribute('href'));
+        if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
       });
-
-      // очистим старые actions и добавим новые
-      card.actions.innerHTML = '';
-      card.actions.appendChild(dl); card.actions.appendChild(view); card.actions.appendChild(del);
-      card.progressBar.style.width = '100%';
-      card.info.textContent = 'Готово';
-      processed.push({name: dl.download, blob, url});
-    } catch(err){
-      console.error('Ошибка обработки', err);
-      card.info.textContent = 'Ошибка: ' + (err && err.message ? err.message : 'неизвестная');
-      card.progressBar.style.width = '0%';
-      alert('Ошибка при обработке изображения: ' + (err && err.message ? err.message : 'см. консоль'));
-    }
-  }
-
-  // Загружает ImageBitmap (быстрее и экономнее памяти) или Image как fallback
-  async function loadImageBitmap(file){
-    // try createImageBitmap (в современных браузерах это лучше)
-    if(window.createImageBitmap){
-      try{
-        // use options to request image orientation applied? (not standardized across browsers)
-        const bitmap = await createImageBitmap(file);
-        return bitmap;
-      }catch(e){
-        // fallback ниже
-        console.warn('createImageBitmap failed, fallback to Image', e);
-      }
-    }
-    // fallback: load via Image + objectURL
-    return await new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(file);
-      const img = new Image();
-      img.onload = () => {
-        // draw image into an offscreen canvas and convert to ImageBitmap if possible
-        try{
-          // createImageBitmap from image element if supported (some browsers allow)
-          if(window.createImageBitmap){
-            createImageBitmap(img).then(b => {
-              URL.revokeObjectURL(url);
-              resolve(b);
-            }).catch(_=> {
-              URL.revokeObjectURL(url);
-              resolve(img); // resolve HTMLImageElement
-            });
-          } else {
-            URL.revokeObjectURL(url);
-            resolve(img);
-          }
-        }catch(e){
-          URL.revokeObjectURL(url);
-          resolve(img);
-        }
-      };
-      img.onerror = (err) => {
-        URL.revokeObjectURL(url);
-        reject(new Error('Не удалось загрузить изображение'));
-      };
-      img.src = url;
     });
-  }
 
-  function ensurePNGName(name){
-    // Возвращаем имя с расширением .jpg (или .png при необходимости)
-    const ext = OUTPUT_FORMAT.includes('png') ? '.png' : '.jpg';
-    if(/\.[^/.]+$/.test(name)) return name.replace(/\.[^/.]+$/, ext);
-    return name + ext;
-  }
-
-  // Zip скачивание
-  async function downloadZip(){
-    if(processed.length === 0){
-      alert('Нет готовых изображений для скачивания.');
-      return;
+    // small phone tap effect on CTA (accessibility)
+    const phoneCTA = document.querySelector('.phone');
+    if(phoneCTA){
+      phoneCTA.addEventListener('click', ()=>{
+        // visual feedback already provided by :active and .pulse
+      });
     }
-    zipBtn.disabled = true; zipBtn.textContent = 'Готовлю .zip…';
-    try{
-      const zip = new JSZip();
-      for(const p of processed){
-        const buf = await p.blob.arrayBuffer();
-        zip.file(p.name, buf);
-      }
-      const content = await zip.generateAsync({type:'blob'});
-      const url = URL.createObjectURL(content);
-      const a = document.createElement('a'); a.href = url; a.download = 'watermarked_images.zip'; a.click();
-      setTimeout(()=> URL.revokeObjectURL(url), 10000);
-    }catch(e){
-      alert('Ошибка при создании zip: ' + (e && e.message ? e.message : 'см. консоль'));
-      console.error(e);
-    } finally {
-      zipBtn.disabled = false; zipBtn.textContent = 'Скачать всё (.zip)';
-    }
-  }
 
-  function clearAll(){
-    // удаляем все превью и освобождаем URLы
-    processed.forEach(p=> { try{ URL.revokeObjectURL(p.url)}catch(e){} });
-    processed.length = 0;
-    grid.innerHTML = '';
-    processingQueue.length = 0;
-    isProcessing = false;
-    fileInput.value = '';
-  }
-
-  function humanSize(bytes){
-    if(bytes < 1024) return bytes + ' B';
-    if(bytes < 1024*1024) return (bytes/1024).toFixed(1)+' KB';
-    return (bytes/(1024*1024)).toFixed(2)+' MB';
-  }
-
-  // Пара мелких полировок: при выходе со страницы очищаем URLы
-  window.addEventListener('beforeunload', ()=> {
-    processed.forEach(p=> { try{ URL.revokeObjectURL(p.url)}catch(e){} });
-  });
-
+    // optional: enable simple keyboard focus styles for accessibility
+    document.addEventListener('keyup', (e)=>{
+      if(e.key === 'Tab') document.body.classList.add('show-focus');
+    });
   </script>
 </body>
 </html>
