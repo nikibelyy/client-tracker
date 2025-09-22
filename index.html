@@ -15,7 +15,7 @@
     }
     html,body{margin:0;height:100%;background:var(--bg-gradient);color:var(--text);}
     .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:24px;}
-    .card{width:100%;max-width:1000px;background:rgba(255,255,255,0.05);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
+    .card{width:100%;max-width:800px;background:rgba(255,255,255,0.05);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
     h1{margin:0 0 12px;font-size:22px;}
     label{display:block;margin-top:10px;font-size:13px;color:var(--muted);}
     input{width:100%;padding:10px;border-radius:8px;border:none;margin-top:4px;background:var(--card-bg);color:var(--text);}
@@ -25,7 +25,6 @@
     .preview{background:rgba(255,255,255,0.03);padding:12px;border-radius:10px;white-space:pre-wrap;margin-top:12px;min-height:120px;font-size:15px;}
     .history{margin-top:20px;}
     .history-item{background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-top:8px;font-size:14px;}
-    footer{text-align:center;margin-top:20px;font-size:12px;color:var(--muted);}
   </style>
 </head>
 <body>
@@ -39,11 +38,7 @@
       <label for="phone">Телефон</label>
       <input id="phone" type="tel" placeholder="+7 999 123-45-67">
 
-      <label for="sender">Ваше имя / фирма</label>
-      <input id="sender" type="text" placeholder="Компания или имя">
-
       <button id="openWA" class="btn btn-cta">📲 Открыть в WhatsApp</button>
-      <button id="copyMsg" class="btn btn-ghost">📋 Скопировать</button>
       <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
 
       <div class="preview" id="preview"></div>
@@ -52,17 +47,12 @@
         <h3 style="margin:10px 0 6px;font-size:16px;">История отправок</h3>
         <div id="historyList"></div>
       </div>
-
-      <footer>
-        📍 Воронеж, ул. Антонова-Овсиенко 15А к.1 • <a href="https://вызовдтп.рф" style="color:var(--text);text-decoration:none;">вызовдтп.рф</a>
-      </footer>
     </div>
   </div>
 
 <script>
   const nameEl = document.getElementById('clientName');
   const phoneEl = document.getElementById('phone');
-  const senderEl = document.getElementById('sender');
   const previewEl = document.getElementById('preview');
   const historyList = document.getElementById('historyList');
 
@@ -80,9 +70,8 @@
 
   function buildMessage(){
     const name = nameEl.value.trim() || 'Клиент';
-    const sender = senderEl.value.trim();
     const dt = formatDateTime(new Date());
-    return `📄 ДТП оформлено европротоколом\n👤 ${name}\n📅 ${dt}\n🏁 Просьба приехать в наш офис для расчёта ущерба.\n📍 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф${sender ? `\n— ${sender}`:''}`;
+    return `📄 ДТП оформлено европротоколом\n👤 ${name}\n📅 ${dt}\n🏁 Просьба приехать в наш офис для расчёта ущерба.\n📍 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;
   }
 
   function refreshPreview(){ previewEl.textContent = buildMessage(); }
@@ -105,18 +94,10 @@
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
     window.open(url,'_blank');
 
-    // сохраняем в историю
     const history = JSON.parse(localStorage.getItem('history')||'[]');
     history.unshift({name:nameEl.value.trim(),phone:phone, date:formatDateTime(new Date())});
     localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
     loadHistory();
-  });
-
-  document.getElementById('copyMsg').addEventListener('click', async ()=>{
-    try{
-      await navigator.clipboard.writeText(buildMessage());
-      alert('Сообщение скопировано!');
-    }catch(e){ alert('Не удалось скопировать автоматически.'); }
   });
 
   document.getElementById('clearHistory').addEventListener('click',()=>{
@@ -124,7 +105,7 @@
     loadHistory();
   });
 
-  [nameEl, phoneEl, senderEl].forEach(el=>el.addEventListener('input',refreshPreview));
+  [nameEl, phoneEl].forEach(el=>el.addEventListener('input',refreshPreview));
   refreshPreview();
   loadHistory();
 </script>
