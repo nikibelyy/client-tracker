@@ -5,76 +5,187 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>DTPAPP</title>
 <style>
-  :root {
-    --bg-gradient: linear-gradient(135deg,#0f172a,#0b3d91,#0b6bb0);
-    --card-bg: rgba(255,255,255,0.05);
-    --text: #e6eef8;
-    --muted: rgba(230,238,248,0.6);
-    font-family: Inter, system-ui, sans-serif;
-  }
-  html,body{margin:0;height:100%;background:var(--bg-gradient);color:var(--text);}
-  .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:12px;}
-  .card{width:100%;max-width:900px;background:var(--card-bg);border-radius:16px;padding:16px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
-  h1{margin:0 0 12px;font-size:20px;}
-  label{display:block;margin-top:6px;font-size:13px;color:var(--muted);}
-  input,select{width:100%;padding:12px;border-radius:10px;border:none;margin-top:2px;background:rgba(255,255,255,0.1);color:var(--text);font-size:16px;}
-  .btn{margin-top:14px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:600;font-size:16px;width:100%;}
-  .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
-  .tabs{display:flex;gap:10px;margin-bottom:15px;}
-  .tab-btn{flex:1;text-align:center;padding:12px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,0.07);font-size:16px;}
-  .tab-btn.active{background:#25D366;color:#042;font-weight:700;}
-  .history-item,.client-item{
-    background:rgba(0,0,0,0.3);
-    padding:14px;
-    border-radius:14px;
-    margin-top:12px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  .client-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;}
-  .no-select{user-select:none;pointer-events:none;}
-  .actions{display:flex;gap:8px;}
-  .wa-btn{
-    background:#25D366;
-    border:none;
-    border-radius:50%;
-    width:40px;
-    height:40px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:transform .1s ease;
-    pointer-events:auto;
-  }
-  .wa-btn:hover{transform:scale(1.1);}
-  .wa-btn img{width:22px;height:22px;}
-  .edit-btn,.del-btn{
-    pointer-events:auto;
-    cursor:pointer;
-    font-size:14px;
-    padding:8px 12px;
-    border-radius:8px;
-  }
-  .edit-btn{background:#1E90FF;border:none;color:#fff;}
-  .del-btn{background:#ff4c4c;border:none;color:#fff;}
-  .salary-total{margin-top:15px;font-weight:bold;text-align:right;font-size:16px;}
-  .percent-30{color:#4CAF50;font-weight:bold;}
-  .percent-25{color:#FF9800;font-weight:bold;}
-  .percent-15{color:#f44336;font-weight:bold;}
-  .salary-colored{font-weight:bold;font-size:15px;}
-  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .client-form{background:rgba(255,255,255,0.05);padding:16px;border-radius:12px;margin-bottom:15px;}
+:root {
+  --bg-gradient: linear-gradient(120deg,#0f172a,#0b3d91,#0b6bb0,#00c6ff);
+  --card-bg: rgba(255,255,255,0.08);
+  --text: #f1f6ff;
+  --muted: rgba(230,238,248,0.7);
+  --accent: #25D366;
+  font-family: "Inter", system-ui, sans-serif;
+}
 
-  /* адаптация для телефонов */
-  @media(max-width:600px){
-    .form-grid{grid-template-columns:1fr;}
-    .btn{font-size:15px;}
-    .tab-btn{font-size:15px;padding:10px;}
-    h1{font-size:18px;}
-  }
+/* анимированный фон */
+body {
+  margin:0;
+  height:100%;
+  background: var(--bg-gradient);
+  background-size: 300% 300%;
+  animation: gradientMove 12s ease infinite;
+  color:var(--text);
+}
+@keyframes gradientMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* контейнер */
+.wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:16px;}
+.card{
+  width:100%;
+  max-width:900px;
+  background:var(--card-bg);
+  border-radius:20px;
+  padding:20px;
+  backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  animation: fadeIn .7s ease;
+}
+@keyframes fadeIn {
+  from {opacity:0;transform:translateY(20px);}
+  to {opacity:1;transform:translateY(0);}
+}
+
+h1{margin:0 0 16px;font-size:24px;font-weight:700;letter-spacing:0.5px;}
+label{display:block;margin-top:8px;font-size:14px;color:var(--muted);font-weight:500;}
+
+/* поля с иконками */
+.input-icon {
+  position:relative;
+  margin-top:4px;
+}
+.input-icon span {
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:16px;
+  opacity:0.8;
+}
+.input-icon input,
+.input-icon select {
+  width:100%;
+  padding:12px 14px 12px 38px;
+  border-radius:12px;
+  border:none;
+  background:rgba(255,255,255,0.1);
+  color:var(--text);
+  font-size:16px;
+  transition: all .2s ease;
+}
+.input-icon input:focus,
+.input-icon select:focus{
+  outline:none;
+  background:rgba(255,255,255,0.15);
+  box-shadow:0 0 0 2px var(--accent);
+}
+
+/* кнопки */
+.btn{
+  margin-top:16px;
+  padding:14px 18px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  font-size:16px;
+  width:100%;
+  transition: all .25s ease;
+}
+.btn-cta{
+  background:linear-gradient(90deg,#25D366,#1EBEA4);
+  color:#042;
+  box-shadow:0 6px 20px rgba(37,211,102,0.4);
+}
+.btn-cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 25px rgba(37,211,102,0.6);}
+.btn-ghost{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.2);
+  color:var(--text);
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.08);}
+
+/* вкладки */
+.tabs{display:flex;gap:12px;margin-bottom:20px;}
+.tab-btn{
+  flex:1;
+  text-align:center;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.08);
+  font-size:16px;
+  font-weight:500;
+  transition: all .25s ease;
+}
+.tab-btn:hover{background:rgba(255,255,255,0.15);}
+.tab-btn.active{background:var(--accent);color:#042;font-weight:700;box-shadow:0 4px 15px rgba(37,211,102,0.5);}
+
+/* элементы истории и клиентов */
+.history-item,.client-item{
+  background:rgba(0,0,0,0.35);
+  padding:16px;
+  border-radius:16px;
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  animation: fadeIn .5s ease;
+}
+.client-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+
+.no-select{user-select:none;pointer-events:none;}
+.actions{display:flex;gap:8px;}
+
+/* WhatsApp кнопка */
+.wa-btn{
+  background:#25D366;
+  border:none;
+  border-radius:50%;
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .2s;
+  pointer-events:auto;
+}
+.wa-btn:hover{transform:scale(1.15);box-shadow:0 0 12px #25D366;}
+.wa-btn img{width:22px;height:22px;}
+
+/* кнопки редактирования */
+.edit-btn,.del-btn{
+  pointer-events:auto;
+  cursor:pointer;
+  font-size:14px;
+  padding:8px 12px;
+  border-radius:8px;
+  transition: all .2s ease;
+}
+.edit-btn{background:#1E90FF;border:none;color:#fff;}
+.edit-btn:hover{background:#0b6bb0;}
+.del-btn{background:#ff4c4c;border:none;color:#fff;}
+.del-btn:hover{background:#d93636;}
+
+/* зарплата */
+.salary-total{margin-top:18px;font-weight:bold;text-align:right;font-size:17px;}
+.percent-30{color:#4CAF50;font-weight:bold;}
+.percent-25{color:#FF9800;font-weight:bold;}
+.percent-15{color:#f44336;font-weight:bold;}
+.salary-colored{font-weight:bold;font-size:15px;}
+
+/* форма клиента */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.client-form{background:rgba(255,255,255,0.05);padding:18px;border-radius:14px;margin-bottom:18px;animation: fadeIn .6s ease;}
+
+/* адаптив */
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr;}
+  .btn{font-size:15px;}
+  .tab-btn{font-size:15px;padding:10px;}
+  h1{font-size:20px;}
+}
 </style>
 </head>
 <body>
@@ -89,14 +200,24 @@
     <div id="sendSection">
       <h1>DTPAPP</h1>
       <label>Имя клиента</label>
-      <input id="clientName" placeholder="Иван Иванов">
+      <div class="input-icon">
+        <span>👤</span>
+        <input id="clientName" placeholder="Иван Иванов">
+      </div>
+
       <label>Марка и гос. номер</label>
-      <input id="carInfo" placeholder="Toyota Camry A123BC">
+      <div class="input-icon">
+        <span>🚘</span>
+        <input id="carInfo" placeholder="Toyota Camry A123BC">
+      </div>
+
       <label>Телефон</label>
-      <input id="phone" placeholder="+7 999 123-45-67">
-      <button id="openWA" class="btn btn-cta">
-        WhatsApp
-      </button>
+      <div class="input-icon">
+        <span>📞</span>
+        <input id="phone" placeholder="+7 999 123-45-67">
+      </div>
+
+      <button id="openWA" class="btn btn-cta">WhatsApp</button>
       <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
 
       <div class="history">
@@ -112,27 +233,42 @@
         <div class="form-grid">
           <div>
             <label>Имя клиента</label>
-            <input id="cName">
+            <div class="input-icon">
+              <span>👤</span>
+              <input id="cName">
+            </div>
           </div>
           <div>
             <label>Марка и гос. номер</label>
-            <input id="cCar">
+            <div class="input-icon">
+              <span>🚘</span>
+              <input id="cCar">
+            </div>
           </div>
           <div>
             <label>Телефон</label>
-            <input id="cPhone">
+            <div class="input-icon">
+              <span>📞</span>
+              <input id="cPhone">
+            </div>
           </div>
           <div>
             <label>Сумма</label>
-            <input id="cSum" type="number" placeholder="100000">
+            <div class="input-icon">
+              <span>💰</span>
+              <input id="cSum" type="number" placeholder="100000">
+            </div>
           </div>
           <div>
             <label>Цессия</label>
-            <select id="cPercent">
-              <option value="30">30%</option>
-              <option value="25">25%</option>
-              <option value="15">15%</option>
-            </select>
+            <div class="input-icon">
+              <span>%</span>
+              <select id="cPercent">
+                <option value="30">30%</option>
+                <option value="25">25%</option>
+                <option value="15">15%</option>
+              </select>
+            </div>
           </div>
         </div>
         <button id="addClient" class="btn btn-cta">➕ Добавить клиента</button>
@@ -145,160 +281,158 @@
 </div>
 
 <script>
-  // --- вкладки ---
-  const tabSend=document.getElementById('tabSend');
-  const tabClients=document.getElementById('tabClients');
-  const sendSection=document.getElementById('sendSection');
-  const clientsSection=document.getElementById('clientsSection');
-  tabSend.addEventListener('click',()=>{
-    tabSend.classList.add('active');
-    tabClients.classList.remove('active');
-    sendSection.style.display='block';
-    clientsSection.style.display='none';
-  });
-  tabClients.addEventListener('click',()=>{
-    tabClients.classList.add('active');
-    tabSend.classList.remove('active');
-    sendSection.style.display='none';
-    clientsSection.style.display='block';
-    loadClients();
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
+// --- вкладки ---
+const tabSend=document.getElementById('tabSend');
+const tabClients=document.getElementById('tabClients');
+const sendSection=document.getElementById('sendSection');
+const clientsSection=document.getElementById('clientsSection');
+tabSend.addEventListener('click',()=>{
+  tabSend.classList.add('active');
+  tabClients.classList.remove('active');
+  sendSection.style.display='block';
+  clientsSection.style.display='none';
+});
+tabClients.addEventListener('click',()=>{
+  tabClients.classList.add('active');
+  tabSend.classList.remove('active');
+  sendSection.style.display='none';
+  clientsSection.style.display='block';
+  loadClients();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
-  // --- WhatsApp ---
-  const nameEl=document.getElementById('clientName');
-  const carEl=document.getElementById('carInfo');
-  const phoneEl=document.getElementById('phone');
-  const historyList=document.getElementById('historyList');
+// --- WhatsApp ---
+const nameEl=document.getElementById('clientName');
+const carEl=document.getElementById('carInfo');
+const phoneEl=document.getElementById('phone');
+const historyList=document.getElementById('historyList');
 
-  function ensurePlus7(){if(!phoneEl.value.startsWith('+7'))phoneEl.value='+7 ';}
-  phoneEl.addEventListener('focus',ensurePlus7);
-  document.addEventListener('DOMContentLoaded',ensurePlus7);
+function ensurePlus7(){if(!phoneEl.value.startsWith('+7'))phoneEl.value='+7 ';}
+phoneEl.addEventListener('focus',ensurePlus7);
+document.addEventListener('DOMContentLoaded',ensurePlus7);
 
-  function normalizePhone(raw){
-    let digits=raw.replace(/[^0-9]/g,'');
-    if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);
-    return digits;
-  }
-  function formatDateTime(date){
-    return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+
-      ', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-  }
-  function buildMessage(name,car){
-    return `🚗💥 ДТП оформлено по европротоколу
+function normalizePhone(raw){
+  let digits=raw.replace(/[^0-9]/g,'');
+  if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);
+  return digits;
+}
+function formatDateTime(date){
+  return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+
+    ', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+}
+function buildMessage(name,car){
+  return `🚗💥 ДТП оформлено по европротоколу
 🙋‍♂️: ${name}
 🚘: ${car}
 📍 Просьба приехать в офис для расчёта ущерба
 🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1
 🚨 Также вы можете вызвать экипаж по ссылке ниже
 🔗 https://вызовдтп.рф`;
-  }
-  function sendWhatsApp(phone,name,car){
-    const msg=buildMessage(name,car);
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-  }
+}
+function sendWhatsApp(phone,name,car){
+  const msg=buildMessage(name,car);
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+}
 
-  function loadHistory(){
-    historyList.innerHTML='';
-    const data=JSON.parse(localStorage.getItem('history')||'[]');
-    if(data.length===0){
-      historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пуста</p>`;
-    }else{
-      data.forEach(item=>{
-        const div=document.createElement('div');
-        div.className='history-item';
-        div.innerHTML=`
-          <div class="client-row"><b class="no-select">👤 ${item.name}</b><span class="no-select">🗓️ ${item.date}</span></div>
-          <div class="client-row"><span class="no-select">🚘 ${item.car}</span><span class="no-select">📞 ${item.phone}</span>
-          <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button></div>`;
-        div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));
-        historyList.appendChild(div);
-      });
-    }
-  }
-
-  document.getElementById('openWA').addEventListener('click',()=>{
-    const phone=normalizePhone(phoneEl.value);
-    if(phone.length<11)return alert('Введите корректный номер');
-    const name=nameEl.value.trim()||'Клиент';
-    const car=carEl.value.trim()||'Не указано';
-    sendWhatsApp(phone,name,car);
-    const history=JSON.parse(localStorage.getItem('history')||'[]');
-    history.unshift({name,phone,car,date:formatDateTime(new Date())});
-    localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
-    loadHistory();
-  });
-  document.getElementById('clearHistory').addEventListener('click',()=>{
-    localStorage.removeItem('history');
-    loadHistory();
-  });
-  loadHistory();
-
-  // --- Клиенты ---
-  function loadClients(){
-    const list=document.getElementById('clientsList');
-    const totalEl=document.getElementById('salaryTotal');
-    list.innerHTML='';
-    const clients=JSON.parse(localStorage.getItem('clients')||'[]');
-    let total=0;
-    clients.forEach((c,i)=>{
-      const salary=c.sum*(c.percent/100);
-      total+=salary;
-      let percentClass = c.percent==30?'percent-30':c.percent==25?'percent-25':'percent-15';
-      const div=document.createElement('div');div.className='client-item';
-      div.innerHTML=`<div class="client-row"><b class="no-select">👤 ${c.name}</b><span class="${percentClass} no-select">${c.sum.toLocaleString('ru-RU')} ₽ (${c.percent}%)</span></div>
-      <div class="client-row"><span class="no-select">🚘 ${c.car}</span><span class="no-select">📞 ${c.phone}</span>
-      <div class="actions"><button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
-      <button class="edit-btn">✏</button><button class="del-btn">🗑</button></div></div>
-      <div class="salary-colored no-select">💵 Моя зарплата: <b>${salary.toFixed(0).toLocaleString('ru-RU')} ₽</b></div>`;
-
-      div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(c.phone,c.name,c.car));
-      div.querySelector('.edit-btn').addEventListener('click',()=>{
-        document.getElementById('cName').value=c.name;
-        document.getElementById('cCar').value=c.car;
-        document.getElementById('cPhone').value=c.phone;
-        document.getElementById('cSum').value=c.sum;
-        document.getElementById('cPercent').value=c.percent;
-        const btn=document.getElementById('addClient');
-        btn.textContent='💾 Сохранить изменения';
-        btn.dataset.edit=i;
-        window.scrollTo({top:0,behavior:'smooth'});
-      });
-      div.querySelector('.del-btn').addEventListener('click',()=>{
-        if(confirm('Удалить клиента?')){
-          clients.splice(i,1);
-          localStorage.setItem('clients',JSON.stringify(clients));
-          loadClients();
-        }
-      });
-      list.appendChild(div);
+function loadHistory(){
+  historyList.innerHTML='';
+  const data=JSON.parse(localStorage.getItem('history')||'[]');
+  if(data.length===0){
+    historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пуста</p>`;
+  }else{
+    data.forEach(item=>{
+      const div=document.createElement('div');
+      div.className='history-item';
+      div.innerHTML=`
+        <div class="client-row"><b class="no-select">👤 ${item.name}</b><span class="no-select">🗓️ ${item.date}</span></div>
+        <div class="client-row"><span class="no-select">🚘 ${item.car}</span><span class="no-select">📞 ${item.phone}</span>
+        <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button></div>`;
+      div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));
+      historyList.appendChild(div);
     });
-
-    totalEl.textContent='💰 Общая зарплата: '+total.toFixed(0).toLocaleString('ru-RU')+' ₽';
   }
+}
 
-  document.getElementById('addClient').addEventListener('click',()=>{
-    const clients=JSON.parse(localStorage.getItem('clients')||'[]');
-    const name=document.getElementById('cName').value.trim()||'Клиент';
-    const car=document.getElementById('cCar').value.trim()||'Не указано';
-    const phone=normalizePhone(document.getElementById('cPhone').value);
-    const sum=parseFloat(document.getElementById('cSum').value)||0;
-    const percent=parseInt(document.getElementById('cPercent').value);
+document.getElementById('openWA').addEventListener('click',()=>{
+  const phone=normalizePhone(phoneEl.value);
+  if(phone.length<11)return alert('Введите корректный номер');
+  const name=nameEl.value.trim()||'Клиент';
+  const car=carEl.value.trim()||'Не указано';
+  sendWhatsApp(phone,name,car);
+  const history=JSON.parse(localStorage.getItem('history')||'[]');
+  history.unshift({name,phone,car,date:formatDateTime(new Date())});
+  localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
+  loadHistory();
+});
+document.getElementById('clearHistory').addEventListener('click',()=>{
+  localStorage.removeItem('history');
+  loadHistory();
+});
+loadHistory();
 
-    const btn=document.getElementById('addClient');
-    const editIndex=btn.dataset.edit;
+// --- Клиенты ---
+function loadClients(){
+  const list=document.getElementById('clientsList');
+  const totalEl=document.getElementById('salaryTotal');
+  list.innerHTML='';
+  const clients=JSON.parse(localStorage.getItem('clients')||'[]');
+  let total=0;
+  clients.forEach((c,i)=>{
+    const salary=c.sum*(c.percent/100);
+    total+=salary;
+    let percentClass = c.percent==30?'percent-30':c.percent==25?'percent-25':'percent-15';
+    const div=document.createElement('div');div.className='client-item';
+    div.innerHTML=`<div class="client-row"><b class="no-select">👤 ${c.name}</b><span class="${percentClass} no-select">${c.sum.toLocaleString('ru-RU')} ₽ (${c.percent}%)</span></div>
+    <div class="client-row"><span class="no-select">🚘 ${c.car}</span><span class="no-select">📞 ${c.phone}</span>
+    <div class="actions"><button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+    <button class="edit-btn">✏</button><button class="del-btn">🗑</button></div></div>
+    <div class="salary-colored no-select">💵 Моя зарплата: <b>${salary.toFixed(0).toLocaleString('ru-RU')} ₽</b></div>`;
 
-    if(editIndex!==undefined){
-      clients[editIndex]={name,car,phone,sum,percent};
-      delete btn.dataset.edit;
-      btn.textContent='➕ Добавить клиента';
-    }else{
-      clients.push({name,car,phone,sum,percent});
-    }
+    div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(c.phone,c.name,c.car));
+    div.querySelector('.edit-btn').addEventListener('click',()=>{
+      document.getElementById('cName').value=c.name;
+      document.getElementById('cCar').value=c.car;
+      document.getElementById('cPhone').value=c.phone;
+      document.getElementById('cSum').value=c.sum;
+      document.getElementById('cPercent').value=c.percent;
+      const btn=document.getElementById('addClient');
+      btn.textContent='💾 Сохранить изменения';
+      btn.dataset.edit=i;
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    div.querySelector('.del-btn').addEventListener('click',()=>{
+      if(confirm('Удалить клиента?')){
+        clients.splice(i,1);
+        localStorage.setItem('clients',JSON.stringify(clients));
+        loadClients();
+      }
+    });
+    list.appendChild(div);
+  });
+  totalEl.textContent='💰 Общая зарплата: '+total.toFixed(0).toLocaleString('ru-RU')+' ₽';
+}
 
-    localStorage.setItem('clients',JSON.stringify(clients));
+document.getElementById('addClient').addEventListener('click',()=>{
+  const clients=JSON.parse(localStorage.getItem('clients')||'[]');
+  const name=document.getElementById('cName').value.trim()||'Клиент';
+  const car=document.getElementById('cCar').value.trim()||'Не указано';
+  const phone=normalizePhone(document.getElementById('cPhone').value);
+  const sum=parseFloat(document.getElementById('cSum').value)||0;
+  const percent=parseInt(document.getElementById('cPercent').value);
+  const btn=document.getElementById('addClient');
+  const editIndex=btn.dataset.edit;
 
-    // очистка формы
+  if(editIndex!==undefined){
+    clients[editIndex]={name,car,phone,sum,percent};
+    delete btn.dataset.edit;
+    btn.textContent='➕ Добавить клиента';
+  } else {
+    clients.push({name,car,phone,sum,percent});
+  }
+  localStorage.setItem('clients',JSON.stringify(clients));
+
+  // очистка формы
+
     document.getElementById('cName').value='';
     document.getElementById('cCar').value='';
     document.getElementById('cPhone').value='';
