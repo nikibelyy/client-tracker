@@ -8,7 +8,6 @@
     :root {
       --bg-gradient: linear-gradient(135deg,#0f172a,#0b3d91,#0b6bb0);
       --card-bg: rgba(255,255,255,0.04);
-      --accent: #1dd1a1;
       --text: #e6eef8;
       --muted: rgba(230,238,248,0.6);
       font-family: Inter, system-ui, sans-serif;
@@ -56,10 +55,21 @@
   const previewEl = document.getElementById('preview');
   const historyList = document.getElementById('historyList');
 
+  // Автоматически добавляем +7 при фокусе или загрузке
+  function ensurePlus7(){
+    if(!phoneEl.value.startsWith('+7')){
+      phoneEl.value = '+7 ';
+    }
+  }
+
+  phoneEl.addEventListener('focus', ensurePlus7);
+  document.addEventListener('DOMContentLoaded', ensurePlus7);
+
   function normalizePhone(raw){
-    let digits = raw.replace(/[^0-9+]/g,'').replace(/^\+/,'');
-    if(digits.length === 11 && digits.startsWith('8')) digits = '7'+digits.slice(1);
-    if(digits.length === 10) digits = '7'+digits;
+    // убираем всё кроме цифр
+    let digits = raw.replace(/[^0-9]/g,'');
+    // если начинается с 8 -> заменим на 7
+    if(digits.length===11 && digits.startsWith('8')) digits = '7'+digits.slice(1);
     return digits;
   }
 
@@ -71,7 +81,7 @@
   function buildMessage(){
     const name = nameEl.value.trim() || 'Клиент';
     const dt = formatDateTime(new Date());
-    return `📄 ДТП оформлено европротоколом\n👤 ${name}\n📅 ${dt}\n🏁 Просьба приехать в наш офис для расчёта ущерба.\n📍 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;
+    return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️ Клиент: ${name}\n🗓️ ${dt}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;
   }
 
   function refreshPreview(){ previewEl.textContent = buildMessage(); }
