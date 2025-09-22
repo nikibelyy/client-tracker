@@ -16,15 +16,14 @@
   .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:24px;}
   .card{width:100%;max-width:900px;background:var(--card-bg);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
   h1{margin:0 0 12px;font-size:22px;}
-  label{display:block;margin-top:10px;font-size:13px;color:var(--muted);}
-  input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-top:4px;background:rgba(255,255,255,0.1);color:var(--text);}
+  label{display:block;margin-top:6px;font-size:13px;color:var(--muted);}
+  input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-top:2px;background:rgba(255,255,255,0.1);color:var(--text);}
   .btn{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;}
   .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
   .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
   .tabs{display:flex;gap:10px;margin-bottom:15px;}
   .tab-btn{flex:1;text-align:center;padding:10px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,0.07);}
   .tab-btn.active{background:#25D366;color:#042;font-weight:700;}
-  .history,.clients{margin-top:10px;}
   .history-item,.client-item{
     background:rgba(0,0,0,0.3);
     padding:12px;
@@ -52,11 +51,13 @@
   .wa-btn img{width:16px;height:16px;}
   .edit-btn{background:#1E90FF;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
   .del-btn{background:#ff4c4c;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
-  .salary-total{margin-top:10px;font-weight:bold;text-align:right;}
+  .salary-total{margin-top:15px;font-weight:bold;text-align:right;}
   .percent-30{color:#4CAF50;font-weight:bold;}
   .percent-25{color:#FF9800;font-weight:bold;}
   .percent-15{color:#f44336;font-weight:bold;}
   .salary-colored{font-weight:bold;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .client-form{background:rgba(255,255,255,0.05);padding:16px;border-radius:12px;margin-bottom:15px;}
 </style>
 </head>
 <body>
@@ -90,17 +91,36 @@
     <!-- Клиенты -->
     <div id="clientsSection" style="display:none;">
       <h1>Мои клиенты</h1>
-      <label>Имя клиента</label><input id="cName">
-      <label>Марка и гос. номер</label><input id="cCar">
-      <label>Телефон</label><input id="cPhone">
-      <label>Сумма</label><input id="cSum" type="number" placeholder="100000">
-      <label>Цессия</label>
-      <select id="cPercent">
-        <option value="30">30%</option>
-        <option value="25">25%</option>
-        <option value="15">15%</option>
-      </select>
-      <button id="addClient" class="btn btn-cta">➕ Добавить клиента</button>
+      <div class="client-form">
+        <div class="form-grid">
+          <div>
+            <label>Имя клиента</label>
+            <input id="cName">
+          </div>
+          <div>
+            <label>Марка и гос. номер</label>
+            <input id="cCar">
+          </div>
+          <div>
+            <label>Телефон</label>
+            <input id="cPhone">
+          </div>
+          <div>
+            <label>Сумма</label>
+            <input id="cSum" type="number" placeholder="100000">
+          </div>
+          <div>
+            <label>Цессия</label>
+            <select id="cPercent">
+              <option value="30">30%</option>
+              <option value="25">25%</option>
+              <option value="15">15%</option>
+            </select>
+          </div>
+        </div>
+        <button id="addClient" class="btn btn-cta">➕ Добавить клиента</button>
+      </div>
+
       <div id="clientsList"></div>
       <div class="salary-total" id="salaryTotal"></div>
     </div>
@@ -127,8 +147,7 @@
   document.addEventListener('DOMContentLoaded',ensurePlus7);
   function normalizePhone(raw){let digits=raw.replace(/[^0-9]/g,'');if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);return digits;}
   function formatDateTime(date){return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});}
-  function buildMessage(name,car){return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️: ${name}\n🚘: ${car}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1
-🚨 Также вы можете вызвать экипаж по ссылке ниже или отправить заявку на консультацию\n🔗 https://вызовдтп.рф`;}
+  function buildMessage(name,car){return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️: ${name}\n🚘: ${car}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🚨 Также вы можете вызвать экипаж по ссылке ниже\n🔗 https://вызовдтп.рф ;}
   function sendWhatsApp(phone,name,car){const msg=buildMessage(name,car);window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');}
 
   function loadHistory(){
@@ -169,7 +188,6 @@
       <button class="edit-btn">✏</button><button class="del-btn">🗑</button></div></div>
       <div class="salary-colored">💵 Моя зарплата: <b>${salary.toFixed(0).toLocaleString('ru-RU')} ₽</b></div>`;
 
-      // кнопки действий
       div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(c.phone,c.name,c.car));
       div.querySelector('.edit-btn').addEventListener('click',()=>{
         document.getElementById('cName').value=c.name;
@@ -177,7 +195,9 @@
         document.getElementById('cPhone').value=c.phone;
         document.getElementById('cSum').value=c.sum;
         document.getElementById('cPercent').value=c.percent;
-        document.getElementById('addClient').dataset.edit=i;
+        const btn=document.getElementById('addClient');
+        btn.textContent='💾 Сохранить изменения';
+        btn.dataset.edit=i;
       });
       div.querySelector('.del-btn').addEventListener('click',()=>{
         if(confirm('Удалить клиента?')){
@@ -192,7 +212,6 @@
     totalEl.textContent='💰 Общая зарплата: '+total.toFixed(0).toLocaleString('ru-RU')+' ₽';
   }
 
-  // Добавление / редактирование клиента
   document.getElementById('addClient').addEventListener('click',()=>{
     const clients=JSON.parse(localStorage.getItem('clients')||'[]');
     const name=document.getElementById('cName').value.trim()||'Клиент';
@@ -206,6 +225,7 @@
     if(editIndex!==undefined){
       clients[editIndex]={name,car,phone,sum,percent};
       delete btn.dataset.edit;
+      btn.textContent='➕ Добавить клиента';
     }else{
       clients.push({name,car,phone,sum,percent});
     }
