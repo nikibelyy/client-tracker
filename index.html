@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>DTPAPP</title>
 <style>
   :root {
@@ -13,51 +13,68 @@
     font-family: Inter, system-ui, sans-serif;
   }
   html,body{margin:0;height:100%;background:var(--bg-gradient);color:var(--text);}
-  .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:24px;}
-  .card{width:100%;max-width:900px;background:var(--card-bg);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
-  h1{margin:0 0 12px;font-size:22px;}
+  .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:12px;}
+  .card{width:100%;max-width:900px;background:var(--card-bg);border-radius:16px;padding:16px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
+  h1{margin:0 0 12px;font-size:20px;}
   label{display:block;margin-top:6px;font-size:13px;color:var(--muted);}
-  input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-top:2px;background:rgba(255,255,255,0.1);color:var(--text);}
-  .btn{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;}
+  input,select{width:100%;padding:12px;border-radius:10px;border:none;margin-top:2px;background:rgba(255,255,255,0.1);color:var(--text);font-size:16px;}
+  .btn{margin-top:14px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:600;font-size:16px;width:100%;}
   .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
   .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
   .tabs{display:flex;gap:10px;margin-bottom:15px;}
-  .tab-btn{flex:1;text-align:center;padding:10px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,0.07);}
+  .tab-btn{flex:1;text-align:center;padding:12px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,0.07);font-size:16px;}
   .tab-btn.active{background:#25D366;color:#042;font-weight:700;}
   .history-item,.client-item{
     background:rgba(0,0,0,0.3);
-    padding:12px;
-    border-radius:12px;
-    margin-top:10px;
+    padding:14px;
+    border-radius:14px;
+    margin-top:12px;
     display:flex;
     flex-direction:column;
     gap:6px;
   }
-  .client-row{display:flex;justify-content:space-between;align-items:center;}
-  .actions{display:flex;gap:6px;}
+  .client-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;}
+  .no-select{user-select:none;pointer-events:none;}
+  .actions{display:flex;gap:8px;}
   .wa-btn{
     background:#25D366;
     border:none;
     border-radius:50%;
-    width:28px;
-    height:28px;
+    width:40px;
+    height:40px;
     display:flex;
     align-items:center;
     justify-content:center;
     cursor:pointer;
     transition:transform .1s ease;
+    pointer-events:auto;
   }
-  .wa-btn:hover{transform:scale(1.15);}
-  .wa-btn img{width:16px;height:16px;}
-  .edit-btn{background:#1E90FF;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
-  .del-btn{background:#ff4c4c;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
-  .salary-total{margin-top:15px;font-weight:bold;text-align:right;}
+  .wa-btn:hover{transform:scale(1.1);}
+  .wa-btn img{width:22px;height:22px;}
+  .edit-btn,.del-btn{
+    pointer-events:auto;
+    cursor:pointer;
+    font-size:14px;
+    padding:8px 12px;
+    border-radius:8px;
+  }
+  .edit-btn{background:#1E90FF;border:none;color:#fff;}
+  .del-btn{background:#ff4c4c;border:none;color:#fff;}
+  .salary-total{margin-top:15px;font-weight:bold;text-align:right;font-size:16px;}
   .percent-30{color:#4CAF50;font-weight:bold;}
   .percent-25{color:#FF9800;font-weight:bold;}
   .percent-15{color:#f44336;font-weight:bold;}
-  .salary-colored{font-weight:bold;}
+  .salary-colored{font-weight:bold;font-size:15px;}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .client-form{background:rgba(255,255,255,0.05);padding:16px;border-radius:12px;margin-bottom:15px;}
+
+  /* адаптация для телефонов */
+  @media(max-width:600px){
+    .form-grid{grid-template-columns:1fr;}
+    .btn{font-size:15px;}
+    .tab-btn{font-size:15px;padding:10px;}
+    h1{font-size:18px;}
+  }
 </style>
 </head>
 <body>
@@ -78,7 +95,7 @@
       <label>Телефон</label>
       <input id="phone" placeholder="+7 999 123-45-67">
       <button id="openWA" class="btn btn-cta">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width:20px;height:20px;margin-right:6px;"> WhatsApp
+        📩 WhatsApp
       </button>
       <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
 
@@ -145,6 +162,7 @@
     sendSection.style.display='none';
     clientsSection.style.display='block';
     loadClients();
+    window.scrollTo({top:0,behavior:'smooth'});
   });
 
   // --- WhatsApp ---
@@ -190,8 +208,8 @@
         const div=document.createElement('div');
         div.className='history-item';
         div.innerHTML=`
-          <div class="client-row"><b>👤 ${item.name}</b><span>🗓️ ${item.date}</span></div>
-          <div class="client-row"><span>🚘 ${item.car}</span><span>📞 ${item.phone}</span>
+          <div class="client-row"><b class="no-select">👤 ${item.name}</b><span class="no-select">🗓️ ${item.date}</span></div>
+          <div class="client-row"><span class="no-select">🚘 ${item.car}</span><span class="no-select">📞 ${item.phone}</span>
           <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button></div>`;
         div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));
         historyList.appendChild(div);
@@ -228,11 +246,11 @@
       total+=salary;
       let percentClass = c.percent==30?'percent-30':c.percent==25?'percent-25':'percent-15';
       const div=document.createElement('div');div.className='client-item';
-      div.innerHTML=`<div class="client-row"><b>👤 ${c.name}</b><span class="${percentClass}">${c.sum.toLocaleString('ru-RU')} ₽ (${c.percent}%)</span></div>
-      <div class="client-row"><span>🚘 ${c.car}</span><span>📞 ${c.phone}</span>
+      div.innerHTML=`<div class="client-row"><b class="no-select">👤 ${c.name}</b><span class="${percentClass} no-select">${c.sum.toLocaleString('ru-RU')} ₽ (${c.percent}%)</span></div>
+      <div class="client-row"><span class="no-select">🚘 ${c.car}</span><span class="no-select">📞 ${c.phone}</span>
       <div class="actions"><button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
       <button class="edit-btn">✏</button><button class="del-btn">🗑</button></div></div>
-      <div class="salary-colored">💵 Моя зарплата: <b>${salary.toFixed(0).toLocaleString('ru-RU')} ₽</b></div>`;
+      <div class="salary-colored no-select">💵 Моя зарплата: <b>${salary.toFixed(0).toLocaleString('ru-RU')} ₽</b></div>`;
 
       div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(c.phone,c.name,c.car));
       div.querySelector('.edit-btn').addEventListener('click',()=>{
@@ -244,6 +262,7 @@
         const btn=document.getElementById('addClient');
         btn.textContent='💾 Сохранить изменения';
         btn.dataset.edit=i;
+        window.scrollTo({top:0,behavior:'smooth'});
       });
       div.querySelector('.del-btn').addEventListener('click',()=>{
         if(confirm('Удалить клиента?')){
