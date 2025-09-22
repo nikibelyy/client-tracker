@@ -22,7 +22,42 @@
     .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
     .history{margin-top:20px;}
-    .history-item{background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-top:8px;font-size:14px;}
+    .history h3{margin:10px 0 6px;font-size:16px;}
+    .history-item{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      background:rgba(0,0,0,0.3);
+      padding:12px 14px;
+      border-radius:12px;
+      margin-top:10px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.3);
+      transition:transform .15s ease, background .15s ease;
+    }
+    .history-item:hover{
+      transform:scale(1.02);
+      background:rgba(255,255,255,0.07);
+    }
+    .history-header{display:flex;justify-content:space-between;align-items:center;}
+    .history-name{font-weight:600;font-size:15px;display:flex;align-items:center;gap:6px;}
+    .history-phone-row{display:flex;align-items:center;justify-content:space-between;}
+    .history-phone{font-size:14px;color:var(--muted);}
+    .wa-btn{
+      background:#25D366;
+      border:none;
+      border-radius:50%;
+      width:28px;
+      height:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      margin-left:10px;
+      transition:transform .1s ease;
+    }
+    .wa-btn:hover{transform:scale(1.15);}
+    .wa-btn img{width:16px;height:16px;}
+    .history-date{font-size:13px;color:var(--muted);}
   </style>
 </head>
 <body>
@@ -40,7 +75,7 @@
       <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
 
       <div class="history">
-        <h3 style="margin:10px 0 6px;font-size:16px;">История отправок</h3>
+        <h3>История отправок</h3>
         <div id="historyList"></div>
       </div>
     </div>
@@ -70,32 +105,54 @@
       ', ' + date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
   }
 
-  function buildMessage(){
-    const name = nameEl.value.trim() || 'Клиент';
+  function buildMessage(name){
     const dt = formatDateTime(new Date());
     return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️ Клиент: ${name}\n🗓️ ${dt}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;
+  }
+
+  function sendWhatsApp(phone, name){
+    const msg = buildMessage(name);
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url,'_blank');
   }
 
   function loadHistory(){
     historyList.innerHTML='';
     const data = JSON.parse(localStorage.getItem('history')||'[]');
-    data.forEach(item=>{
-      const div=document.createElement('div');
-      div.className='history-item';
-      div.textContent=`${item.date} • ${item.name} • ${item.phone}`;
-      historyList.appendChild(div);
-    });
+    if(data.length === 0){
+      historyList.innerHTML = `<p style="color:var(--muted);font-size:14px;">История пока пустая</p>`;
+    } else {
+      data.forEach(item=>{
+        const div=document.createElement('div');
+        div.className='history-item';
+        div.innerHTML=`
+          <div class="history-header">
+            <span class="history-name">👤 ${item.name || 'Без имени'}</span>
+            <span class="history-date">🗓️ ${item.date}</span>
+          </div>
+          <div class="history-phone-row">
+            <span class="history-phone">📞 ${item.phone}</span>
+            <button class="wa-btn" title="Открыть WhatsApp">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+            </button>
+          </div>
+        `;
+        div.querySelector('.wa-btn').addEventListener('click',()=>{
+          sendWhatsApp(item.phone, item.name);
+        });
+        historyList.appendChild(div);
+      });
+    }
   }
 
   document.getElementById('openWA').addEventListener('click', ()=>{
     const phone = normalizePhone(phoneEl.value);
     if(phone.length<11) return alert('Введите корректный номер');
-    const msg = buildMessage();
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    window.open(url,'_blank');
+    const name = nameEl.value.trim() || 'Клиент';
+    sendWhatsApp(phone, name);
 
     const history = JSON.parse(localStorage.getItem('history')||'[]');
-    history.unshift({name:nameEl.value.trim(),phone:phone, date:formatDateTime(new Date())});
+    history.unshift({name:name,phone:phone, date:formatDateTime(new Date())});
     localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
     loadHistory();
   });
