@@ -1,194 +1,154 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CRM — ДТП и WhatsApp</title>
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg,#0f172a,#0b3d91,#0b6bb0);
-      --card-bg: rgba(255,255,255,0.04);
-      --text: #e6eef8;
-      --muted: rgba(230,238,248,0.6);
-      font-family: Inter, system-ui, sans-serif;
-    }
-    html,body{margin:0;height:100%;background:var(--bg-gradient);color:var(--text);}
-    .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:24px;}
-    .card{width:100%;max-width:900px;background:rgba(255,255,255,0.05);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
-    h1{margin:0 0 12px;font-size:22px;}
-    label{display:block;margin-top:10px;font-size:13px;color:var(--muted);}
-    input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-top:4px;background:var(--card-bg);color:var(--text);}
-    .btn{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;}
-    .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
-    .tabs{display:flex;gap:10px;margin-bottom:15px;}
-    .tab-btn{flex:1;text-align:center;padding:10px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,0.07);}
-    .tab-btn.active{background:#25D366;color:#042;font-weight:700;}
-    .history,.clients{margin-top:10px;}
-    .history-item,.client-item{
-      background:rgba(0,0,0,0.3);
-      padding:12px;
-      border-radius:12px;
-      margin-top:10px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .client-row{display:flex;justify-content:space-between;align-items:center;}
-    .actions{display:flex;gap:6px;}
-    .wa-btn{
-      background:#25D366;
-      border:none;
-      border-radius:50%;
-      width:28px;
-      height:28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      transition:transform .1s ease;
-    }
-    .wa-btn:hover{transform:scale(1.15);}
-    .wa-btn img{width:16px;height:16px;}
-    .edit-btn{background:#1E90FF;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
-    .del-btn{background:#ff4c4c;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
-    .salary-total{margin-top:10px;font-weight:bold;text-align:right;}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DTPAPP</title>
+<style>
+  :root {
+    --bg-gradient: linear-gradient(135deg,#0f172a,#0b3d91,#0b6bb0);
+    --card-bg: rgba(255,255,255,0.05);
+    --text: #e6eef8;
+    --muted: rgba(230,238,248,0.6);
+    font-family: Inter, system-ui, sans-serif;
+  }
+  html,body{margin:0;height:100%;background:var(--bg-gradient);color:var(--text);}
+  .wrap{display:flex;align-items:center;justify-content:center;min-height:100%;padding:24px;}
+  .card{width:100%;max-width:900px;background:var(--card-bg);border-radius:16px;padding:24px;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
+  h1{margin:0 0 12px;font-size:22px;}
+  label{display:block;margin-top:10px;font-size:13px;color:var(--muted);}
+  input,select{width:100%;padding:10px;border-radius:8px;border:none;margin-top:4px;background:rgba(255,255,255,0.1);color:var(--text);}
+  .btn{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;}
+  .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
+  .tabs{display:flex;gap:10px;margin-bottom:15px;}
+  .tab-btn{flex:1;text-align:center;padding:10px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,0.07);}
+  .tab-btn.active{background:#25D366;color:#042;font-weight:700;}
+  .history,.clients{margin-top:10px;}
+  .history-item,.client-item{
+    background:rgba(0,0,0,0.3);
+    padding:12px;
+    border-radius:12px;
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .client-row{display:flex;justify-content:space-between;align-items:center;}
+  .actions{display:flex;gap:6px;}
+  .wa-btn{
+    background:#25D366;
+    border:none;
+    border-radius:50%;
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .1s ease;
+  }
+  .wa-btn:hover{transform:scale(1.15);}
+  .wa-btn img{width:16px;height:16px;}
+  .edit-btn{background:#1E90FF;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
+  .del-btn{background:#ff4c4c;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
+  .salary-total{margin-top:10px;font-weight:bold;text-align:right;}
+  .percent-30{color:#4CAF50;font-weight:bold;}
+  .percent-25{color:#FF9800;font-weight:bold;}
+  .percent-15{color:#f44336;font-weight:bold;}
+  .salary-colored{font-weight:bold;}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="tabs">
-        <div class="tab-btn active" id="tabSend">📲 Отправка</div>
-        <div class="tab-btn" id="tabClients">👥 Клиенты</div>
-      </div>
+<div class="wrap">
+  <div class="card">
+    <div class="tabs">
+      <div class="tab-btn active" id="tabSend">📲 Отправка</div>
+      <div class="tab-btn" id="tabClients">👥 Клиенты</div>
+    </div>
 
-      <!-- Отправка WhatsApp -->
-      <div id="sendSection">
-        <h1>Отправка WhatsApp сообщения</h1>
+    <!-- Отправка -->
+    <div id="sendSection">
+      <h1>Отправка WhatsApp</h1>
+      <label>Имя клиента</label>
+      <input id="clientName" placeholder="Иван Иванов">
+      <label>Марка и гос. номер</label>
+      <input id="carInfo" placeholder="Toyota Camry A123BC">
+      <label>Телефон</label>
+      <input id="phone" placeholder="+7 999 123-45-67">
+      <button id="openWA" class="btn btn-cta">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width:20px;height:20px;margin-right:6px;"> WhatsApp
+      </button>
+      <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
 
-        <label for="clientName">Имя клиента</label>
-        <input id="clientName" type="text" placeholder="Иван Иванов">
-
-        <label for="carInfo">Марка и гос. номер</label>
-        <input id="carInfo" type="text" placeholder="Toyota Camry A123BC">
-
-        <label for="phone">Телефон</label>
-        <input id="phone" type="tel" placeholder="+7 999 123-45-67">
-
-        <button id="openWA" class="btn btn-cta">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width:20px;height:20px;vertical-align:middle;margin-right:6px;"> WhatsApp
-        </button>
-        <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
-
-        <div class="history">
-          <h3>История отправок</h3>
-          <div id="historyList"></div>
-        </div>
-      </div>
-
-      <!-- Клиенты -->
-      <div id="clientsSection" style="display:none;">
-        <h1>Мои клиенты</h1>
-        <label>Имя клиента</label>
-        <input id="cName" type="text">
-        <label>Марка и гос. номер</label>
-        <input id="cCar" type="text">
-        <label>Телефон</label>
-        <input id="cPhone" type="tel">
-        <label>Сумма</label>
-        <input id="cSum" type="number" placeholder="100000">
-        <label>Цессия</label>
-        <select id="cPercent">
-          <option value="30">30%</option>
-          <option value="25">25%</option>
-          <option value="15">15%</option>
-        </select>
-        <button id="addClient" class="btn btn-cta">➕ Добавить клиента</button>
-        <div id="clientsList"></div>
-        <div class="salary-total" id="salaryTotal"></div>
+      <div class="history">
+        <h3>История отправок</h3>
+        <div id="historyList"></div>
       </div>
     </div>
+
+    <!-- Клиенты -->
+    <div id="clientsSection" style="display:none;">
+      <h1>Мои клиенты</h1>
+      <label>Имя клиента</label><input id="cName">
+      <label>Марка и гос. номер</label><input id="cCar">
+      <label>Телефон</label><input id="cPhone">
+      <label>Сумма</label><input id="cSum" type="number" placeholder="100000">
+      <label>Цессия</label>
+      <select id="cPercent">
+        <option value="30">30%</option>
+        <option value="25">25%</option>
+        <option value="15">15%</option>
+      </select>
+      <button id="addClient" class="btn btn-cta">➕ Добавить клиента</button>
+      <div id="clientsList"></div>
+      <div class="salary-total" id="salaryTotal"></div>
+    </div>
   </div>
+</div>
 
 <script>
-  // --- Вкладки ---
-  const tabSend = document.getElementById('tabSend');
-  const tabClients = document.getElementById('tabClients');
-  const sendSection = document.getElementById('sendSection');
-  const clientsSection = document.getElementById('clientsSection');
-  tabSend.addEventListener('click',()=>{
-    tabSend.classList.add('active');tabClients.classList.remove('active');
-    sendSection.style.display='block';clientsSection.style.display='none';
-  });
-  tabClients.addEventListener('click',()=>{
-    tabClients.classList.add('active');tabSend.classList.remove('active');
-    sendSection.style.display='none';clientsSection.style.display='block';
-    loadClients();
-  });
+  // --- вкладки ---
+  const tabSend=document.getElementById('tabSend');
+  const tabClients=document.getElementById('tabClients');
+  const sendSection=document.getElementById('sendSection');
+  const clientsSection=document.getElementById('clientsSection');
+  tabSend.addEventListener('click',()=>{tabSend.classList.add('active');tabClients.classList.remove('active');sendSection.style.display='block';clientsSection.style.display='none';});
+  tabClients.addEventListener('click',()=>{tabClients.classList.add('active');tabSend.classList.remove('active');sendSection.style.display='none';clientsSection.style.display='block';loadClients();});
 
-  // --- WhatsApp блок ---
-  const nameEl = document.getElementById('clientName');
-  const carEl = document.getElementById('carInfo');
-  const phoneEl = document.getElementById('phone');
-  const historyList = document.getElementById('historyList');
+  // --- WhatsApp ---
+  const nameEl=document.getElementById('clientName');
+  const carEl=document.getElementById('carInfo');
+  const phoneEl=document.getElementById('phone');
+  const historyList=document.getElementById('historyList');
 
   function ensurePlus7(){if(!phoneEl.value.startsWith('+7'))phoneEl.value='+7 ';}
-  phoneEl.addEventListener('focus', ensurePlus7);
-  document.addEventListener('DOMContentLoaded', ensurePlus7);
-
+  phoneEl.addEventListener('focus',ensurePlus7);
+  document.addEventListener('DOMContentLoaded',ensurePlus7);
   function normalizePhone(raw){let digits=raw.replace(/[^0-9]/g,'');if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);return digits;}
   function formatDateTime(date){return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});}
-  
-  function buildMessage(name, car){
-    return `🚗💥 ДТП оформлено по европротоколу
-🙋‍♂️: ${name}
-🚘: ${car}
-📍 Просьба приехать в офис для расчёта ущерба
-🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1
-🚨 Также вы можете вызвать экипаж по ссылке ниже или отправить заявку на консультацию`;
-🔗 https://вызовдтп.рф
-  }
-
-  function sendWhatsApp(phone,name,car){
-    const msg=buildMessage(name,car);
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-  }
+  function buildMessage(name,car){return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️: ${name}\n🚘: ${car}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1
+🚨 Также вы можете вызвать экипаж по ссылке ниже или отправить заявку на консультацию\n🔗 https://вызовдтп.рф`;}
+  function sendWhatsApp(phone,name,car){const msg=buildMessage(name,car);window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');}
 
   function loadHistory(){
     historyList.innerHTML='';
     const data=JSON.parse(localStorage.getItem('history')||'[]');
-    if(data.length===0){historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пустая</p>`;}
-    else{
-      data.forEach(item=>{
-        const div=document.createElement('div');
-        div.className='history-item';
-        div.innerHTML=`
-          <div class="client-row"><b>👤 ${item.name||'Без имени'}</b><span>🗓️ ${item.date}</span></div>
-          <div class="client-row">
-            <span>🚘 ${item.car}</span>
-            <span>📞 ${item.phone}</span>
-            <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"></button>
-          </div>`;
-        div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));
-        historyList.appendChild(div);
-      });
-    }
+    if(data.length===0){historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пуста</p>`;}
+    else{data.forEach(item=>{const div=document.createElement('div');div.className='history-item';div.innerHTML=`
+      <div class="client-row"><b>👤 ${item.name}</b><span>🗓️ ${item.date}</span></div>
+      <div class="client-row"><span>🚘 ${item.car}</span><span>📞 ${item.phone}</span><button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button></div>`;div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));historyList.appendChild(div);});}
   }
 
   document.getElementById('openWA').addEventListener('click',()=>{
-    const phone=normalizePhone(phoneEl.value);
-    if(phone.length<11)return alert('Введите корректный номер');
-    const name=nameEl.value.trim()||'Клиент';
-    const car=carEl.value.trim()||'Не указано';
+    const phone=normalizePhone(phoneEl.value);if(phone.length<11)return alert('Введите корректный номер');
+    const name=nameEl.value.trim()||'Клиент';const car=carEl.value.trim()||'Не указано';
     sendWhatsApp(phone,name,car);
-
     const history=JSON.parse(localStorage.getItem('history')||'[]');
     history.unshift({name:name,phone:phone,car:car,date:formatDateTime(new Date())});
     localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
     loadHistory();
   });
-
   document.getElementById('clearHistory').addEventListener('click',()=>{localStorage.removeItem('history');loadHistory();});
   loadHistory();
 
@@ -200,43 +160,63 @@
     const clients=JSON.parse(localStorage.getItem('clients')||'[]');
     let total=0;
     clients.forEach((c,i)=>{
-      const salary=c.sum*(c.percent/100);
-      total+=salary;
-      const div=document.createElement('div');
-      div.className='client-item';
-      div.innerHTML=`
-        <div class="client-row"><b>👤 ${c.name}</b><span>💰 ${c.sum} ₽ (${c.percent}%)</span></div>
-        <div class="client-row">
-          <span>🚘 ${c.car}</span>
-          <span>📞 ${c.phone}</span>
-          <div class="actions">
-            <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"></button>
-            <button class="edit-btn">✏</button>
-            <button class="del-btn">🗑</button>
-          </div>
-        </div>
-        <div>💵 Моя зарплата: <b>${salary.toFixed(0)} ₽</b></div>`;
+      const salary=c.sum*(c.percent/100);total+=salary;
+      let percentClass = c.percent==30?'percent-30':c.percent==25?'percent-25':'percent-15';
+      const div=document.createElement('div');div.className='client-item';
+      div.innerHTML=`<div class="client-row"><b>👤 ${c.name}</b><span class="${percentClass}">${c.sum.toLocaleString('ru-RU')} ₽ (${c.percent}%)</span></div>
+      <div class="client-row"><span>🚘 ${c.car}</span><span>📞 ${c.phone}</span>
+      <div class="actions"><button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+      <button class="edit-btn">✏</button><button class="del-btn">🗑</button></div></div>
+      <div class="salary-colored">💵 Моя зарплата: <b>${salary.toFixed(0).toLocaleString('ru-RU')} ₽</b></div>`;
+
+      // кнопки действий
       div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(c.phone,c.name,c.car));
-      div.querySelector('.del-btn').addEventListener('click',()=>{
-        clients.splice(i,1);
-        localStorage.setItem('clients',JSON.stringify(clients));
-        loadClients();
-      });
       div.querySelector('.edit-btn').addEventListener('click',()=>{
         document.getElementById('cName').value=c.name;
         document.getElementById('cCar').value=c.car;
         document.getElementById('cPhone').value=c.phone;
         document.getElementById('cSum').value=c.sum;
         document.getElementById('cPercent').value=c.percent;
-        clients.splice(i,1);
-        localStorage.setItem('clients',JSON.stringify(clients));
-        loadClients();
+        document.getElementById('addClient').dataset.edit=i;
+      });
+      div.querySelector('.del-btn').addEventListener('click',()=>{
+        if(confirm('Удалить клиента?')){
+          clients.splice(i,1);
+          localStorage.setItem('clients',JSON.stringify(clients));
+          loadClients();
+        }
       });
       list.appendChild(div);
     });
-    totalEl.textContent=`Итого зарплата: ${total.toFixed(0)} ₽`;
+
+    totalEl.textContent='💰 Общая зарплата: '+total.toFixed(0).toLocaleString('ru-RU')+' ₽';
   }
 
+  // Добавление / редактирование клиента
   document.getElementById('addClient').addEventListener('click',()=>{
-    const name=document.getElementById('cName').value.trim();
-    const car=document.getElementById
+    const clients=JSON.parse(localStorage.getItem('clients')||'[]');
+    const name=document.getElementById('cName').value.trim()||'Клиент';
+    const car=document.getElementById('cCar').value.trim()||'Не указано';
+    const phone=normalizePhone(document.getElementById('cPhone').value);
+    const sum=parseFloat(document.getElementById('cSum').value)||0;
+    const percent=parseInt(document.getElementById('cPercent').value);
+
+    const btn=document.getElementById('addClient');
+    const editIndex=btn.dataset.edit;
+    if(editIndex!==undefined){
+      clients[editIndex]={name,car,phone,sum,percent};
+      delete btn.dataset.edit;
+    }else{
+      clients.push({name,car,phone,sum,percent});
+    }
+
+    localStorage.setItem('clients',JSON.stringify(clients));
+    document.getElementById('cName').value='';
+    document.getElementById('cCar').value='';
+    document.getElementById('cPhone').value='';
+    document.getElementById('cSum').value='';
+    loadClients();
+  });
+</script>
+</body>
+</html>
