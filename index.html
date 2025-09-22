@@ -133,8 +133,19 @@
   const tabClients=document.getElementById('tabClients');
   const sendSection=document.getElementById('sendSection');
   const clientsSection=document.getElementById('clientsSection');
-  tabSend.addEventListener('click',()=>{tabSend.classList.add('active');tabClients.classList.remove('active');sendSection.style.display='block';clientsSection.style.display='none';});
-  tabClients.addEventListener('click',()=>{tabClients.classList.add('active');tabSend.classList.remove('active');sendSection.style.display='none';clientsSection.style.display='block';loadClients();});
+  tabSend.addEventListener('click',()=>{
+    tabSend.classList.add('active');
+    tabClients.classList.remove('active');
+    sendSection.style.display='block';
+    clientsSection.style.display='none';
+  });
+  tabClients.addEventListener('click',()=>{
+    tabClients.classList.add('active');
+    tabSend.classList.remove('active');
+    sendSection.style.display='none';
+    clientsSection.style.display='block';
+    loadClients();
+  });
 
   // --- WhatsApp ---
   const nameEl=document.getElementById('clientName');
@@ -145,30 +156,64 @@
   function ensurePlus7(){if(!phoneEl.value.startsWith('+7'))phoneEl.value='+7 ';}
   phoneEl.addEventListener('focus',ensurePlus7);
   document.addEventListener('DOMContentLoaded',ensurePlus7);
-  function normalizePhone(raw){let digits=raw.replace(/[^0-9]/g,'');if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);return digits;}
-  function formatDateTime(date){return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});}
-  function buildMessage(name,car){return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️: ${name}\n🚘: ${car}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🚨 Также вы можете вызвать экипаж по ссылке ниже\n🔗 https://вызовдтп.рф ;}
-  function sendWhatsApp(phone,name,car){const msg=buildMessage(name,car);window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');}
+
+  function normalizePhone(raw){
+    let digits=raw.replace(/[^0-9]/g,'');
+    if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);
+    return digits;
+  }
+  function formatDateTime(date){
+    return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+
+      ', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  }
+  function buildMessage(name,car){
+    return `🚗💥 ДТП оформлено по европротоколу
+🙋‍♂️: ${name}
+🚘: ${car}
+📍 Просьба приехать в офис для расчёта ущерба
+🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1
+🚨 Также вы можете вызвать экипаж по ссылке ниже
+🔗 https://вызовдтп.рф`;
+  }
+  function sendWhatsApp(phone,name,car){
+    const msg=buildMessage(name,car);
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+  }
 
   function loadHistory(){
     historyList.innerHTML='';
     const data=JSON.parse(localStorage.getItem('history')||'[]');
-    if(data.length===0){historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пуста</p>`;}
-    else{data.forEach(item=>{const div=document.createElement('div');div.className='history-item';div.innerHTML=`
-      <div class="client-row"><b>👤 ${item.name}</b><span>🗓️ ${item.date}</span></div>
-      <div class="client-row"><span>🚘 ${item.car}</span><span>📞 ${item.phone}</span><button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button></div>`;div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));historyList.appendChild(div);});}
+    if(data.length===0){
+      historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пуста</p>`;
+    }else{
+      data.forEach(item=>{
+        const div=document.createElement('div');
+        div.className='history-item';
+        div.innerHTML=`
+          <div class="client-row"><b>👤 ${item.name}</b><span>🗓️ ${item.date}</span></div>
+          <div class="client-row"><span>🚘 ${item.car}</span><span>📞 ${item.phone}</span>
+          <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button></div>`;
+        div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name,item.car));
+        historyList.appendChild(div);
+      });
+    }
   }
 
   document.getElementById('openWA').addEventListener('click',()=>{
-    const phone=normalizePhone(phoneEl.value);if(phone.length<11)return alert('Введите корректный номер');
-    const name=nameEl.value.trim()||'Клиент';const car=carEl.value.trim()||'Не указано';
+    const phone=normalizePhone(phoneEl.value);
+    if(phone.length<11)return alert('Введите корректный номер');
+    const name=nameEl.value.trim()||'Клиент';
+    const car=carEl.value.trim()||'Не указано';
     sendWhatsApp(phone,name,car);
     const history=JSON.parse(localStorage.getItem('history')||'[]');
-    history.unshift({name:name,phone:phone,car:car,date:formatDateTime(new Date())});
+    history.unshift({name,phone,car,date:formatDateTime(new Date())});
     localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
     loadHistory();
   });
-  document.getElementById('clearHistory').addEventListener('click',()=>{localStorage.removeItem('history');loadHistory();});
+  document.getElementById('clearHistory').addEventListener('click',()=>{
+    localStorage.removeItem('history');
+    loadHistory();
+  });
   loadHistory();
 
   // --- Клиенты ---
@@ -179,7 +224,8 @@
     const clients=JSON.parse(localStorage.getItem('clients')||'[]');
     let total=0;
     clients.forEach((c,i)=>{
-      const salary=c.sum*(c.percent/100);total+=salary;
+      const salary=c.sum*(c.percent/100);
+      total+=salary;
       let percentClass = c.percent==30?'percent-30':c.percent==25?'percent-25':'percent-15';
       const div=document.createElement('div');div.className='client-item';
       div.innerHTML=`<div class="client-row"><b>👤 ${c.name}</b><span class="${percentClass}">${c.sum.toLocaleString('ru-RU')} ₽ (${c.percent}%)</span></div>
@@ -222,6 +268,7 @@
 
     const btn=document.getElementById('addClient');
     const editIndex=btn.dataset.edit;
+
     if(editIndex!==undefined){
       clients[editIndex]={name,car,phone,sum,percent};
       delete btn.dataset.edit;
@@ -231,10 +278,14 @@
     }
 
     localStorage.setItem('clients',JSON.stringify(clients));
+
+    // очистка формы
     document.getElementById('cName').value='';
     document.getElementById('cCar').value='';
     document.getElementById('cPhone').value='';
     document.getElementById('cSum').value='';
+    document.getElementById('cPercent').value='30';
+
     loadClients();
   });
 </script>
