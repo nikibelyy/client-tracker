@@ -21,7 +21,6 @@
     .btn{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;}
     .btn-cta{background:linear-gradient(90deg,#25D366,#1EBEA4);color:#042;}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--text);}
-    .preview{background:rgba(255,255,255,0.03);padding:12px;border-radius:10px;white-space:pre-wrap;margin-top:12px;min-height:120px;font-size:15px;}
     .history{margin-top:20px;}
     .history-item{background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-top:8px;font-size:14px;}
   </style>
@@ -29,7 +28,7 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Сообщение в WhatsApp — ДТП (европротокол)</h1>
+      <h1>Отправка WhatsApp сообщения</h1>
 
       <label for="clientName">Имя клиента</label>
       <input id="clientName" type="text" placeholder="Иван Иванов">
@@ -39,8 +38,6 @@
 
       <button id="openWA" class="btn btn-cta">📲 Открыть в WhatsApp</button>
       <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
-
-      <div class="preview" id="preview"></div>
 
       <div class="history">
         <h3 style="margin:10px 0 6px;font-size:16px;">История отправок</h3>
@@ -52,23 +49,18 @@
 <script>
   const nameEl = document.getElementById('clientName');
   const phoneEl = document.getElementById('phone');
-  const previewEl = document.getElementById('preview');
   const historyList = document.getElementById('historyList');
 
-  // Автоматически добавляем +7 при фокусе или загрузке
   function ensurePlus7(){
     if(!phoneEl.value.startsWith('+7')){
       phoneEl.value = '+7 ';
     }
   }
-
   phoneEl.addEventListener('focus', ensurePlus7);
   document.addEventListener('DOMContentLoaded', ensurePlus7);
 
   function normalizePhone(raw){
-    // убираем всё кроме цифр
     let digits = raw.replace(/[^0-9]/g,'');
-    // если начинается с 8 -> заменим на 7
     if(digits.length===11 && digits.startsWith('8')) digits = '7'+digits.slice(1);
     return digits;
   }
@@ -83,8 +75,6 @@
     const dt = formatDateTime(new Date());
     return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️ Клиент: ${name}\n🗓️ ${dt}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;
   }
-
-  function refreshPreview(){ previewEl.textContent = buildMessage(); }
 
   function loadHistory(){
     historyList.innerHTML='';
@@ -115,8 +105,6 @@
     loadHistory();
   });
 
-  [nameEl, phoneEl].forEach(el=>el.addEventListener('input',refreshPreview));
-  refreshPreview();
   loadHistory();
 </script>
 </body>
