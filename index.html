@@ -36,14 +36,22 @@
     }
     .client-row{display:flex;justify-content:space-between;align-items:center;}
     .actions{display:flex;gap:6px;}
-    .wa-btn, .edit-btn, .del-btn{
-      border:none;border-radius:6px;padding:6px 10px;cursor:pointer;
+    .wa-btn{
+      background:#25D366;
+      border:none;
+      border-radius:50%;
+      width:28px;
+      height:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:transform .1s ease;
     }
-    .wa-btn{background:#25D366;}
-    .edit-btn{background:#1E90FF;}
-    .del-btn{background:#ff4c4c;}
-    table{width:100%;margin-top:10px;border-collapse:collapse;}
-    table td,table th{padding:6px;text-align:left;}
+    .wa-btn:hover{transform:scale(1.15);}
+    .wa-btn img{width:16px;height:16px;}
+    .edit-btn{background:#1E90FF;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
+    .del-btn{background:#ff4c4c;border:none;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
     .salary-total{margin-top:10px;font-weight:bold;text-align:right;}
   </style>
 </head>
@@ -55,13 +63,16 @@
         <div class="tab-btn" id="tabClients">👥 Клиенты</div>
       </div>
 
+      <!-- Отправка WhatsApp -->
       <div id="sendSection">
         <h1>Отправка WhatsApp сообщения</h1>
         <label for="clientName">Имя клиента</label>
         <input id="clientName" type="text" placeholder="Иван Иванов">
         <label for="phone">Телефон</label>
         <input id="phone" type="tel" placeholder="+7 999 123-45-67">
-        <button id="openWA" class="btn btn-cta">📲 Открыть в WhatsApp</button>
+        <button id="openWA" class="btn btn-cta">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width:20px;height:20px;vertical-align:middle;margin-right:6px;"> WhatsApp
+        </button>
         <button id="clearHistory" class="btn btn-ghost">🗑 Очистить историю</button>
         <div class="history">
           <h3>История отправок</h3>
@@ -69,6 +80,7 @@
         </div>
       </div>
 
+      <!-- Клиенты -->
       <div id="clientsSection" style="display:none;">
         <h1>Мои клиенты</h1>
         <label>Имя клиента</label>
@@ -91,12 +103,11 @@
   </div>
 
 <script>
-  // Переключение вкладок
+  // --- Вкладки ---
   const tabSend = document.getElementById('tabSend');
   const tabClients = document.getElementById('tabClients');
   const sendSection = document.getElementById('sendSection');
   const clientsSection = document.getElementById('clientsSection');
-
   tabSend.addEventListener('click',()=>{
     tabSend.classList.add('active');tabClients.classList.remove('active');
     sendSection.style.display='block';clientsSection.style.display='none';
@@ -111,34 +122,19 @@
   const nameEl = document.getElementById('clientName');
   const phoneEl = document.getElementById('phone');
   const historyList = document.getElementById('historyList');
-
   function ensurePlus7(){if(!phoneEl.value.startsWith('+7'))phoneEl.value='+7 ';}
   phoneEl.addEventListener('focus', ensurePlus7);
   document.addEventListener('DOMContentLoaded', ensurePlus7);
+  function normalizePhone(raw){let digits=raw.replace(/[^0-9]/g,'');if(digits.length===11&&digits.startsWith('8'))digits='7'+digits.slice(1);return digits;}
+  function formatDateTime(date){return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});}
+  function buildMessage(name){const dt=formatDateTime(new Date());return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️ Клиент: ${name}\n🗓️ ${dt}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;}
+  function sendWhatsApp(phone,name){const msg=buildMessage(name);window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');}
 
-  function normalizePhone(raw){
-    let digits = raw.replace(/[^0-9]/g,'');
-    if(digits.length===11 && digits.startsWith('8')) digits = '7'+digits.slice(1);
-    return digits;
-  }
-  function formatDateTime(date){
-    return date.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+
-      ', '+date.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-  }
-  function buildMessage(name){
-    const dt=formatDateTime(new Date());
-    return `🚗💥 ДТП оформлено по европротоколу\n🙋‍♂️ Клиент: ${name}\n🗓️ ${dt}\n📍 Просьба приехать в офис для расчёта ущерба\n🏢 Воронеж, ул. Антонова-Овсиенко 15А к.1\n🔗 https://вызовдтп.рф`;
-  }
-  function sendWhatsApp(phone,name){
-    const msg=buildMessage(name);
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-  }
   function loadHistory(){
     historyList.innerHTML='';
     const data=JSON.parse(localStorage.getItem('history')||'[]');
-    if(data.length===0){
-      historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пустая</p>`;
-    }else{
+    if(data.length===0){historyList.innerHTML=`<p style="color:var(--muted);font-size:14px;">История пока пустая</p>`;}
+    else{
       data.forEach(item=>{
         const div=document.createElement('div');
         div.className='history-item';
@@ -146,7 +142,7 @@
           <div class="client-row"><b>👤 ${item.name||'Без имени'}</b><span>🗓️ ${item.date}</span></div>
           <div class="client-row">
             <span>📞 ${item.phone}</span>
-            <button class="wa-btn">WA</button>
+            <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"></button>
           </div>`;
         div.querySelector('.wa-btn').addEventListener('click',()=>sendWhatsApp(item.phone,item.name));
         historyList.appendChild(div);
@@ -163,9 +159,7 @@
     localStorage.setItem('history',JSON.stringify(history.slice(0,10)));
     loadHistory();
   });
-  document.getElementById('clearHistory').addEventListener('click',()=>{
-    localStorage.removeItem('history');loadHistory();
-  });
+  document.getElementById('clearHistory').addEventListener('click',()=>{localStorage.removeItem('history');loadHistory();});
   loadHistory();
 
   // --- Клиенты ---
@@ -185,7 +179,7 @@
         <div class="client-row">
           <span>📞 ${c.phone}</span>
           <div class="actions">
-            <button class="wa-btn">WA</button>
+            <button class="wa-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"></button>
             <button class="edit-btn">✏</button>
             <button class="del-btn">🗑</button>
           </div>
@@ -210,7 +204,6 @@
     });
     totalEl.textContent=`Итого зарплата: ${total.toFixed(0)} ₽`;
   }
-
   document.getElementById('addClient').addEventListener('click',()=>{
     const name=document.getElementById('cName').value.trim();
     const phone=normalizePhone(document.getElementById('cPhone').value);
