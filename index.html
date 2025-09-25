@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CLIENTAPP</title>
+<title>CRMAPP</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -177,7 +177,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>CLIENTAPP</h1>
+    <h1>CRMAPP</h1>
   </header>
 
   <!-- форма -->
@@ -220,7 +220,7 @@
   const LS_KEY = 'crmapp_clients';
   const LS_PERCENT = 'crmapp_percent';
   let clients = [];
-  let percent = 15;
+  let currentPercent = 15; // процент для новых клиентов
 
   const inputName=document.getElementById('inputName');
   const inputPlate=document.getElementById('inputPlate');
@@ -236,15 +236,15 @@
 
   function load(){
     try{clients=JSON.parse(localStorage.getItem(LS_KEY))||[]}catch(e){clients=[]}
-    try{percent=Number(localStorage.getItem(LS_PERCENT))||15}catch(e){percent=15}
+    try{currentPercent=Number(localStorage.getItem(LS_PERCENT))||15}catch(e){currentPercent=15}
     updatePercentButtons();
   }
-  function save(){localStorage.setItem(LS_KEY,JSON.stringify(clients));localStorage.setItem(LS_PERCENT,percent)}
+  function save(){localStorage.setItem(LS_KEY,JSON.stringify(clients));localStorage.setItem(LS_PERCENT,currentPercent)}
   function fmtMoney(n){return Number(n||0).toLocaleString('ru-RU')+' ₽'}
-  function calcSalary(a){return (Number(a)||0)*percent/100}
+  function calcSalary(a,p){return (Number(a)||0)*(p||0)/100}
   function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
   function uid(){return 'id_'+Math.random().toString(36).slice(2,9)}
-  function digitsOnly(p){return (p||'').replace(/\\D+/g,'')}
+  function digitsOnly(p){return (p||'').replace(/\D+/g,'')}
   function waLink(p){const d=digitsOnly(p);return d?'https://wa.me/'+d:null}
 
   function render(filt=''){
@@ -254,7 +254,7 @@
     clients.filter(c=>!f||c.name.toLowerCase().includes(f)||c.plate.toLowerCase().includes(f)||c.phone.includes(f))
     .forEach(c=>{
       total+=Number(c.amount||0);
-      totalPay+=calcSalary(c.amount);
+      totalPay+=calcSalary(c.amount,c.percent);
       const card=document.createElement('div');
       card.className='card';
       card.innerHTML=`
@@ -271,8 +271,8 @@
             <div class="money-value">${fmtMoney(c.amount)}</div>
           </div>
           <div class="money-box">
-            <div class="money-label">К выплате (${percent}%)</div>
-            <div class="money-value">${fmtMoney(calcSalary(c.amount))}</div>
+            <div class="money-label">К выплате (${c.percent}%)</div>
+            <div class="money-value">${fmtMoney(calcSalary(c.amount,c.percent))}</div>
           </div>
         </div>
         <div class="actions">
@@ -292,7 +292,14 @@
 
   function addClient(){
     if(!inputName.value.trim()){alert('Введите имя');return}
-    clients.unshift({id:uid(),name:inputName.value.trim(),plate:inputPlate.value.trim(),phone:inputPhone.value.trim(),amount:Number(inputAmount.value)||0});
+    clients.unshift({
+      id:uid(),
+      name:inputName.value.trim(),
+      plate:inputPlate.value.trim(),
+      phone:inputPhone.value.trim(),
+      amount:Number(inputAmount.value)||0,
+      percent: currentPercent
+    });
     inputName.value=inputPlate.value=inputPhone.value=inputAmount.value='';
     save();render(searchInput.value);
   }
@@ -302,7 +309,8 @@
     const p=prompt('Гос. номер',c.plate);if(p===null)return;
     const ph=prompt('Телефон',c.phone);if(ph===null)return;
     const a=prompt('Сумма',c.amount);if(a===null)return;
-    c.name=n;c.plate=p;c.phone=ph;c.amount=Number(a)||0;
+    const perc=prompt('Процент',c.percent);if(perc===null)return;
+    c.name=n;c.plate=p;c.phone=ph;c.amount=Number(a)||0;c.percent=Number(perc)||c.percent;
     save();render(searchInput.value);
   }
   function removeClient(id){if(confirm('Удалить?')){clients=clients.filter(c=>c.id!==id);save();render(searchInput.value)}}
@@ -310,11 +318,11 @@
 
   function updatePercentButtons(){
     document.querySelectorAll('.percent-switch button').forEach(b=>{
-      b.classList.toggle('active',Number(b.dataset.percent)===percent);
+      b.classList.toggle('active',Number(b.dataset.percent)===currentPercent);
     });
   }
   document.querySelectorAll('.percent-switch button').forEach(b=>{
-    b.onclick=()=>{percent=Number(b.dataset.percent);save();updatePercentButtons();render(searchInput.value)};
+    b.onclick=()=>{currentPercent=Number(b.dataset.percent);save();updatePercentButtons()};
   });
 
   addBtn.onclick=addClient;
