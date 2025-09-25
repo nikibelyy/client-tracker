@@ -3,70 +3,191 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Мини-CRM</title>
+<title>CRMAPP</title>
 <style>
-  :root{
-    --bg:#0e141f;
+  :root {
+    --bg: #0d1117;
     --card-bg: rgba(255,255,255,0.05);
     --glass-border: rgba(255,255,255,0.12);
     --accent: linear-gradient(135deg,#4facfe 0%, #00f2fe 100%);
-    --cta:#0b84ff;
-    --danger:#ff5c6c;
-    --radius:16px;
+    --danger: #ff4d6d;
+    --radius: 16px;
   }
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:960px;margin:0 auto;padding:20px;display:grid;grid-template-columns:360px 1fr;gap:20px}
-  header{grid-column:1/-1;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-  h1{margin:0;font-size:20px;font-weight:700}
-  .panel{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:var(--radius);backdrop-filter:blur(8px) saturate(120%);padding:16px;box-shadow:0 8px 30px rgba(0,0,0,0.6);}
-  label{font-size:12px;display:block;margin-bottom:4px;color:rgba(255,255,255,0.7)}
-  input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px}
-  input:focus{outline:none;border-color:rgba(255,255,255,0.3)}
-  .btn{cursor:pointer;border:none;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 16px;border-radius:18px;transition:.15s}
-  .btn:active{transform:translateY(1px)}
-  .btn-cta{background:var(--accent);color:#042029;font-weight:700}
-  .btn-ghost{background:rgba(255,255,255,0.06);color:#fff}
-  .btn-danger{background:var(--danger);color:#fff}
-  .percent-switch{display:flex;gap:8px;margin-bottom:14px}
-  .percent-switch button{flex:1}
-  .clients-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-  .card{background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border:1px solid var(--glass-border);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
-  .client-name{font-weight:700;font-size:16px}
-  .gov{font-weight:600;background:rgba(255,255,255,0.08);padding:4px 8px;border-radius:10px;font-size:12px}
-  .row-between{display:flex;justify-content:space-between}
-  .money{font-weight:700}
-  .actions{display:flex;gap:8px;flex-wrap:wrap}
-  .whatsapp{background:linear-gradient(135deg,#25D366,#128C7E);color:#042029;font-weight:700;border-radius:12px;padding:8px 12px;text-decoration:none}
-  footer{grid-column:1/-1;margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:rgba(255,255,255,0.6)}
-  @media(max-width:800px){.wrap{grid-template-columns:1fr}}
-  @media(max-width:600px){.wrap{padding:12px}.clients-list{grid-template-columns:1fr}}
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: #fff;
+  }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 16px;
+  }
+  header {
+    grid-column: 1/-1;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  h1 { margin: 0; font-size: 22px; font-weight: 700; }
+
+  .panel {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(8px) saturate(120%);
+    padding: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+  }
+
+  label { font-size: 12px; display: block; margin-bottom: 4px; color: rgba(255,255,255,0.7) }
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  input:focus { outline: none; border-color: rgba(255,255,255,0.3) }
+
+  .btn {
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 14px;
+    transition: .15s;
+  }
+  .btn:active { transform: translateY(1px) }
+  .btn-cta { background: var(--accent); color: #042029; font-weight: 700 }
+  .btn-danger { background: var(--danger); color: #fff }
+
+  .percent-switch {
+    display: flex; gap: 8px; margin-bottom: 14px;
+  }
+  .percent-switch button {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .percent-switch button.active {
+    background: var(--accent);
+    color: #042029;
+  }
+
+  .clients-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+    gap: 14px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 14px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .client-name { font-size: 18px; font-weight: 700 }
+  .gov, .phone {
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+  }
+  .phone { margin-left: 6px }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .money-block {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .money-box {
+    flex: 1;
+    padding: 8px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    text-align: center;
+  }
+  .money-label { font-size: 12px; color: rgba(255,255,255,0.7) }
+  .money-value { font-weight: 700; font-size: 15px }
+
+  .actions { display: flex; gap: 8px; flex-wrap: wrap }
+  .whatsapp {
+    flex: 1;
+    background: linear-gradient(135deg,#25D366,#128C7E);
+    color: #042029;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 8px 12px;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-small {
+    padding: 6px 10px;
+    font-size: 14px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+  }
+
+  footer {
+    grid-column: 1/-1;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  @media(max-width: 700px) {
+    .wrap { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Мини-CRM</h1>
-    <div>
-      <button id="exportBtn" class="btn btn-ghost">Экспорт</button>
-    </div>
+    <h1>CRMAPP</h1>
   </header>
 
   <!-- форма -->
   <aside class="panel">
     <div class="percent-switch">
-      <button class="btn btn-ghost" data-percent="15">15%</button>
-      <button class="btn btn-ghost" data-percent="25">25%</button>
-      <button class="btn btn-ghost" data-percent="30">30%</button>
+      <button data-percent="15" class="active">15%</button>
+      <button data-percent="25">25%</button>
+      <button data-percent="30">30%</button>
     </div>
     <label>Имя</label>
     <input id="inputName" type="text" placeholder="Имя клиента" />
-    <label style="margin-top:10px">Гос. номер</label>
+    <label>Гос. номер</label>
     <input id="inputPlate" type="text" placeholder="A123BC77" />
-    <label style="margin-top:10px">Телефон</label>
+    <label>Телефон</label>
     <input id="inputPhone" type="tel" placeholder="+79161234567" />
-    <label style="margin-top:10px">Сумма (₽)</label>
+    <label>Сумма (₽)</label>
     <input id="inputAmount" type="number" placeholder="10000" />
-    <div style="margin-top:14px;display:flex;gap:8px">
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
       <button id="addBtn" class="btn btn-cta">Добавить</button>
       <button id="clearAll" class="btn btn-danger">Очистить всё</button>
     </div>
@@ -83,16 +204,14 @@
       </div>
       <div id="clients" class="clients-list"></div>
     </div>
-    <footer>
-      <div>Данные хранятся только в твоём браузере</div>
-    </footer>
+    <footer>Данные хранятся только в твоём браузере</footer>
   </main>
 </div>
 
 <script>
 (function(){
-  const LS_KEY = 'miniCRM_clients_v2';
-  const LS_PERCENT = 'miniCRM_percent_v2';
+  const LS_KEY = 'crmapp_clients';
+  const LS_PERCENT = 'crmapp_percent';
   let clients = [];
   let percent = 15;
 
@@ -107,9 +226,7 @@
   const sumToPay=document.getElementById('sumToPay');
   const searchInput=document.getElementById('search');
   const clearAll=document.getElementById('clearAll');
-  const exportBtn=document.getElementById('exportBtn');
 
-  // helpers
   function load(){
     try{clients=JSON.parse(localStorage.getItem(LS_KEY))||[]}catch(e){clients=[]}
     try{percent=Number(localStorage.getItem(LS_PERCENT))||15}catch(e){percent=15}
@@ -123,7 +240,6 @@
   function digitsOnly(p){return (p||'').replace(/\\D+/g,'')}
   function waLink(p){const d=digitsOnly(p);return d?'https://wa.me/'+d:null}
 
-  // render
   function render(filt=''){
     clientsWrap.innerHTML='';
     const f=filt.trim().toLowerCase();
@@ -135,21 +251,27 @@
       const card=document.createElement('div');
       card.className='card';
       card.innerHTML=`
-        <div class="row-between">
-          <div>
-            <div class="client-name">${escapeHtml(c.name)}</div>
-            <div style="font-size:12px;opacity:.7">${escapeHtml(c.phone)}</div>
+        <div class="top">
+          <div class="client-name">${escapeHtml(c.name)}</div>
+          <div class="badges">
+            <div class="gov">${escapeHtml(c.plate)}</div>
+            <div class="phone">${escapeHtml(c.phone)}</div>
           </div>
-          <div class="gov">${escapeHtml(c.plate)}</div>
         </div>
-        <div class="row-between">
-          <div>Сумма<br><span class="money">${fmtMoney(c.amount)}</span></div>
-          <div>К выплате (${percent}%)<br><span class="money">${fmtMoney(calcSalary(c.amount))}</span></div>
+        <div class="money-block">
+          <div class="money-box">
+            <div class="money-label">Сумма</div>
+            <div class="money-value">${fmtMoney(c.amount)}</div>
+          </div>
+          <div class="money-box">
+            <div class="money-label">К выплате (${percent}%)</div>
+            <div class="money-value">${fmtMoney(calcSalary(c.amount))}</div>
+          </div>
         </div>
         <div class="actions">
           <a class="whatsapp" target="_blank" href="${waLink(c.phone)||'#'}">WhatsApp</a>
-          <button data-act="edit" class="btn btn-ghost">✏️</button>
-          <button data-act="del" class="btn btn-ghost">🗑️</button>
+          <button data-act="edit" class="btn-small">✏️</button>
+          <button data-act="del" class="btn-small">🗑️</button>
         </div>
       `;
       card.querySelector('[data-act="edit"]').onclick=()=>editClient(c.id);
@@ -161,7 +283,6 @@
     sumToPay.textContent=fmtMoney(totalPay);
   }
 
-  // actions
   function addClient(){
     if(!inputName.value.trim()){alert('Введите имя');return}
     clients.unshift({id:uid(),name:inputName.value.trim(),plate:inputPlate.value.trim(),phone:inputPhone.value.trim(),amount:Number(inputAmount.value)||0});
@@ -179,37 +300,21 @@
   }
   function removeClient(id){if(confirm('Удалить?')){clients=clients.filter(c=>c.id!==id);save();render(searchInput.value)}}
   function clearAllFn(){if(confirm('Очистить всех?')){clients=[];save();render()}}
-  function exportData(){
-    const payload={percent,clients,exportedAt:new Date().toISOString()};
-    const json=JSON.stringify(payload,null,2);
-    const blob=new Blob([json],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');a.href=url;a.download='crm_export.json';a.click();
-    URL.revokeObjectURL(url);
-    // плюс показать в окне
-    const w=window.open('about:blank','exportWin');w.document.write('<pre>'+escapeHtml(json)+'</pre>');
-  }
 
-  // percent buttons
   function updatePercentButtons(){
     document.querySelectorAll('.percent-switch button').forEach(b=>{
-      b.style.background=(Number(b.dataset.percent)===percent)?'var(--accent)':'rgba(255,255,255,0.06)';
-      b.style.color=(Number(b.dataset.percent)===percent)?'#042029':'#fff';
+      b.classList.toggle('active',Number(b.dataset.percent)===percent);
     });
   }
   document.querySelectorAll('.percent-switch button').forEach(b=>{
     b.onclick=()=>{percent=Number(b.dataset.percent);save();updatePercentButtons();render(searchInput.value)};
   });
 
-  // events
   addBtn.onclick=addClient;
   clearAll.onclick=clearAllFn;
   searchInput.oninput=()=>render(searchInput.value);
-  exportBtn.onclick=exportData;
 
-  // init
-  load();
-  render();
+  load(); render();
 })();
 </script>
 </body>
