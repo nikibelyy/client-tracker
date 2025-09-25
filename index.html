@@ -3,583 +3,475 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Мини-CRM — локально в браузере</title>
+<title>Мини-CRM — в браузере (localStorage)</title>
 <style>
   :root{
-    --bg1:#ff9a9e;
-    --bg2:#fad0c4;
-    --glass-bg: rgba(255,255,255,0.14);
-    --card-border: rgba(255,255,255,0.25);
-    --accent1: #667eea;
-    --accent2: #764ba2;
-    --cta1: #ff7e5f;
-    --cta2: #feb47b;
-    --text: #0b0b0b;
-    --muted: rgba(255,255,255,0.7);
-    --shadow: 0 8px 32px rgba(0,0,0,0.15);
+    --bg:#0f1724;
+    --card-bg: rgba(255,255,255,0.06);
+    --accent: linear-gradient(135deg,#6EE7B7 0%, #3B82F6 100%);
+    --glass-border: rgba(255,255,255,0.12);
+    --muted: rgba(255,255,255,0.65);
+    --cta-color: #0b84ff;
+    --danger: #ff5c6c;
+    --max-width: 980px;
+    --radius: 14px;
   }
-
-  /* Animated gradient background */
-  body{
-    margin:0;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    color: var(--text);
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:28px;
-    background: linear-gradient(120deg,var(--bg1),var(--bg2), #a18cd1, #fbc2eb);
-    background-size: 600% 600%;
-    animation: GradientBG 16s ease infinite;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+  html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,"Helvetica Neue", Arial; background: radial-gradient(1200px 600px at 10% 10%, rgba(59,130,246,0.08), transparent), radial-gradient(1000px 500px at 90% 90%, rgba(110,231,183,0.04), transparent), var(--bg); color: #fff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  .wrap{max-width:var(--max-width);margin:28px auto;padding:20px;display:grid;grid-template-columns: 360px 1fr;gap:20px;align-items:start;}
+  header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  h1{font-size:20px;margin:0}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+  /* glass panel */
+  .panel{
+    background: var(--card-bg);
+    border-radius:var(--radius);
+    padding:16px;
+    border:1px solid var(--glass-border);
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
   }
-  @keyframes GradientBG{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
-
-  /* App container */
-  .app{
-    width:100%;
-    max-width:980px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    padding:20px;
-    border-radius:16px;
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-
-  header{
-    display:flex;
-    gap:16px;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-  }
-
-  .brand{
-    display:flex;
-    gap:12px;
-    align-items:center;
-  }
-  .logo{
-    width:52px;
-    height:52px;
-    border-radius:12px;
-    background: linear-gradient(135deg,var(--accent1),var(--accent2));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-weight:700;
-    box-shadow: 0 6px 18px rgba(102,126,234,0.18), inset 0 1px 0 rgba(255,255,255,0.15);
-  }
-  h1{font-size:18px;margin:0;color:white}
-  p.lead{margin:0;color:rgba(255,255,255,0.85);font-size:13px}
-
-  /* Form area */
-  .top{
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-    margin-bottom:16px;
-    flex-wrap:wrap;
-  }
-  form.add-client{
-    display:flex;
-    gap:8px;
-    align-items:end;
-    flex-wrap:wrap;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
-    padding:12px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,0.04);
-    flex:1 1 560px;
-  }
-  label{display:flex;flex-direction:column;font-size:12px;color:var(--muted)}
+  /* left column — form */
+  .form .row{display:flex;gap:10px;margin-bottom:10px}
+  label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
   input[type="text"], input[type="tel"], input[type="number"]{
-    padding:8px 10px;
-    border-radius:8px;
-    border:1px solid rgba(255,255,255,0.06);
-    background: rgba(255,255,255,0.03);
-    color:white;
-    min-width:120px;
+    width:100%;
+    padding:10px 12px;
+    border-radius:10px;border:1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.03); color: #fff; outline:none;
+    font-size:14px;
   }
-
-  /* CTA gradient buttons */
+  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   .btn{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:10px 14px;
-    border-radius:10px;
-    border:none;
-    cursor:pointer;
-    color:white;
-    font-weight:600;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-    transition: transform .12s ease, opacity .12s;
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 14px;border-radius:14px;border:none;cursor:pointer;
+    font-weight:600;font-size:14px;
+    box-shadow: 0 6px 18px rgba(11,132,255,0.18);
+    transition: transform .12s ease, box-shadow .12s ease;
   }
   .btn:active{transform:translateY(1px)}
   .btn-cta{
-    background: linear-gradient(90deg,var(--cta1),var(--cta2));
+    background: var(--accent);
+    color:#042029;
+    padding:12px 16px;
+    border-radius:18px;
   }
-  .btn-ghost{
-    background: transparent;
-    border:1px solid rgba(255,255,255,0.06);
-    color:white;
-    font-weight:600;
-  }
-
-  /* Cards grid */
-  .controls{
-    display:flex;
-    gap:8px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-
-  .list{
-    display:grid;
-    grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
-    gap:12px;
-    margin-top:14px;
-  }
-
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 12px;border-radius:12px}
+  .small{font-size:13px;padding:8px 10px;border-radius:10px}
+  /* right column — list */
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px}
+  .search{flex:1;display:flex;gap:8px}
+  .search input{flex:1}
+  .clients-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
   .card{
-    padding:14px;
-    border-radius:14px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    border:1px solid var(--card-border);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    backdrop-filter: blur(8px);
-    color:white;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+    padding:12px;border-radius:14px;border:1px solid var(--glass-border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+    display:flex;flex-direction:column;gap:8px;
   }
-
-  .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .muted{font-size:12px;color:rgba(255,255,255,0.75)}
-  .big{font-size:16px;font-weight:700}
-
-  .tag{
-    padding:6px 8px;
-    border-radius:999px;
-    font-size:12px;
-    background: rgba(255,255,255,0.06);
-    display:inline-block;
-  }
-
+  .card .top{display:flex;justify-content:space-between;align-items:center}
+  .client-name{font-weight:700;font-size:16px}
+  .meta{font-size:12px;color:var(--muted)}
+  .gov{font-weight:600;padding:6px 8px;border-radius:10px;background:rgba(255,255,255,0.02);font-size:12px}
+  .row-between{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .muted{color:var(--muted);font-size:13px}
+  .money{font-weight:700}
   .actions{display:flex;gap:8px;flex-wrap:wrap}
-  .wa{
-    display:inline-flex;
-    gap:8px;
-    align-items:center;
-    padding:8px 10px;
-    border-radius:9px;
+  .btn-icon{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;min-width:40px}
+  .whatsapp{
+    background: linear-gradient(135deg,#25D366,#128C7E); color:#042029; border-radius:12px; padding:8px 12px; font-weight:700; display:inline-flex;align-items:center;gap:8px;
     text-decoration:none;
-    color:white;
-    font-weight:700;
-    background: linear-gradient(90deg,#2bd66a,#06a84a);
   }
-
-  footer{
-    margin-top:12px;
-    font-size:12px;
-    color:rgba(255,255,255,0.7);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  }
-
-  /* small screens */
+  footer{grid-column:1/-1;margin-top:12px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .controls{display:flex;gap:8px;align-items:center}
+  .percent-control{display:flex;gap:10px;align-items:center}
+  input[type=range]{width:160px}
+  /* responsive */
+  @media (max-width:900px){ .wrap{grid-template-columns:1fr; padding:14px} .clients-list{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))} }
   @media (max-width:600px){
-    .app{padding:12px;border-radius:12px}
+    body{padding-bottom:40px}
+    .panel{padding:12px;border-radius:12px}
+    .btn{font-size:14px}
+    .wrap{margin:12px auto;padding:12px}
     header{flex-direction:column;align-items:flex-start;gap:8px}
-    form.add-client{flex-direction:column;align-items:stretch}
-    .controls{width:100%;justify-content:space-between}
-    .list{grid-template-columns:1fr}
-    .logo{width:44px;height:44px}
+    .clients-list{grid-template-columns:1fr}
+    .whatsapp{padding:10px 14px;border-radius:16px}
   }
-
   /* tiny helpers */
-  .small{font-size:12px}
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+  .note{font-size:12px;color:var(--muted)}
+  .flex{display:flex;gap:8px;align-items:center}
+  .center{display:flex;justify-content:center;align-items:center}
 </style>
 </head>
 <body>
-  <div class="app" role="application" aria-label="Мини CRM">
+  <div class="wrap">
     <header>
-      <div class="brand">
-        <div class="logo">CRM</div>
-        <div>
-          <h1>Мини-CRM (локально)</h1>
-          <p class="lead">Данные сохраняются только в браузере — не требуется сервер.</p>
-        </div>
+      <div>
+        <h1>Мини-CRM (браузер, localStorage)</h1>
+        <p class="lead">Клиенты хранятся только у тебя в браузере. Стеклянный дизайн, мобильная адаптация, WhatsApp-кнопка и автомат расчёта зарплаты.</p>
       </div>
-
-      <div class="controls">
-        <div style="display:flex;gap:8px;align-items:center;">
-          <label class="small muted">Глоб. процент:
-            <input id="globalPercent" type="number" min="0" max="100" step="0.1" value="10" style="width:84px"/>
-          </label>
-          <label class="small muted">Код (по умолч.) :
-            <input id="defaultDial" type="text" value="+7" style="width:84px"/>
-          </label>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button id="exportBtn" class="btn btn-ghost">Экспорт JSON</button>
-          <button id="importBtn" class="btn btn-ghost">Импорт</button>
-          <button id="clearAll" class="btn btn-ghost">Очистить всё</button>
+      <div class="flex">
+        <div class="percent-control panel" style="display:flex;align-items:center;gap:10px;">
+          <label style="margin:0;font-size:12px;color:var(--muted)">Процент зарплаты</label>
+          <input id="globalPercentRange" type="range" min="0" max="100" value="10" />
+          <input id="globalPercent" type="number" min="0" max="100" value="10" style="width:64px" />
         </div>
       </div>
     </header>
 
-    <div class="top">
-      <form id="addForm" class="add-client" onsubmit="return false;">
-        <label>
-          Имя
-          <input id="name" type="text" placeholder="Марка Иванов" required />
-        </label>
-        <label>
-          Гос. номер
-          <input id="plate" type="text" placeholder="A123BC77" />
-        </label>
-        <label>
-          Телефон
-          <input id="phone" type="tel" placeholder="+7 900 000 0000" />
-        </label>
-        <label>
-          Сумма сделки
-          <input id="sum" type="number" min="0" step="0.01" placeholder="100000" />
-        </label>
-        <label>
-          % (перс. для клиента)
-          <input id="percent" type="number" min="0" max="100" step="0.1" placeholder="по умолчанию" />
-        </label>
-        <button id="addBtn" class="btn btn-cta" title="Добавить клиента">Добавить клиента</button>
-      </form>
+    <!-- left: форма -->
+    <aside class="panel form">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div>
+          <strong>Добавить клиента</strong>
+          <div class="note">Вводи телефон с кодом страны для корректной работы WhatsApp (пример: +79161234567)</div>
+        </div>
+        <div class="note">Local only</div>
+      </div>
 
-      <div style="min-width:220px;">
-        <label class="small muted">Поиск / фильтр
-          <input id="search" type="text" placeholder="имя, номер, телефон..." />
-        </label>
-        <div style="margin-top:8px;display:flex;gap:8px;">
-          <button id="sortBySum" class="btn btn-ghost">Сорт: сумма ↓</button>
-          <button id="toggleEmptyPhone" class="btn btn-ghost">Только с телефоном</button>
+      <div class="row">
+        <div style="flex:1">
+          <label>Имя</label>
+          <input id="inputName" type="text" placeholder="Марк" />
         </div>
       </div>
-    </div>
 
-    <div id="list" class="list" aria-live="polite"></div>
+      <div class="row">
+        <div style="flex:1">
+          <label>Гос. номер</label>
+          <input id="inputPlate" type="text" placeholder="A123BC77" />
+        </div>
+      </div>
 
-    <footer>
-      <div>Клиентов: <span id="count">0</span></div>
-      <div class="muted">Локальное хранилище (localStorage). Никаких внешних запросов.</div>
-    </footer>
+      <div class="row">
+        <div style="flex:1">
+          <label>Телефон</label>
+          <input id="inputPhone" type="tel" placeholder="+79161234567" />
+        </div>
+      </div>
 
-    <!-- hidden file input for import -->
-    <input id="fileIn" type="file" accept="application/json" style="display:none"/>
+      <div class="row">
+        <div style="flex:1">
+          <label>Сумма (₽)</label>
+          <input id="inputAmount" type="number" step="0.01" placeholder="10000" />
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="addBtn" class="btn btn-cta">Добавить клиента
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:6px"><path d="M5 12h14" stroke="#042029" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5v14" stroke="#042029" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="clearAll" class="btn btn-ghost small">Очистить всё</button>
+        <button id="importBtn" class="btn btn-ghost small">Импорт</button>
+        <button id="exportBtn" class="btn small">Экспорт</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <label>Быстрая подсказка</label>
+        <div class="note">Телефон преобразуется для WhatsApp: все символы, кроме цифр, убираются. WhatsApp требует код страны без + (например 7916...)</div>
+      </div>
+    </aside>
+
+    <!-- right: список -->
+    <main>
+      <div class="panel">
+        <div class="toolbar">
+          <div class="search">
+            <input id="search" type="text" placeholder="Поиск по имени, номеру, телефону..." />
+            <button id="resetSearch" class="btn btn-ghost small">Сброс</button>
+          </div>
+          <div class="controls">
+            <div class="note">Всего: <span id="totalCount">0</span></div>
+            <div class="note">Общая сумма: <strong id="sumTotal">0 ₽</strong></div>
+            <div class="note">К выплате: <strong id="sumToPay">0 ₽</strong></div>
+          </div>
+        </div>
+
+        <div id="clients" class="clients-list"></div>
+      </div>
+
+      <footer>
+        <div class="note">Сохранение: <strong>localStorage</strong> — данные видны только в этом браузере.</div>
+        <div class="note">Сделано красиво — используй на смартфоне (≤600px) для удобства.</div>
+      </footer>
+    </main>
   </div>
 
 <script>
-/* ========== Storage keys ========== */
-const LS_KEY = 'miniCRM_clients_v1';
-const LS_SETTINGS = 'miniCRM_settings_v1';
+(function(){
+  const LS_KEY = 'miniCRM_clients_v1';
+  const LS_PERCENT = 'miniCRM_percent_v1';
 
-/* ========== Helpers ========== */
-function uid(){ return Math.random().toString(36).slice(2,9); }
+  // DOM
+  const inputName = document.getElementById('inputName');
+  const inputPlate = document.getElementById('inputPlate');
+  const inputPhone = document.getElementById('inputPhone');
+  const inputAmount = document.getElementById('inputAmount');
+  const addBtn = document.getElementById('addBtn');
+  const clientsWrap = document.getElementById('clients');
+  const totalCount = document.getElementById('totalCount');
+  const sumTotal = document.getElementById('sumTotal');
+  const sumToPay = document.getElementById('sumToPay');
+  const searchInput = document.getElementById('search');
+  const resetSearch = document.getElementById('resetSearch');
+  const clearAll = document.getElementById('clearAll');
+  const exportBtn = document.getElementById('exportBtn');
+  const importBtn = document.getElementById('importBtn');
+  const globalPercentRange = document.getElementById('globalPercentRange');
+  const globalPercentInput = document.getElementById('globalPercent');
 
-function numberCleanForWhatsApp(raw, defaultDial='+7'){
-  if(!raw) return null;
-  let s = raw.replace(/[^\d+]/g,'');
-  // If it starts with '+' keep it.
-  if(s.startsWith('+')) return s.replace('+','');
-  // If starts with '8' and length 11 -> replace with 7 (common RU)
-  if(s.length === 11 && s.startsWith('8')) s = '7' + s.slice(1);
-  // if it looks short, prepend default dial (remove +)
-  let dd = defaultDial.replace(/[^\d]/g,'');
-  if(s.length < 9){
-    s = dd + s;
-  } else if(s.length === 10){
-    // maybe local w/o country code; prepend default
-    s = dd + s;
-  }
-  // return digits only (wa.me wants digits)
-  return s.replace(/[^\d]/g,'');
-}
+  // data
+  let clients = [];
+  let percent = 10;
 
-function formatCurrency(n){
-  if(n === '' || n === null || isNaN(n)) return '—';
-  return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(Number(n));
-}
-
-/* ========== App state ========== */
-let clients = [];
-let settings = {
-  globalPercent: 10,
-  defaultDial: '+7'
-};
-let ui = { list: document.getElementById('list'), count: document.getElementById('count') };
-
-/* ========== Load / Save ========== */
-function save(){
-  localStorage.setItem(LS_KEY, JSON.stringify(clients));
-  localStorage.setItem(LS_SETTINGS, JSON.stringify(settings));
-}
-function load(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    clients = raw ? JSON.parse(raw) : [];
-  }catch(e){ clients = []; }
-  try{
-    const s = localStorage.getItem(LS_SETTINGS);
-    if(s) settings = Object.assign(settings, JSON.parse(s));
-  }catch(e){}
-}
-
-/* ========== Render ========== */
-let sortDesc = true;
-let filterHasPhone = false;
-
-function renderList(){
-  ui.list.innerHTML = '';
-  const q = document.getElementById('search').value.trim().toLowerCase();
-  let visible = clients.slice();
-
-  if(q){
-    visible = visible.filter(c=>{
-      return (c.name && c.name.toLowerCase().includes(q)) ||
-             (c.plate && c.plate.toLowerCase().includes(q)) ||
-             (c.phone && c.phone.toLowerCase().includes(q));
-    });
-  }
-  if(filterHasPhone){
-    visible = visible.filter(c => c.phone && c.phone.trim().length>0);
-  }
-  visible.sort((a,b)=> {
-    const sa = Number(a.sum||0);
-    const sb = Number(b.sum||0);
-    return sortDesc ? sb - sa : sa - sb;
-  });
-
-  visible.forEach(c => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="row">
-        <div>
-          <div class="big">${escapeHtml(c.name||'—')}</div>
-          <div class="muted">${escapeHtml(c.plate || '')}</div>
-        </div>
-        <div class="tag small">${c.id}</div>
-      </div>
-
-      <div class="row">
-        <div>
-          <div class="muted">Сумма</div>
-          <div class="big">${formatCurrency(c.sum)}</div>
-        </div>
-        <div>
-          <div class="muted">% для расчёта</div>
-          <div class="big">${c.percent !== undefined && c.percent !== null && c.percent !== '' ? Number(c.percent) + '%' : Number(settings.globalPercent) + '%'}</div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <div class="muted">Зарплата</div>
-          <div class="big">${calcSalaryDisplay(c)}</div>
-        </div>
-        <div class="muted small">Телефон: ${c.phone ? escapeHtml(maskPhone(c.phone)) : '—'}</div>
-      </div>
-
-      <div class="actions">
-        ${c.phone ? `<a class="wa" href="https://wa.me/${numberCleanForWhatsApp(c.phone, settings.defaultDial)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
-        <button class="btn btn-ghost" data-action="edit" data-id="${c.id}">Редактировать</button>
-        <button class="btn btn-ghost" data-action="del" data-id="${c.id}">Удалить</button>
-      </div>
-    `;
-    ui.list.appendChild(card);
-  });
-
-  ui.count.textContent = visible.length;
-}
-
-function calcSalaryDisplay(c){
-  const percent = (c.percent !== undefined && c.percent !== null && c.percent !== '') ? Number(c.percent) : Number(settings.globalPercent);
-  const s = Number(c.sum||0);
-  if(isNaN(s) || s === 0) return '—';
-  const salary = (s * percent / 100);
-  return formatCurrency(salary);
-}
-
-/* ========== Utilities ========== */
-function escapeHtml(s){
-  if(!s) return '';
-  return String(s).replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
-}
-function maskPhone(s){
-  if(!s) return '';
-  const d = s.replace(/\D/g,'');
-  if(d.length <= 4) return s;
-  return d.replace(/(\d{0,3})(\d{0,3})(\d{0,4})/, (m,a,b,c)=> (a? '+'+a + ' ':'') + (b? b + ' ':'') + (c? c : ''));
-}
-
-/* ========== Form actions ========== */
-document.getElementById('addBtn').addEventListener('click', ()=>{
-  const name = document.getElementById('name').value.trim();
-  const plate = document.getElementById('plate').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const sum = document.getElementById('sum').value.trim();
-  const percent = document.getElementById('percent').value.trim();
-
-  if(!name){
-    alert('Введите имя клиента.');
-    return;
-  }
-
-  const client = {
-    id: uid(),
-    name,
-    plate,
-    phone,
-    sum: sum === '' ? 0 : Number(sum),
-    percent: percent === '' ? '' : Number(percent),
-    createdAt: new Date().toISOString()
-  };
-  clients.unshift(client);
-  save();
-  renderList();
-  // clear form
-  document.getElementById('addForm').reset();
-});
-
-/* Edit & Delete */
-ui.list.addEventListener('click', (ev)=>{
-  const btn = ev.target.closest('button');
-  if(!btn) return;
-  const id = btn.dataset.id;
-  const act = btn.dataset.action;
-  if(act === 'del'){
-    if(confirm('Удалить клиента?')) {
-      clients = clients.filter(c=>c.id !== id);
-      save();
-      renderList();
-    }
-  } else if(act === 'edit'){
-    const c = clients.find(x=>x.id === id);
-    if(!c) return;
-    // simple prompt-based edit (fast). Could be replaced by modal.
-    const name = prompt('Имя клиента:', c.name);
-    if(name === null) return;
-    const plate = prompt('Гос.номер:', c.plate || '');
-    if(plate === null) return;
-    const phone = prompt('Телефон:', c.phone || '');
-    if(phone === null) return;
-    const sum = prompt('Сумма сделки:', c.sum || 0);
-    if(sum === null) return;
-    const percent = prompt('Процент (оставьте пустым чтобы использовать глобальный):', c.percent === '' ? '' : String(c.percent));
-    if(percent === null) return;
-
-    c.name = name.trim();
-    c.plate = plate.trim();
-    c.phone = phone.trim();
-    c.sum = sum === '' ? 0 : Number(sum);
-    c.percent = percent === '' ? '' : Number(percent);
-    save();
-    renderList();
-  }
-});
-
-/* Search, sort, filters */
-document.getElementById('search').addEventListener('input', renderList);
-document.getElementById('sortBySum').addEventListener('click', ()=>{
-  sortDesc = !sortDesc;
-  document.getElementById('sortBySum').textContent = 'Сорт: сумма ' + (sortDesc ? '↓' : '↑');
-  renderList();
-});
-document.getElementById('toggleEmptyPhone').addEventListener('click', ()=>{
-  filterHasPhone = !filterHasPhone;
-  document.getElementById('toggleEmptyPhone').textContent = filterHasPhone ? 'Только с телефоном ✓' : 'Только с телефоном';
-  renderList();
-});
-
-/* Global percent & default dial */
-const gp = document.getElementById('globalPercent');
-const dd = document.getElementById('defaultDial');
-gp.addEventListener('change', ()=>{
-  settings.globalPercent = Number(gp.value || 0);
-  save(); renderList();
-});
-dd.addEventListener('change', ()=>{
-  settings.defaultDial = dd.value || '+7';
-  save();
-});
-
-/* Export / Import / Clear */
-document.getElementById('exportBtn').addEventListener('click', ()=>{
-  const payload = { clients, settings, exportedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `mini-crm-export-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-document.getElementById('importBtn').addEventListener('click', ()=> document.getElementById('fileIn').click());
-document.getElementById('fileIn').addEventListener('change', (e)=>{
-  const f = e.target.files[0];
-  if(!f) return;
-  const r = new FileReader();
-  r.onload = ()=>{
+  // helpers
+  function load(){
     try{
-      const data = JSON.parse(r.result);
-      if(Array.isArray(data.clients)){
-        clients = data.clients.concat(clients); // append imported to top
-        if(data.settings) settings = Object.assign(settings, data.settings);
-        save();
-        renderList();
-        alert('Импорт успешно завершён.');
-      } else {
-        alert('Файл не содержит ожидаемые данные (нет clients[]).');
-      }
-    }catch(err){ alert('Ошибка чтения файла: ' + err.message); }
-  };
-  r.readAsText(f);
-  e.target.value = ''; // reset
-});
-
-document.getElementById('clearAll').addEventListener('click', ()=>{
-  if(confirm('Это удалит ВСЕ записи в localStorage. Продолжить?')) {
-    clients = [];
-    save();
-    renderList();
+      const raw = localStorage.getItem(LS_KEY);
+      clients = raw ? JSON.parse(raw) : [];
+    }catch(e){ clients = []; }
+    try{
+      const p = localStorage.getItem(LS_PERCENT);
+      if(p !== null) percent = Number(p);
+    }catch(e){}
+    globalPercentRange.value = percent;
+    globalPercentInput.value = percent;
   }
-});
 
-/* ========== Init ========== */
-function init(){
+  function save(){
+    localStorage.setItem(LS_KEY, JSON.stringify(clients));
+    localStorage.setItem(LS_PERCENT, String(percent));
+  }
+
+  function fmtMoney(n){
+    if(!isFinite(n)) return '0 ₽';
+    return Number(n).toLocaleString('ru-RU', {maximumFractionDigits:2}) + ' ₽';
+  }
+
+  function calcSalary(amount){
+    const a = Number(amount) || 0;
+    return (a * (Number(percent)||0) / 100);
+  }
+
+  function digitsOnlyPhone(phone){
+    if(!phone) return '';
+    const only = phone.replace(/\\D+/g,'');
+    // If phone starts with 8 and length looks like RU (11 digits), convert 8->7 (common), but we won't assume.
+    return only;
+  }
+
+  function buildWhatsAppLink(phone){
+    const digits = digitsOnlyPhone(phone);
+    if(!digits) return null;
+    return 'https://wa.me/' + digits;
+  }
+
+  function uid(){ return 'id_' + Math.random().toString(36).slice(2,9); }
+
+  // render
+  function render(filterText=''){
+    clientsWrap.innerHTML = '';
+    const f = filterText.trim().toLowerCase();
+    const visible = clients.filter(c => {
+      if(!f) return true;
+      return (c.name || '').toLowerCase().includes(f) ||
+             (c.plate || '').toLowerCase().includes(f) ||
+             (c.phone || '').toLowerCase().includes(f) ||
+             String(c.amount || '').toLowerCase().includes(f);
+    });
+
+    let total = 0, totalPay = 0;
+    visible.forEach(c => {
+      total += Number(c.amount || 0);
+      totalPay += calcSalary(c.amount);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="top">
+          <div>
+            <div class="client-name">${escapeHtml(c.name || '—')}</div>
+            <div class="meta">${escapeHtml(c.phone || '')}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="gov">${escapeHtml(c.plate || '')}</div>
+            <div class="muted" style="font-size:12px;margin-top:6px">ID: ${c.id}</div>
+          </div>
+        </div>
+
+        <div class="row-between">
+          <div>
+            <div class="muted">Сумма</div>
+            <div class="money">${fmtMoney(c.amount)}</div>
+          </div>
+          <div>
+            <div class="muted">К выплате (${percent}%)</div>
+            <div class="money">${fmtMoney(calcSalary(c.amount))}</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="whatsapp" target="_blank" rel="noopener" href="${buildWhatsAppLink(c.phone) || '#'}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right:6px">
+              <path d="M21 12.08A9 9 0 1 0 12.08 21l-1.1.29.29-1.1A9 9 0 0 0 21 12.08z" stroke="#042029" stroke-width="0" fill="#fff"/>
+            </svg>
+            WhatsApp
+          </a>
+
+          <button class="btn-icon" data-action="edit" title="Редактировать">✏️</button>
+          <button class="btn-icon" data-action="copy" title="Копировать номер">📋</button>
+          <button class="btn-icon" data-action="delete" title="Удалить" style="color:var(--danger)">🗑️</button>
+        </div>
+      `;
+      // attach actions handlers
+      card.querySelectorAll('[data-action]').forEach(btn=>{
+        btn.addEventListener('click', ()=> {
+          const action = btn.getAttribute('data-action');
+          if(action === 'edit') editClient(c.id);
+          if(action === 'delete') removeClient(c.id);
+          if(action === 'copy') { navigator.clipboard?.writeText(c.phone || '') .then(()=> alert('Номер скопирован в буфер')) .catch(()=> alert('Не удалось скопировать')) }
+        });
+      });
+
+      clientsWrap.appendChild(card);
+    });
+
+    totalCount.textContent = visible.length;
+    sumTotal.textContent = fmtMoney(total);
+    sumToPay.textContent = fmtMoney(totalPay);
+  }
+
+  // escape
+  function escapeHtml(s){
+    if(!s) return '';
+    return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]});
+  }
+
+  // actions
+  function addClient(){
+    const name = inputName.value.trim();
+    const plate = inputPlate.value.trim();
+    const phone = inputPhone.value.trim();
+    const amount = Number(inputAmount.value) || 0;
+    if(!name){
+      alert('Введите имя клиента');
+      return;
+    }
+    const c = { id: uid(), name, plate, phone, amount };
+    clients.unshift(c);
+    save();
+    render(searchInput.value);
+    // clear some fields for convenience
+    inputName.value = '';
+    inputPlate.value = '';
+    inputPhone.value = '';
+    inputAmount.value = '';
+    inputName.focus();
+  }
+
+  function editClient(id){
+    const c = clients.find(x=>x.id===id);
+    if(!c) return;
+    const newName = prompt('Имя', c.name);
+    if(newName === null) return;
+    const newPlate = prompt('Гос. номер', c.plate);
+    if(newPlate === null) return;
+    const newPhone = prompt('Телефон', c.phone);
+    if(newPhone === null) return;
+    const newAmount = prompt('Сумма', String(c.amount || 0));
+    if(newAmount === null) return;
+    c.name = newName.trim();
+    c.plate = newPlate.trim();
+    c.phone = newPhone.trim();
+    c.amount = Number(newAmount) || 0;
+    save(); render(searchInput.value);
+  }
+
+  function removeClient(id){
+    if(!confirm('Удалить клиента?')) return;
+    clients = clients.filter(x=>x.id!==id);
+    save(); render(searchInput.value);
+  }
+
+  function clearEverything(){
+    if(!confirm('Удалить всех клиентов и настройки? Это действие необратимо.')) return;
+    clients = [];
+    percent = 10;
+    save();
+    render();
+    globalPercentRange.value = percent;
+    globalPercentInput.value = percent;
+  }
+
+  function exportData(){
+    const payload = { clients, percent, exportedAt: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'miniCRM_export.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function importData(){
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'application/json';
+    input.addEventListener('change', () => {
+      const f = input.files?.[0];
+      if(!f) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try{
+          const obj = JSON.parse(String(e.target.result));
+          if(Array.isArray(obj.clients)) clients = obj.clients;
+          if(typeof obj.percent === 'number') percent = obj.percent;
+          save(); render(); globalPercentRange.value = percent; globalPercentInput.value = percent;
+          alert('Импорт завершён');
+        }catch(err){ alert('Не удалось импортировать: неверный формат'); }
+      };
+      reader.readAsText(f);
+    });
+    input.click();
+  }
+
+  // events
+  addBtn.addEventListener('click', addClient);
+  inputAmount.addEventListener('keydown', (e)=>{ if(e.key==='Enter') addClient(); });
+  searchInput.addEventListener('input', ()=> render(searchInput.value));
+  resetSearch.addEventListener('click', ()=>{ searchInput.value=''; render(); });
+  clearAll.addEventListener('click', clearEverything);
+  exportBtn.addEventListener('click', exportData);
+  importBtn.addEventListener('click', importData);
+
+  globalPercentRange.addEventListener('input', (e)=> {
+    percent = Number(e.target.value);
+    globalPercentInput.value = percent;
+    save(); render(searchInput.value);
+  });
+  globalPercentInput.addEventListener('change', (e)=> {
+    let val = Number(e.target.value);
+    if(isNaN(val) || val < 0) val = 0;
+    if(val > 100) val = 100;
+    percent = val;
+    globalPercentRange.value = percent;
+    save(); render(searchInput.value);
+  });
+
+  // initial load
   load();
-  // set UI settings
-  document.getElementById('globalPercent').value = settings.globalPercent;
-  document.getElementById('defaultDial').value = settings.defaultDial;
-  renderList();
-}
-init();
+  // seed example if empty (optional)
+  if(!clients.length){
+    clients = [
+      { id: uid(), name: 'Марк Иванов', plate: 'A123BC77', phone:'+79161234567', amount: 25000 },
+      { id: uid(), name: 'Елена Петрова', plate: 'B987YT99', phone:'+79261239900', amount: 15000 }
+    ];
+    save();
+  }
+  render();
 
-/* ========== Small UX helpers ========== */
-// Recompute salary whenever settings.globalPercent changes in the input
-gp.addEventListener('input', ()=> renderList());
+  // expose for dev (optional)
+  window._miniCRM = { get clients(){return clients}, save, load };
 
+})();
 </script>
 </body>
 </html>
