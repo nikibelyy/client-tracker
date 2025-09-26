@@ -3,333 +3,553 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CRMAPP</title>
+<title>Клиенты договоры</title>
+
 <style>
-  :root {
-    --bg: #0d1117;
-    --card-bg: rgba(255,255,255,0.05);
-    --glass-border: rgba(255,255,255,0.12);
-    --accent: linear-gradient(135deg,#4facfe 0%, #00f2fe 100%);
-    --danger: #ff4d6d;
-    --radius: 16px;
+  :root{
+    --bg: #0f1724;
+    --card: linear-gradient(135deg,#0f1724 0%, #0b1220 100%);
+    --accent1: #6EE7B7;
+    --accent2: #60A5FA;
+    --muted: #9aa7bd;
+    --glass: rgba(255,255,255,0.04);
+    --danger: #ff6b6b;
+    --radius: 14px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: #fff;
-  }
-  .wrap {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 16px;
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 16px;
-  }
-  header {
-    grid-column: 1/-1;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  h1 { margin: 0; font-size: 22px; font-weight: 700; }
 
-  .panel {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
+  html,body{
+    height:100%;
+    margin:0;
+    background: linear-gradient(180deg,#071025 0%, #081226 55%, #061021 100%);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  .wrap{
+    max-width:980px;
+    margin:18px auto;
+    padding:18px;
+  }
+
+  header{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:14px;
+  }
+
+  .logo{
+    width:56px;
+    height:56px;
+    border-radius:12px;
+    background: linear-gradient(135deg,var(--accent1),var(--accent2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:#042028;
+    box-shadow:0 6px 18px rgba(2,6,23,0.6), inset 0 -6px 18px rgba(255,255,255,0.08);
+    flex:0 0 56px;
+  }
+
+  h1{
+    font-size:1.15rem;
+    margin:0;
+    letter-spacing:-0.2px;
+  }
+
+  p.sub{
+    margin:0;
+    color:var(--muted);
+    font-size:0.85rem;
+  }
+
+  main{
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:18px;
+    align-items:start;
+  }
+
+  /* responsive -> single column on small screens */
+  @media (max-width:820px){
+    main{
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* form card */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
     border-radius: var(--radius);
-    backdrop-filter: blur(8px) saturate(120%);
-    padding: 16px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    padding:14px;
+    box-shadow: 0 6px 30px rgba(2,6,23,0.5);
+    border: 1px solid rgba(255,255,255,0.03);
   }
 
-  label { font-size: 12px; display: block; margin-bottom: 4px; color: rgba(255,255,255,0.7) }
-  input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.04);
-    color: #fff;
-    font-size: 14px;
-    margin-bottom: 12px;
+  form .row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
   }
-  input:focus { outline: none; border-color: rgba(255,255,255,0.3) }
 
-  .btn {
-    cursor: pointer;
+  @media (max-width:520px){
+    form .row{flex-direction:column;}
+  }
+
+  label{
+    display:block;
+    font-size:0.82rem;
+    color: #dff6ee;
+    margin-bottom:6px;
+  }
+
+  input[type="text"], select{
+    width:100%;
+    appearance:none;
     border: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 12px;
-    border-radius: 12px;
-    transition: .15s;
-  }
-  .btn:hover { opacity: .9 }
-  .btn-cta { background: var(--accent); color: #042029; font-weight: 700 }
-  .btn-danger { background: var(--danger); color: #fff }
-
-  .percent-switch {
-    display: flex; gap: 8px; margin-bottom: 14px;
-  }
-  .percent-switch button {
-    flex: 1;
-    background: rgba(255,255,255,0.06);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 10px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .percent-switch button.active {
-    background: var(--accent);
-    color: #042029;
+    padding:12px 12px;
+    border-radius:10px;
+    background: rgba(255,255,255,0.02);
+    color: #eaf6ff;
+    outline: none;
+    font-size:0.95rem;
+    box-shadow: inset 0 -4px 10px rgba(0,0,0,0.35);
+    border:1px solid rgba(255,255,255,0.02);
   }
 
-  .fixed-summary {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(13,17,23,0.9);
-    backdrop-filter: blur(6px);
-    border-radius: 12px;
-    padding: 8px 12px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
+  .controls{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+    align-items:center;
   }
 
-  .clients-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
-    gap: 14px;
+  .btn{
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    font-size:0.95rem;
+    transition:transform .08s ease;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.5);
   }
 
-  .card {
-    border-radius: 16px;
-    padding: 14px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .card .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .client-name { font-size: 18px; font-weight: 700 }
-  .gov, .phone {
-    font-size: 13px;
-    padding: 4px 8px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.08);
-  }
-  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .btn:active{transform:translateY(1px);}
 
-  .money-block {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+  .primary{
+    background: linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:#042028;
   }
-  .money-box {
-    flex: 1;
-    padding: 8px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    text-align: center;
-  }
-  .money-label { font-size: 12px; color: rgba(255,255,255,0.7) }
-  .money-value { font-weight: 700; font-size: 15px }
 
-  .actions { display: flex; gap: 8px; flex-wrap: wrap }
-  .btn-icon {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    padding: 8px;
-    background: rgba(255,255,255,0.06);
-    border: none;
-    cursor: pointer;
-    transition: .2s;
+  .ghost{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
   }
-  .btn-icon:hover { background: rgba(255,255,255,0.12) }
-  .btn-icon img { width: 20px; height: 20px; }
 
-  @media(max-width: 700px) {
-    .wrap { grid-template-columns: 1fr; }
+  .danger{
+    background: linear-gradient(90deg,#ff8f8f,#ff6b6b);
+    color:#2b0505;
   }
+
+  /* clients list */
+  .list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .client{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .client .left{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    min-width:0;
+  }
+
+  .avatar{
+    width:56px;height:56px;border-radius:10px;
+    background: linear-gradient(135deg,var(--accent2),var(--accent1));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; color:#022437;
+    flex:0 0 56px;
+  }
+
+  .meta{
+    min-width:0;
+  }
+
+  .meta .name{
+    font-weight:700;
+    font-size:0.98rem;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .meta .car{
+    color:var(--muted);
+    font-size:0.86rem;
+    margin-top:4px;
+  }
+
+  .right{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-shrink:0;
+  }
+
+  .badge{
+    font-weight:700;
+    padding:8px 10px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.03);
+    font-size:0.95rem;
+  }
+
+  .empty{
+    color:var(--muted);
+    text-align:center;
+    padding:28px 8px;
+  }
+
+  /* small utilities */
+  .row-between{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+
+  .small{
+    font-size:0.82rem;
+    color:var(--muted);
+  }
+
+  footer.note{
+    margin-top:16px;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.82rem;
+  }
+
+  /* subtle scrollbar for mobile */
+  ::-webkit-scrollbar{height:8px;width:8px;}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.04);border-radius:999px;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>CRMAPP</h1>
+    <div class="logo">CD</div>
+    <div>
+      <h1>Клиенты — договоры</h1>
+      <p class="sub">Добавляй, редактируй и храни записи локально на устройстве</p>
+    </div>
   </header>
 
-  <!-- форма -->
-  <aside class="panel">
-    <div class="percent-switch">
-      <button data-percent="15" class="active">15%</button>
-      <button data-percent="25">25%</button>
-      <button data-percent="30">30%</button>
-    </div>
-    <label>Имя</label>
-    <input id="inputName" type="text" placeholder="Имя клиента" />
-    <label>Гос. номер</label>
-    <input id="inputPlate" type="text" placeholder="A123BC77" />
-    <label>Телефон</label>
-    <input id="inputPhone" type="tel" placeholder="+79161234567" />
-    <label>Сумма (₽)</label>
-    <input id="inputAmount" type="number" placeholder="10000" />
-    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-      <button id="addBtn" class="btn btn-cta">Добавить</button>
-      <button id="clearAll" class="btn btn-danger">Очистить всё</button>
-    </div>
-  </aside>
-
-  <!-- список -->
   <main>
-    <div class="panel">
-      <div class="fixed-summary">
-        Всего: <span id="totalCount">0</span> • Общая сумма: <span id="sumTotal">0 ₽</span> • К выплате: <span id="sumToPay">0 ₽</span>
+    <!-- left: client list -->
+    <section>
+      <div class="card">
+        <div class="row-between" style="margin-bottom:10px">
+          <div>
+            <strong>Список клиентов</strong>
+            <div class="small">Всего: <span id="total">0</span></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn ghost" id="btnExport">Экспорт CSV</button>
+            <button class="btn ghost" id="btnClearAll">Очистить</button>
+          </div>
+        </div>
+
+        <div id="clientsList" class="list" aria-live="polite">
+          <div class="empty" id="emptyState">Нет клиентов — добавь через форму справа.</div>
+        </div>
       </div>
-      <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <input id="search" type="text" placeholder="Поиск..." style="flex:1;min-width:140px">
+    </section>
+
+    <!-- right: form -->
+    <aside>
+      <div class="card" aria-labelledby="formTitle">
+        <div id="formTitle" style="margin-bottom:8px">
+          <strong>Новый клиент</strong>
+        </div>
+
+        <form id="clientForm" autocomplete="off" novalidate>
+          <div class="row">
+            <div style="flex:1">
+              <label for="fio">ФИО</label>
+              <input id="fio" name="fio" type="text" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div style="flex:1">
+              <label for="brand">Марка машины</label>
+              <input id="brand" name="brand" type="text" />
+            </div>
+            <div style="width:150px">
+              <label for="plate">Гос. номер</label>
+              <input id="plate" name="plate" type="text" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div style="flex:1">
+              <label for="percent">Процент</label>
+              <select id="percent" name="percent" required>
+                <option value="30">30%</option>
+                <option value="25">25%</option>
+                <option value="20">20%</option>
+                <option value="15">15%</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button id="saveBtn" class="btn primary" type="submit">Добавить</button>
+            <button id="cancelEdit" class="btn ghost" type="button" style="display:none">Отменить</button>
+            <div style="flex:1"></div>
+            <div class="small">Сохранение в браузере</div>
+          </div>
+        </form>
+
+        <div style="height:10px"></div>
+
+        <div class="small">Подходит для использования в WebView / PWA.</div>
       </div>
-      <div id="clients" class="clients-list"></div>
-    </div>
+    </aside>
   </main>
+
+  <footer class="note">Версия интерфейса — мобильная оптимизация включена</footer>
 </div>
 
 <script>
 (function(){
-  const LS_KEY = 'crmapp_clients';
-  const LS_PERCENT = 'crmapp_percent';
+  // Keys and DOM
+  const STORAGE_KEY = 'contracts_clients_v1';
+  const form = document.getElementById('clientForm');
+  const fioIn = document.getElementById('fio');
+  const brandIn = document.getElementById('brand');
+  const plateIn = document.getElementById('plate');
+  const percentIn = document.getElementById('percent');
+  const clientsList = document.getElementById('clientsList');
+  const totalEl = document.getElementById('total');
+  const emptyState = document.getElementById('emptyState');
+  const saveBtn = document.getElementById('saveBtn');
+  const cancelEditBtn = document.getElementById('cancelEdit');
+  const btnExport = document.getElementById('btnExport');
+  const btnClearAll = document.getElementById('btnClearAll');
+
   let clients = [];
-  let currentPercent = 15; // процент для новых клиентов
+  let editId = null;
 
-  const inputName=document.getElementById('inputName');
-  const inputPlate=document.getElementById('inputPlate');
-  const inputPhone=document.getElementById('inputPhone');
-  const inputAmount=document.getElementById('inputAmount');
-  const addBtn=document.getElementById('addBtn');
-  const clientsWrap=document.getElementById('clients');
-  const totalCount=document.getElementById('totalCount');
-  const sumTotal=document.getElementById('sumTotal');
-  const sumToPay=document.getElementById('sumToPay');
-  const searchInput=document.getElementById('search');
-  const clearAll=document.getElementById('clearAll');
+  // util: generate id
+  function uid(){
+    return 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  }
 
+  // load
   function load(){
-    try{clients=JSON.parse(localStorage.getItem(LS_KEY))||[]}catch(e){clients=[]}
-    try{currentPercent=Number(localStorage.getItem(LS_PERCENT))||15}catch(e){currentPercent=15}
-    updatePercentButtons();
-  }
-  function save(){localStorage.setItem(LS_KEY,JSON.stringify(clients));localStorage.setItem(LS_PERCENT,currentPercent)}
-  function fmtMoney(n){return Number(n||0).toLocaleString('ru-RU')+' ₽'}
-  function calcSalary(a,p){return (Number(a)||0)*(p||0)/100}
-  function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-  function uid(){return 'id_'+Math.random().toString(36).slice(2,9)}
-  function digitsOnly(p){return (p||'').replace(/\D+/g,'')}
-  function waLink(p){const d=digitsOnly(p);return d?'https://wa.me/'+d:null}
-
-  function render(filt=''){
-    clientsWrap.innerHTML='';
-    const f=filt.trim().toLowerCase();
-    let total=0, totalPay=0;
-    clients.filter(c=>!f||c.name.toLowerCase().includes(f)||c.plate.toLowerCase().includes(f)||c.phone.includes(f))
-    .forEach(c=>{
-      total+=Number(c.amount||0);
-      totalPay+=calcSalary(c.amount,c.percent);
-      const card=document.createElement('div');
-      card.className='card';
-      card.innerHTML=`
-        <div class="top">
-          <div class="client-name">${escapeHtml(c.name)}</div>
-          <div class="badges">
-            <div class="gov">${escapeHtml(c.plate)}</div>
-            <div class="phone">${escapeHtml(c.phone)}</div>
-          </div>
-        </div>
-        <div class="money-block">
-          <div class="money-box">
-            <div class="money-label">Сумма</div>
-            <div class="money-value">${fmtMoney(c.amount)}</div>
-          </div>
-          <div class="money-box">
-            <div class="money-label">К выплате (${c.percent}%)</div>
-            <div class="money-value">${fmtMoney(calcSalary(c.amount,c.percent))}</div>
-          </div>
-        </div>
-        <div class="actions">
-          <a class="btn-icon" target="_blank" href="${waLink(c.phone)||'#'}"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="wa"></a>
-          <button data-act="edit" class="btn-icon"><img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="edit"></button>
-          <button data-act="del" class="btn-icon"><img src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="del"></button>
-        </div>
-      `;
-      card.querySelector('[data-act="edit"]').onclick=()=>editClient(c.id);
-      card.querySelector('[data-act="del"]').onclick=()=>removeClient(c.id);
-      clientsWrap.appendChild(card);
-    });
-    totalCount.textContent=clients.length;
-    sumTotal.textContent=fmtMoney(total);
-    sumToPay.textContent=fmtMoney(totalPay);
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      clients = raw ? JSON.parse(raw) : [];
+    }catch(e){ clients=[]; }
+    renderList();
   }
 
-  function addClient(){
-    if(!inputName.value.trim()){alert('Введите имя');return}
-    clients.unshift({
-      id:uid(),
-      name:inputName.value.trim(),
-      plate:inputPlate.value.trim(),
-      phone:inputPhone.value.trim(),
-      amount:Number(inputAmount.value)||0,
-      percent: currentPercent
-    });
-    inputName.value=inputPlate.value=inputPhone.value=inputAmount.value='';
-    save();render(searchInput.value);
+  function saveStorage(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
   }
-  function editClient(id){
-    const c=clients.find(x=>x.id===id);if(!c)return;
-    const n=prompt('Имя',c.name);if(n===null)return;
-    const p=prompt('Гос. номер',c.plate);if(p===null)return;
-    const ph=prompt('Телефон',c.phone);if(ph===null)return;
-    const a=prompt('Сумма',c.amount);if(a===null)return;
-    const perc=prompt('Процент',c.percent);if(perc===null)return;
-    c.name=n;c.plate=p;c.phone=ph;c.amount=Number(a)||0;c.percent=Number(perc)||c.percent;
-    save();render(searchInput.value);
-  }
-  function removeClient(id){if(confirm('Удалить?')){clients=clients.filter(c=>c.id!==id);save();render(searchInput.value)}}
-  function clearAllFn(){if(confirm('Очистить всех?')){clients=[];save();render()}}
 
-  function updatePercentButtons(){
-    document.querySelectorAll('.percent-switch button').forEach(b=>{
-      b.classList.toggle('active',Number(b.dataset.percent)===currentPercent);
+  // render
+  function renderList(){
+    clientsList.innerHTML = '';
+    if (!clients.length){
+      clientsList.appendChild(emptyState);
+      totalEl.textContent = '0';
+      return;
+    }
+    totalEl.textContent = clients.length;
+    clients.forEach(client => {
+      const node = document.createElement('div');
+      node.className = 'client';
+      node.dataset.id = client.id;
+
+      const left = document.createElement('div');
+      left.className = 'left';
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = client.fio ? client.fio.split(' ').map(s=>s[0]||'').slice(0,2).join('').toUpperCase() : 'К';
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = client.fio || '—';
+      const car = document.createElement('div');
+      car.className = 'car';
+      car.textContent = `${client.brand || '—'} · ${client.plate || '—'}`;
+
+      meta.appendChild(name);
+      meta.appendChild(car);
+      left.appendChild(avatar);
+      left.appendChild(meta);
+
+      const right = document.createElement('div');
+      right.className = 'right';
+
+      const badge = document.createElement('div');
+      badge.className = 'badge';
+      badge.textContent = client.percent + '%';
+
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn ghost';
+      editBtn.textContent = 'Изменить';
+      editBtn.addEventListener('click', ()=> startEdit(client.id));
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn danger';
+      delBtn.textContent = 'Удалить';
+      delBtn.addEventListener('click', ()=> removeClient(client.id));
+
+      right.appendChild(badge);
+      right.appendChild(editBtn);
+      right.appendChild(delBtn);
+
+      node.appendChild(left);
+      node.appendChild(right);
+
+      clientsList.appendChild(node);
     });
   }
-  document.querySelectorAll('.percent-switch button').forEach(b=>{
-    b.onclick=()=>{currentPercent=Number(b.dataset.percent);save();updatePercentButtons()};
+
+  // add
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const fio = fioIn.value.trim();
+    const brand = brandIn.value.trim();
+    const plate = plateIn.value.trim();
+    const percent = percentIn.value;
+
+    // minimal validation
+    if (!fio){
+      // focus, but no hints
+      fioIn.focus();
+      return;
+    }
+
+    if (editId){
+      const idx = clients.findIndex(c=>c.id===editId);
+      if (idx>=0){
+        clients[idx] = Object.assign({}, clients[idx], {fio, brand, plate, percent});
+        editId = null;
+        saveBtn.textContent = 'Добавить';
+        cancelEditBtn.style.display = 'none';
+      }
+    } else {
+      const newCli = { id: uid(), fio, brand, plate, percent };
+      clients.unshift(newCli);
+    }
+
+    saveStorage();
+    renderList();
+    form.reset();
+    percentIn.value = '30';
   });
 
-  addBtn.onclick=addClient;
-  clearAll.onclick=clearAllFn;
-  searchInput.oninput=()=>render(searchInput.value);
+  function startEdit(id){
+    const client = clients.find(c=>c.id===id);
+    if (!client) return;
+    editId = id;
+    fioIn.value = client.fio || '';
+    brandIn.value = client.brand || '';
+    plateIn.value = client.plate || '';
+    percentIn.value = client.percent || '30';
+    saveBtn.textContent = 'Сохранить';
+    cancelEditBtn.style.display = '';
+    // scroll into view on small
+    fioIn.scrollIntoView({behavior:'smooth', block:'center'});
+  }
 
-  load(); render();
+  cancelEditBtn.addEventListener('click', function(){
+    editId = null;
+    form.reset();
+    percentIn.value = '30';
+    saveBtn.textContent = 'Добавить';
+    cancelEditBtn.style.display = 'none';
+  });
+
+  function removeClient(id){
+    const idx = clients.findIndex(c=>c.id===id);
+    if (idx===-1) return;
+    clients.splice(idx,1);
+    saveStorage();
+    renderList();
+  }
+
+  // export CSV
+  btnExport.addEventListener('click', function(){
+    if (!clients.length) return;
+    const header = ['id','fio','brand','plate','percent','createdAt'];
+    const rows = clients.map(c=>{
+      const created = c.id ? new Date(parseInt(c.id.split('_')[1],36)).toISOString().split('T')[0] : '';
+      return [c.id, c.fio, c.brand, c.plate, c.percent, created];
+    });
+    const csv = [header, ...rows].map(r=>r.map(cell => {
+      if (cell==null) return '';
+      const s = String(cell).replace(/"/g,'""');
+      if (s.search(/[,\"\n]/) >= 0) return `"${s}"`;
+      return s;
+    }).join(',')).join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'clients.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // clear all
+  btnClearAll.addEventListener('click', function(){
+    if (!clients.length) return;
+    // clear storage and UI
+    clients = [];
+    saveStorage();
+    renderList();
+  });
+
+  // init
+  load();
+
+  // expose for debugging (optional)
+  window.__clientsApp = {
+    add: (c)=> { clients.unshift(Object.assign({id:uid()}, c)); saveStorage(); renderList(); },
+    list: ()=> clients.slice()
+  };
+
 })();
 </script>
 </body>
