@@ -6,15 +6,12 @@
 <title>Клиенты</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d1117">
-
-<!-- для iPhone -->
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Клиенты">
 
 <style>
-  /* стили — те же из прошлой версии */
   :root {
     --bg: #0d1117; --card: #161b22; --accent: #3b82f6;
     --text: #f0f6fc; --muted: #8b949e; --danger: #ef4444;
@@ -39,8 +36,12 @@
   .info{flex:1;overflow:hidden;}
   .name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .details{font-size:0.85rem;color:var(--muted);margin-top:4px;}
-  .actions{display:flex;gap:6px;flex-shrink:0;}
-  .badge{padding:6px 10px;background:#1f2937;border-radius:999px;font-weight:600;font-size:0.9rem;color:var(--accent);margin-right:8px;}
+  .actions{display:flex;gap:6px;flex-shrink:0;align-items:center;}
+  .badge{padding:6px 10px;background:#1f2937;border-radius:999px;font-weight:600;font-size:0.9rem;color:var(--accent);}
+  .status{padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.85rem;text-transform:capitalize;}
+  .status.active{background:#065f46;color:#a7f3d0;}
+  .status.pending{background:#92400e;color:#fcd34d;}
+  .status.done{background:#1e3a8a;color:#93c5fd;}
   .empty{text-align:center;padding:20px;color:var(--muted);}
 </style>
 </head>
@@ -76,6 +77,14 @@
             <option value="15">15%</option>
           </select>
         </div>
+        <div style="flex:1">
+          <label for="status">Статус</label>
+          <select id="status">
+            <option value="active">Активный</option>
+            <option value="pending">В ожидании</option>
+            <option value="done">Завершён</option>
+          </select>
+        </div>
       </div>
       <div class="row" style="margin-top:6px">
         <button type="submit" class="btn primary" id="saveBtn">Добавить</button>
@@ -91,12 +100,13 @@
 
 <script>
 (function(){
-  const STORAGE_KEY = 'clients_data_v2';
+  const STORAGE_KEY = 'clients_data_v3';
   const form=document.getElementById('clientForm');
   const fioIn=document.getElementById('fio');
   const brandIn=document.getElementById('brand');
   const plateIn=document.getElementById('plate');
   const percentIn=document.getElementById('percent');
+  const statusIn=document.getElementById('status');
   const clientsList=document.getElementById('clientsList');
   const emptyState=document.getElementById('emptyState');
   const saveBtn=document.getElementById('saveBtn');
@@ -116,25 +126,42 @@
       const name=document.createElement('div');name.className='name';name.textContent=c.fio;
       const details=document.createElement('div');details.className='details';details.textContent=(c.brand||'—')+' · '+(c.plate||'—');
       info.appendChild(name);info.appendChild(details);
+
       const actions=document.createElement('div');actions.className='actions';
       const badge=document.createElement('div');badge.className='badge';badge.textContent=c.percent+'%';
+      const status=document.createElement('div');status.className='status '+c.status;
+      if(c.status==='active') status.textContent='Активный';
+      if(c.status==='pending') status.textContent='В ожидании';
+      if(c.status==='done') status.textContent='Завершён';
+
       const editBtn=document.createElement('button');editBtn.className='btn ghost';editBtn.textContent='✎';editBtn.onclick=()=>startEdit(c.id);
       const delBtn=document.createElement('button');delBtn.className='btn danger';delBtn.textContent='×';delBtn.onclick=()=>remove(c.id);
-      actions.appendChild(badge);actions.appendChild(editBtn);actions.appendChild(delBtn);
-      row.appendChild(info);row.appendChild(actions);clientsList.appendChild(row);
+
+      actions.appendChild(badge);
+      actions.appendChild(status);
+      actions.appendChild(editBtn);
+      actions.appendChild(delBtn);
+
+      row.appendChild(info);row.appendChild(actions);
+      clientsList.appendChild(row);
     });
   }
 
   form.onsubmit=e=>{
     e.preventDefault();
     const fio=fioIn.value.trim(); if(!fio) return;
-    const obj={id:editId||uid(),fio,brand:brandIn.value.trim(),plate:plateIn.value.trim(),percent:percentIn.value};
+    const obj={id:editId||uid(),fio,brand:brandIn.value.trim(),plate:plateIn.value.trim(),percent:percentIn.value,status:statusIn.value};
     if(editId){const i=clients.findIndex(x=>x.id===editId);if(i>=0)clients[i]=obj;editId=null;saveBtn.textContent='Добавить';cancelEdit.style.display='none';}
     else{clients.unshift(obj);}
-    save();render();form.reset();percentIn.value='30';
+    save();render();form.reset();percentIn.value='30';statusIn.value='active';
   };
-  function startEdit(id){const c=clients.find(x=>x.id===id);if(!c)return;editId=id;fioIn.value=c.fio;brandIn.value=c.brand;plateIn.value=c.plate;percentIn.value=c.percent;saveBtn.textContent='Сохранить';cancelEdit.style.display='';}
-  cancelEdit.onclick=()=>{editId=null;form.reset();percentIn.value='30';saveBtn.textContent='Добавить';cancelEdit.style.display='none';};
+  function startEdit(id){
+    const c=clients.find(x=>x.id===id);if(!c)return;
+    editId=id;
+    fioIn.value=c.fio;brandIn.value=c.brand;plateIn.value=c.plate;percentIn.value=c.percent;statusIn.value=c.status||'active';
+    saveBtn.textContent='Сохранить';cancelEdit.style.display='';
+  }
+  cancelEdit.onclick=()=>{editId=null;form.reset();percentIn.value='30';statusIn.value='active';saveBtn.textContent='Добавить';cancelEdit.style.display='none';};
   function remove(id){clients=clients.filter(c=>c.id!==id);save();render();}
   load();
 
